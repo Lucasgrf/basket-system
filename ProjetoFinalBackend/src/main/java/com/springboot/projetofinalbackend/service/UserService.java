@@ -7,8 +7,11 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Service
 public class UserService {
@@ -19,39 +22,33 @@ public class UserService {
     @Autowired
     private CredentialService credentialService;
 
-    /*@Autowired Tem que colocar esse troço
-    private PasswordEncoder passwordEncoder;*/
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
-    // Incompleto: sem JWT e security
     public ResponseEntity<User> register(@RequestBody UserDTO userDTO) {
-        // Verificar se o usuário já existe
         if (userRepository.findByEmail(userDTO.email()) != null) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build(); // 409 Conflict
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
-        // Converter UserDTO para User
         var user = new User();
         BeanUtils.copyProperties(userDTO, user);
 
-        // Criptografar a senha do usuário
-        //user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        // Criar credenciais
         if (!credentialService.create(user)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
-        // Salvar o usuário e retornar a resposta
         User savedUser = userRepository.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
     }
 
 
     //Incompleto: Spring security e JWTs
-    public ResponseEntity<Void> login(User user) {
-        var userAuthenticate = userRepository.findByEmail(user.getEmail());
-        if (userAuthenticate != null && userAuthenticate.getPassword().equals(user.getPassword())) {
+    public ResponseEntity<Void> login(UserDTO user) {
+        var userAuthenticate = userRepository.findByEmail(user.email());
+        if (authenticate(user.password(),userAuthenticate.getPassword())) {
             // gerar e retornar um token de autenticação
             // return ResponseEntity.status(HttpStatus.OK).body(new AuthenticationResponse("token"));
             return ResponseEntity.status(HttpStatus.OK).build();
@@ -60,40 +57,41 @@ public class UserService {
         }
     }
 
+    private boolean authenticate(String rawPassword, String encodedPassword) {
+        return passwordEncoder.matches(rawPassword, encodedPassword);
+    }
 
-    public ResponseEntity<User> updateProfile(User user) {
-        var userUpdate = userRepository.findByEmail(user.getEmail());
+
+    public ResponseEntity<User> updateProfile(@PathVariable Long id, @RequestBody UserDTO user) {
+        var userUpdate = userRepository.findById(id).orElse(null);
         if (userUpdate == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        userUpdate.setFullName(user.getFullName());
-        userUpdate.setUsername(user.getUsername());
+        userUpdate.setFullName(user.fullName());
+        userUpdate.setUsername(user.username());
 
-        // Atualiza a senha com hashing se for necessário
-        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
-            //userUpdate.setPassword(hashPassword(user.getPassword())); // Método de hashing da senha
+        if(authenticate(user.password(),userUpdate.getPassword())) {
+            userRepository.save(userUpdate);
+            return ResponseEntity.status(HttpStatus.OK).body(userUpdate);
+        }else{
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-
-        userRepository.save(userUpdate);
-        return ResponseEntity.status(HttpStatus.OK).body(userUpdate);
     }
 
-    /* Implementar hashing da senha, usando BCrypt
-    private String hashPassword(String password) {
-        return BCryptPasswordEncoder.encode(password);
-    }*/
 
-
-    public ResponseEntity<Void> deleteProfile(User user, String confirmation) {
-        var userDelete = userRepository.findByEmail(user.getEmail());
+    public ResponseEntity<Void> deleteProfile(@PathVariable Long id, @RequestBody UserDTO user,@RequestParam String confirmPassword) {
+        var userDelete = userRepository.findById(id).orElse(null);
         if (userDelete == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        if (!confirmation.equals(userDelete.getPassword())) {
+
+        if(authenticate(confirmPassword,userDelete.getPassword())){
+            userRepository.delete(userDelete);
+        }else{
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        userRepository.delete(userDelete);
+
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 

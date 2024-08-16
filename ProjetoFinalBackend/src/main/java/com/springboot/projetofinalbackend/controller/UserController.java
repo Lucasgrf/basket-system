@@ -21,18 +21,18 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Void> login(User user) {
+    public ResponseEntity<Void> login(@RequestBody @Valid UserDTO user) {
         return userService.login(user);
     }
 
-    @PutMapping("/profile")
-    public ResponseEntity<User> updateProfile(User user){
-        return userService.updateProfile(user);
+    @PutMapping("/profile/{id}")
+    public ResponseEntity<User> updateProfile(@PathVariable Long id ,@RequestBody @Valid UserDTO user){
+        return userService.updateProfile(id,user);
     }
 
     @DeleteMapping("/profile/{id}")
-    public ResponseEntity<Void> deleteProfile(User user, String confirmation) {
-        return userService.deleteProfile(user, confirmation);
+    public ResponseEntity<Void> deleteProfile(@PathVariable Long id , @RequestBody @Valid UserDTO user, String confirmPassword) {
+        return userService.deleteProfile(id,user,confirmPassword);
     }
 
 }

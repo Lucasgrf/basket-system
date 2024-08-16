@@ -3,6 +3,7 @@ package com.springboot.projetofinalbackend.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -38,10 +39,12 @@ public class Player {
 
     @ManyToMany
     @JoinTable(
-            name = "player_training",
+            name = "player_confirmed_trainings",
             joinColumns = @JoinColumn(name = "player_id"),
             inverseJoinColumns = @JoinColumn(name = "training_id")
     )
-    private Set<Training> trainings;
+    private Set<Training> confirmedTrainings = new HashSet<>();
+
+
 }
 

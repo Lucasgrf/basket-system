@@ -16,5 +16,5 @@ public record TeamDTO(
         @NotBlank String emailContact,
         @NotBlank String phoneContact,
         @NotNull Long coachId,
-        @NotNull List<PlayerDTO> players
+        List<PlayerDTO> players
 ) { }

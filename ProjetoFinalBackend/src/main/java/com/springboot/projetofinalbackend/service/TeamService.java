@@ -1,6 +1,7 @@
 package com.springboot.projetofinalbackend.service;
 
 import com.springboot.projetofinalbackend.DTO.TeamDTO;
+import com.springboot.projetofinalbackend.model.Player;
 import com.springboot.projetofinalbackend.model.Team;
 import com.springboot.projetofinalbackend.repository.TeamRepository;
 import org.springframework.beans.BeanUtils;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class TeamService {
@@ -33,18 +35,18 @@ public class TeamService {
         return ResponseEntity.status(HttpStatus.CREATED).body(teamRepository.save(team));
     }
 
-    public ResponseEntity<Team> update(@PathVariable Long id, @RequestBody Team team) {
+    public ResponseEntity<Team> update(@PathVariable Long id, @RequestBody TeamDTO team) {
         var teamUpdate = teamRepository.findById(id).orElse(null);
         if (teamUpdate == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        teamUpdate.setName(team.getName());
-        teamUpdate.setAddress(team.getAddress());
-        teamUpdate.setGym(team.getGym());
-        teamUpdate.setEmailContact(team.getEmailContact());
-        teamUpdate.setFoundation(team.getFoundation());
-        teamUpdate.setPhoneContact(team.getPhoneContact());
+        teamUpdate.setName(team.name());
+        teamUpdate.setAddress(team.address());
+        teamUpdate.setGym(team.gym());
+        teamUpdate.setEmailContact(team.emailContact());
+        teamUpdate.setFoundation(team.foundation());
+        teamUpdate.setPhoneContact(team.phoneContact());
 
         return ResponseEntity.status(HttpStatus.OK).body(teamRepository.save(teamUpdate));
     }
@@ -57,5 +59,13 @@ public class TeamService {
         }
         teamRepository.delete(teamDelete);
         return ResponseEntity.noContent().build();
+    }
+
+    public ResponseEntity<Set<Player>> getAllPlayersTeam(Long teamId) {
+        var team = teamRepository.findById(teamId).orElse(null);
+        if (team == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(team.getPlayers());
     }
 }

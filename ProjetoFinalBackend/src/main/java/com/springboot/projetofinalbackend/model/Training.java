@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -44,6 +45,9 @@ public class Training {
 
     @ManyToMany(mappedBy = "trainings")
     private Set<Player> players;
+
+    @ManyToMany(mappedBy = "confirmedTrainings")
+    private Set<Player> confirmedPlayers = new HashSet<>();
 
 }
 

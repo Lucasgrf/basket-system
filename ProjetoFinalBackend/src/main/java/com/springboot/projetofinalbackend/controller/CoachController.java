@@ -1,8 +1,11 @@
 package com.springboot.projetofinalbackend.controller;
 
 import com.springboot.projetofinalbackend.DTO.TeamDTO;
+import com.springboot.projetofinalbackend.DTO.TrainingDTO;
 import com.springboot.projetofinalbackend.model.Player;
 import com.springboot.projetofinalbackend.model.Team;
+import com.springboot.projetofinalbackend.model.Training;
+import com.springboot.projetofinalbackend.repository.TrainingRepository;
 import com.springboot.projetofinalbackend.service.TeamService;
 import com.springboot.projetofinalbackend.service.TrainingService;
 import jakarta.persistence.EntityNotFoundException;
@@ -29,29 +32,46 @@ public class CoachController {
     }
 
     @DeleteMapping("/team/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id, @RequestParam String confirmation) {
+    public ResponseEntity<Void> deleteTeam(@PathVariable Long id, @RequestParam String confirmation) {
         return teamService.delete(id, confirmation);
     }
 
 
     @PutMapping("/team/{id}")
-    public ResponseEntity<Team> update(@PathVariable Long id, @RequestBody Team team) {
+    public ResponseEntity<Team> updateTeam(@PathVariable Long id, @RequestBody TeamDTO team) {
         return teamService.update(id, team);
     }
 
-    //public boolean createTraining(Coach coach) {} OK
-    //public boolean updateTraining(Coach coach) {} OK
-    //public boolean deleteTraining(Coach coach) {} OK
+    @GetMapping("/teams/{teamId}/players")
+    public ResponseEntity<Set<Player>> getAllPlayers(@PathVariable Long teamId) {
+        return teamService.getAllPlayersTeam(teamId);
+    }
+
+    @PostMapping("/training")
+    public ResponseEntity<Training> createTraining(@RequestBody TrainingDTO trainingDTO) {
+        return trainingService.create(trainingDTO);
+    }
+
+    @PutMapping("/training/{id}")
+    public ResponseEntity<Training> updateTraining(@PathVariable Long id ,@RequestBody TrainingDTO trainingDTO) {
+        return trainingService.update(id,trainingDTO);
+    }
+
+    @DeleteMapping("/training/{id}")
+    public ResponseEntity<Void> deleteTraining(@PathVariable Long id, @RequestParam String confirmation) {
+        return trainingService.delete(id,confirmation);
+    }
 
     @PostMapping("/trainings/{trainingId}/players/{playerId}")
     public ResponseEntity<Set<Player>> addPlayer(@PathVariable Long trainingId, @PathVariable Long playerId) {
         try {
             Set<Player> updatedPlayers = trainingService.addPlayer(trainingId, playerId);
-            return ResponseEntity.ok(updatedPlayers);
+            return ResponseEntity.status(HttpStatus.OK).body(updatedPlayers);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
     @DeleteMapping("/trainings/{trainingId}/players/{playerId}")
     public ResponseEntity<Void> deletePlayer(@PathVariable Long trainingId, @PathVariable Long playerId) {
         try {

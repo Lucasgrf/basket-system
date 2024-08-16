@@ -11,6 +11,6 @@ public record TrainingDTO(
         @NotBlank String title,
         @NotNull LocalDateTime dateTime,
         @NotBlank String location,
-        @NotNull List<@NotNull Long> credentialIds,
-        @NotNull Long teamId
+        List<Long> credentialIds,
+        Long teamId
 ) { }
