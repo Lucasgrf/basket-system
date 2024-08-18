@@ -14,9 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
 
 
 @Service
@@ -29,14 +26,6 @@ public class PlayerService {
 
     @Autowired
     private TrainingRepository trainingRepository;
-
-    public ResponseEntity<List<Player>> findAll() {
-        return ResponseEntity.status(HttpStatus.OK).body(playerRepository.findAll());
-    }
-
-    public ResponseEntity<Player> findById(Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(playerRepository.findById(id).orElse(null));
-    }
 
     public ResponseEntity<Player> create(@RequestBody PlayerDTO playerDTO) {
         var player = new Player();

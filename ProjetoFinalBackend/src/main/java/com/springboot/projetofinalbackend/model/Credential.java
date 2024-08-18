@@ -18,15 +18,12 @@ public class Credential {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     private String photoName;
 
     @Column(nullable = false, unique = true)
     private String name;
 
     private Long TeamId;
-
-    private String role;
 
     @OneToOne
     @JoinColumn(name = "user_id")

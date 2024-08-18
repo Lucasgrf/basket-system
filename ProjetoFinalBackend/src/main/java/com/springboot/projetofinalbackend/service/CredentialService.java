@@ -1,10 +1,11 @@
 package com.springboot.projetofinalbackend.service;
 
+import com.springboot.projetofinalbackend.DTO.CredentialDTO;
 import com.springboot.projetofinalbackend.model.Credential;
 import com.springboot.projetofinalbackend.model.User;
 import com.springboot.projetofinalbackend.repository.CredentialRepository;
-import com.springboot.projetofinalbackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,18 +13,26 @@ public class CredentialService {
     @Autowired
     private CredentialRepository credentialRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
-    public boolean create(User user) {
+    public Credential create(User user) {
         var credential = new Credential();
         credential.setUser(user);
-        credential.setPhotoName(user.getPhotoName());
-        credential.setName(user.getFullName());
+        credential.setPhotoName(null);
+        credential.setName(user.getUsername());
         credential.setTeamId(null);
-        credential.setRole(null);
         credentialRepository.save(credential);
-        return credentialRepository.existsById(credential.getId());
+        return credential;
+    }
+
+    public ResponseEntity update(CredentialDTO credential) {
+        var cred = credentialRepository.findById(credential.id()).orElseThrow(() -> new RuntimeException("Credential not found"));
+        if(cred != null) {
+            cred.setPhotoName(credential.photoName());
+            cred.setName(credential.name());
+            cred.setTeamId(credential.teamId());
+            credentialRepository.save(cred);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 }
 

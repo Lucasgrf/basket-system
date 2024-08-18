@@ -37,6 +37,9 @@ public class Player {
     @JoinColumn(name = "team_id")
     private Team team;
 
+    @ManyToMany(mappedBy = "players")
+    private Set<Training> trainings = new HashSet<>();
+
     @ManyToMany
     @JoinTable(
             name = "player_confirmed_trainings",

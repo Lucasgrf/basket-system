@@ -33,8 +33,6 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    private String fullName;
-
     private String photoName;
 
     @Enumerated(EnumType.STRING)

@@ -43,8 +43,13 @@ public class Training {
     )
     private List<Credential> credentials;
 
-    @ManyToMany(mappedBy = "trainings")
-    private Set<Player> players;
+    @ManyToMany
+    @JoinTable(
+            name = "player_training", // Nome da tabela de junção
+            joinColumns = @JoinColumn(name = "training_id"), // Chave estrangeira para a tabela Training
+            inverseJoinColumns = @JoinColumn(name = "player_id") // Chave estrangeira para a tabela Player
+    )
+    private Set<Player> players = new HashSet<>();
 
     @ManyToMany(mappedBy = "confirmedTrainings")
     private Set<Player> confirmedPlayers = new HashSet<>();

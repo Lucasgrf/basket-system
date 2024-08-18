@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -22,12 +23,16 @@ public class TeamService {
     private TeamRepository teamRepository;
 
     public ResponseEntity<List<Team>> findAll() {
-        return ResponseEntity.status(HttpStatus.OK).body(teamRepository.findAll());
+        List<Team> teams = teamRepository.findAll();
+        return ResponseEntity.status(HttpStatus.OK).body(teams);
     }
 
-    public ResponseEntity<Team> findById(Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(teamRepository.findById(id).orElse(null));
+    public ResponseEntity<Team> findById(@PathVariable Long id) {
+        Optional<Team> team = teamRepository.findById(id);
+        return team.map(value -> ResponseEntity.status(HttpStatus.OK).body(value))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
     }
+
 
     public ResponseEntity<Team> create(@RequestBody TeamDTO teamDto) {
         var team = new Team();
@@ -61,7 +66,7 @@ public class TeamService {
         return ResponseEntity.noContent().build();
     }
 
-    public ResponseEntity<Set<Player>> getAllPlayersTeam(Long teamId) {
+    public ResponseEntity<Set<Player>> getAllPlayersTeam(@PathVariable Long teamId) {
         var team = teamRepository.findById(teamId).orElse(null);
         if (team == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

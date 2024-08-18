@@ -42,11 +42,6 @@ public class CoachController {
         return teamService.update(id, team);
     }
 
-    @GetMapping("/teams/{teamId}/players")
-    public ResponseEntity<Set<Player>> getAllPlayers(@PathVariable Long teamId) {
-        return teamService.getAllPlayersTeam(teamId);
-    }
-
     @PostMapping("/training")
     public ResponseEntity<Training> createTraining(@RequestBody TrainingDTO trainingDTO) {
         return trainingService.create(trainingDTO);

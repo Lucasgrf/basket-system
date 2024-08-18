@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
 import java.util.Set;
 
 @Service
@@ -30,14 +29,6 @@ public class TrainingService {
         var training = new Training();
         BeanUtils.copyProperties(trainingDto, training);
         return ResponseEntity.status(HttpStatus.CREATED).body(trainingRepository.save(training));
-    }
-
-    public ResponseEntity<List<Training>> findAll(){
-        return ResponseEntity.status(HttpStatus.OK).body(trainingRepository.findAll());
-    }
-
-    public ResponseEntity<Training> findById(Long id){
-        return ResponseEntity.status(HttpStatus.OK).body(trainingRepository.findById(id).orElse(null));
     }
 
     public ResponseEntity<Training> update(@PathVariable Long id ,@RequestBody TrainingDTO training){
