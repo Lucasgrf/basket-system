@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registrar</title>
+
+</head>
+<body>
+  <main class="min-h-screen flex flex-col md:flex-row">
+    <div class="hidden md:flex md:w-1/2 justify-center items-center">
+      <img src="./assets/register 1.png" alt="Left Image" class="h-full">
+    </div>
+    <div class="flex flex-col justify-center items-center md:w-1/2 bg-gray-200 p-8">
+      <header class="flex justify-start items-start w-44 h-10 mb-8">
+        <img src="./assets/LogoCell.svg" alt="Logo" class="h-12">
+      </header>
+      <section class="border md:border-none p-10 w-96 max-w-m bg-white rounded-md">
+        <h2 class="text-center text-2xl font-bold text-gray-900 mb-4">Registrar</h2>
+        <p class="text-center text-sm text-gray-600 mb-8">Insira seus dados para se registrar</p>
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-6">
+          <div class="mb-6">
+            <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Email:</label>
+            <input type="email" formControlName="email" class="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="john.doe@company.com" required />
+          </div>
+          <div>
+            <label for="phone" class="block mb-2 text-sm font-medium text-gray-900">Telefone:</label>
+            <input type="tel" formControlName="phone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="99-99999-9999" required />
+          </div>
+          <div class="mb-6">
+            <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Senha:</label>
+            <input type="password" formControlName="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="•••••••••" required />
+          </div>
+          <div class="mb-6">
+            <label for="confirm_password" class="block mb-2 text-sm font-medium text-gray-900">Confirmar Senha:</label>
+            <input type="password" formControlName="confirmPassword" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="•••••••••" required />
+          </div>
+          <div class="flex items-center">
+            <input formControlName="rememberMe" type="checkbox" class="h-4 w-4 text-indigo-600 border-gray-300 rounded">
+            <label for="remember-me" class="ml-2 block text-sm text-gray-900">Lembrar-me</label>
+            <a href="#" class="ml-auto text-sm text-indigo-600 hover:text-indigo-500">Esqueceu a senha?</a>
+          </div>
+          <div>
+            <button type="submit" class="w-full py-2 px-4 bg-custom text-white font-semibold rounded-md shadow hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-600">Registrar</button>
+          </div>
+        </form>
+        <p class="mt-8 text-center text-sm text-gray-600">Já tem uma conta? <a href="#" class="text-indigo-600 hover:text-indigo-500">Entre aqui</a></p>
+      </section>
+    </div>
+  </main>
+
+</body>
+</html>
