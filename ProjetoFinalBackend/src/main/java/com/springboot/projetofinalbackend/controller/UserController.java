@@ -15,14 +15,14 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PutMapping("/profile/{id}")
-    public ResponseEntity<User> updateProfile(@PathVariable Long id ,@RequestBody @Valid UserDTO user){
-        return userService.updateProfile(id,user);
+    @PutMapping("/profile")
+    public ResponseEntity<User> updateProfile(@RequestBody @Valid UserDTO user){
+        return userService.updateProfile(user);
     }
 
-    @DeleteMapping("/profile/{id}")
-    public ResponseEntity<Void> deleteProfile(@PathVariable Long id , @RequestBody @Valid UserDTO user) {
-        return userService.deleteProfile(id,user);
+    @DeleteMapping("/profile")
+    public ResponseEntity<Void> deleteProfile(@RequestBody @Valid UserDTO user) {
+        return userService.deleteProfile(user);
     }
 
 }

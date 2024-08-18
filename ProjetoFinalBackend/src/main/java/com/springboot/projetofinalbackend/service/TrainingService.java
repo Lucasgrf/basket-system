@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Set;
 
@@ -43,10 +44,8 @@ public class TrainingService {
     }
 
     public ResponseEntity<Void> delete(@PathVariable Long id, @RequestParam String confirmation){
-        var trainingDelete = trainingRepository.findById(id).orElse(null);
-        if(trainingDelete == null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        var trainingDelete = trainingRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         if(!trainingDelete.getTitle().equals(confirmation)){
             return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();

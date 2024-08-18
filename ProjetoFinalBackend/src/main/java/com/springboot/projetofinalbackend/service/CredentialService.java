@@ -7,6 +7,9 @@ import com.springboot.projetofinalbackend.repository.CredentialRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Service
 public class CredentialService {
@@ -24,17 +27,27 @@ public class CredentialService {
         return credential;
     }
 
-    //Revisar
-    public ResponseEntity update(CredentialDTO credential) {
-        var cred = credentialRepository.findById(credential.id()).orElseThrow(() -> new RuntimeException("Credential not found"));
-        if(cred != null) {
-            cred.setPhotoName(credential.photoName());
-            cred.setName(credential.name());
-            cred.setTeamId(credential.teamId());
-            credentialRepository.save(cred);
-            return ResponseEntity.ok().build();
+    public ResponseEntity<Credential> update(@PathVariable Long id, @RequestBody CredentialDTO credential) {
+        var cred = credentialRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Credential not found"));
+
+        cred.setPhotoName(credential.photoName());
+        cred.setName(credential.name());
+        cred.setTeamId(credential.teamId());
+        credentialRepository.save(cred);
+
+        return ResponseEntity.ok().build();
+
+    }
+
+    public ResponseEntity<Void> delete(@PathVariable Long id, @RequestParam String confirmation) {
+        var cred = credentialRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Credential not found"));
+        if(confirmation.equals(cred.getName())){
+            credentialRepository.delete(cred);
+            return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.badRequest().build();
     }
 }
 

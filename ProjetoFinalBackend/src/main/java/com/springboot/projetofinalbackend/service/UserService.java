@@ -3,13 +3,13 @@ package com.springboot.projetofinalbackend.service;
 import com.springboot.projetofinalbackend.DTO.UserDTO;
 import com.springboot.projetofinalbackend.model.User;
 import com.springboot.projetofinalbackend.repository.UserRepository;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
@@ -22,7 +22,8 @@ public class UserService {
     private AuthService authService;
 
     public ResponseEntity<User> updateProfile(@PathVariable Long id, @RequestBody UserDTO user) {
-        var userUpdate = userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        var userUpdate = userRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         userUpdate.setUsername(user.username());
         userUpdate.setPhotoName(user.photoName());
@@ -36,16 +37,12 @@ public class UserService {
     }
 
 
-    public ResponseEntity<Void> deleteProfile(@PathVariable Long id, @RequestBody @Valid UserDTO user) {
-        var userDelete = userRepository.findById(id).orElse(null);
-        if (userDelete == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+    public ResponseEntity<Void> deleteProfile(@PathVariable Long id, @RequestParam String password) {
+        var userDelete = userRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        if(user.email().equals(userDelete.getEmail()) && user.username().equals(userDelete.getUsername())) {
-            if(authService.authenticate(user.password(),userDelete.getPassword())){
-                userRepository.delete(userDelete);
-            }
+        if(authService.authenticate(password,userDelete.getPassword())){
+            userRepository.delete(userDelete);
         }
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

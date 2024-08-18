@@ -7,7 +7,6 @@ import com.springboot.projetofinalbackend.repository.PlayerRepository;
 import com.springboot.projetofinalbackend.repository.TeamRepository;
 import com.springboot.projetofinalbackend.repository.TrainingRepository;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

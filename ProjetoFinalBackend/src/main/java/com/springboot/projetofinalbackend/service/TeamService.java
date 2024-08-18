@@ -12,26 +12,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @Service
 public class TeamService {
     @Autowired
     private TeamRepository teamRepository;
-
-    public ResponseEntity<List<Team>> findAll() {
-        List<Team> teams = teamRepository.findAll();
-        return ResponseEntity.status(HttpStatus.OK).body(teams);
-    }
-
-    public ResponseEntity<Team> findById(@PathVariable Long id) {
-        Optional<Team> team = teamRepository.findById(id);
-        return team.map(value -> ResponseEntity.status(HttpStatus.OK).body(value))
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
-    }
 
 
     public ResponseEntity<Team> create(@RequestBody TeamDTO teamDto) {
@@ -41,10 +29,8 @@ public class TeamService {
     }
 
     public ResponseEntity<Team> update(@PathVariable Long id, @RequestBody TeamDTO team) {
-        var teamUpdate = teamRepository.findById(id).orElse(null);
-        if (teamUpdate == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        var teamUpdate = teamRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         teamUpdate.setName(team.name());
         teamUpdate.setAddress(team.address());
@@ -58,19 +44,17 @@ public class TeamService {
 
 
     public ResponseEntity<Void> delete(@PathVariable Long id, @RequestParam String confirmation) {
-        var teamDelete = teamRepository.findById(id).orElse(null);
-        if (teamDelete == null || !confirmation.equals(teamDelete.getName())) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        var teamDelete = teamRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        if(confirmation.equals(teamDelete.getName())) {
+            teamRepository.delete(teamDelete);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
-        teamRepository.delete(teamDelete);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
     public ResponseEntity<Set<Player>> getAllPlayersTeam(@PathVariable Long teamId) {
-        var team = teamRepository.findById(teamId).orElse(null);
-        if (team == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        var team = teamRepository.findById(teamId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         return ResponseEntity.status(HttpStatus.OK).body(team.getPlayers());
     }
 }
