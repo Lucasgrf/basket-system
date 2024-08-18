@@ -25,6 +25,8 @@ public class Credential {
 
     private Long TeamId;
 
+    private String userType;
+
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;

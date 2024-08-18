@@ -1,12 +1,12 @@
 package com.springboot.projetofinalbackend.DTO;
 
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
+import com.springboot.projetofinalbackend.model.User;
 
 public record UserDTO(
-        @NotBlank String username,
-        @NotBlank String password,
-        @Email @NotBlank String email,
-        String photoName
+        String username,
+        String password,
+        String email,
+        String photoName,
+        User.Role role
 ) {}

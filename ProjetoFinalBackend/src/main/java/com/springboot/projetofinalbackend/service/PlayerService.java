@@ -27,14 +27,8 @@ public class PlayerService {
     @Autowired
     private TrainingRepository trainingRepository;
 
-    public ResponseEntity<Player> create(@RequestBody PlayerDTO playerDTO) {
-        var player = new Player();
-        BeanUtils.copyProperties(playerDTO, player);
-        return ResponseEntity.status(HttpStatus.CREATED).body(playerRepository.save(player));
-    }
-
     public ResponseEntity<Player> joinTeam(@RequestBody PlayerDTO playerDTO) {
-        var player = playerRepository.findById(playerDTO.id())
+        var player = playerRepository.findById(playerDTO.userId())
                 .orElseThrow(() -> new EntityNotFoundException("Player not found."));
 
         var team = teamRepository.findById(playerDTO.teamId()).orElse(null);
@@ -51,7 +45,7 @@ public class PlayerService {
     }
 
     public ResponseEntity<Void> leaveTeam(@RequestBody PlayerDTO playerDTO) {
-        var player = playerRepository.findById(playerDTO.id())
+        var player = playerRepository.findById(playerDTO.userId())
                 .orElseThrow(() -> new EntityNotFoundException("Player not found."));
 
         if (player.getTeam() == null) {
@@ -64,7 +58,7 @@ public class PlayerService {
     }
 
     public ResponseEntity<Training> confirmPresence(@RequestBody PlayerDTO playerDTO, @PathVariable Long trainingId) {
-        Player player = playerRepository.findById(playerDTO.id())
+        Player player = playerRepository.findById(playerDTO.userId())
                 .orElseThrow(() -> new EntityNotFoundException("Player not found."));
 
         Training training = trainingRepository.findById(trainingId)
@@ -83,7 +77,7 @@ public class PlayerService {
 
 
     public ResponseEntity<Training> absenceTraining(@RequestBody PlayerDTO playerDTO, @PathVariable Long id) {
-        Player player = playerRepository.findById(playerDTO.id())
+        Player player = playerRepository.findById(playerDTO.userId())
                 .orElseThrow(() -> new EntityNotFoundException("Player not found."));
 
         Training training = trainingRepository.findById(id)

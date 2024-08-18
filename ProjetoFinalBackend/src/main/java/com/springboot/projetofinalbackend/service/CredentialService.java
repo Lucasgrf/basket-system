@@ -19,10 +19,12 @@ public class CredentialService {
         credential.setPhotoName(null);
         credential.setName(user.getUsername());
         credential.setTeamId(null);
+        credential.setUserType(user.getRole().name());
         credentialRepository.save(credential);
         return credential;
     }
 
+    //Revisar
     public ResponseEntity update(CredentialDTO credential) {
         var cred = credentialRepository.findById(credential.id()).orElseThrow(() -> new RuntimeException("Credential not found"));
         if(cred != null) {

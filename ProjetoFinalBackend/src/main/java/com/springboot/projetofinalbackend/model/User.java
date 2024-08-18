@@ -45,6 +45,9 @@ public class User {
     private Player player;
 
     @OneToOne(mappedBy = "user")
+    private Admin admin;
+
+    @OneToOne(mappedBy = "user")
     private Credential credential;
 
     public enum Role {

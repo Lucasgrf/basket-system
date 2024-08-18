@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class UserService {
@@ -21,10 +22,7 @@ public class UserService {
     private AuthService authService;
 
     public ResponseEntity<User> updateProfile(@PathVariable Long id, @RequestBody UserDTO user) {
-        var userUpdate = userRepository.findById(id).orElse(null);
-        if (userUpdate == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        var userUpdate = userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         userUpdate.setUsername(user.username());
         userUpdate.setPhotoName(user.photoName());

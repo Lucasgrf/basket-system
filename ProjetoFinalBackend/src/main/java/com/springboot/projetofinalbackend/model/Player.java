@@ -21,16 +21,12 @@ public class Player {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(nullable = false)
     private String position;
 
-    @Column(nullable = false)
     private double height;
 
-    @Column(nullable = false)
     private double weight;
 
-    @Column(nullable = false)
     private int age;
 
     @ManyToOne(cascade = CascadeType.MERGE)
