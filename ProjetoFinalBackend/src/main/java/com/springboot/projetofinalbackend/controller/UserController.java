@@ -7,10 +7,12 @@ import com.springboot.projetofinalbackend.service.AdminService;
 import com.springboot.projetofinalbackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
+@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COACH','ROLE_PLAYER')")
 public class UserController {
 
     @Autowired
