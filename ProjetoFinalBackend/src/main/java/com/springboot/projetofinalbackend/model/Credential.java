@@ -23,12 +23,13 @@ public class Credential {
     @Column(nullable = false, unique = true)
     private String name;
 
-    private Long TeamId;
+    @Column(name = "team_id")
+    private Long teamId;
 
     private String userType;
 
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 }
 

@@ -1,9 +1,6 @@
 package com.springboot.projetofinalbackend.controller;
 
-import com.springboot.projetofinalbackend.DTO.CredentialDTO;
-import com.springboot.projetofinalbackend.DTO.TeamDTO;
-import com.springboot.projetofinalbackend.DTO.TrainingDTO;
-import com.springboot.projetofinalbackend.DTO.UserDTO;
+import com.springboot.projetofinalbackend.DTO.*;
 import com.springboot.projetofinalbackend.model.Credential;
 import com.springboot.projetofinalbackend.model.Team;
 import com.springboot.projetofinalbackend.model.Training;
@@ -22,34 +19,34 @@ public class AdminController {
     private AdminService adminService;
 
     @GetMapping("/users")
-    public ResponseEntity<List<User>> getAllUser(){
+    public ResponseEntity<List<UserDTO>> getAllUser(){
         return adminService.getAllUser();
     }
 
     //Revisar o delete.
     @DeleteMapping("/users/delete/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id ,@RequestParam String confirmation){
-        return adminService.deleteUser(id, confirmation);
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id, @RequestBody RequestDeleteDTO body){
+        return adminService.deleteUser(id,body);
     }
 
     @PostMapping("/users/add")
-    public ResponseEntity<User> addUser(UserDTO body){
-        return adminService.createUser(body);
+    public ResponseEntity<User> addUser(@RequestBody UserDTO user, @RequestParam String password){
+        return adminService.createUser(user,password);
     }
 
     @PutMapping("/users/update/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody UserDTO body){
-        return adminService.updateUser(id,body);
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody ResponseUpdateUser user){
+        return adminService.updateUser(id,user);
     }
 
     @GetMapping("/trainings")
-    public ResponseEntity<List<Training>> getAllTrainings(){
+    public ResponseEntity<List<TrainingDTO>> getAllTrainings(){
         return adminService.getAllTrainings();
     }
 
     @DeleteMapping("/trainings/delete/{id}")
-    public ResponseEntity<Void> deleteTraining(@PathVariable Long id, @RequestParam String confirm){
-        return adminService.deleteTraining(id, confirm);
+    public ResponseEntity<Void> deleteTraining(@PathVariable Long id, @RequestParam String title){
+        return adminService.deleteTraining(id,title);
     }
 
     @PostMapping("/trainings/add")
@@ -63,8 +60,8 @@ public class AdminController {
     }
 
     @GetMapping("/teams")
-    public ResponseEntity<List<Team>> getAllTeam(){
-        return adminService.getAllTeam();
+    public ResponseEntity<List<TeamDTO>> getAllTeam(){
+        return adminService.getAllTeams();
     }
 
     @DeleteMapping("/teams/delete/{id}")
@@ -83,8 +80,8 @@ public class AdminController {
     }
 
     @GetMapping("/credentials")
-    public ResponseEntity<List<Credential>> getAllCredential(){
-        return adminService.getAllCredential();
+    public ResponseEntity<List<CredentialDTO>> getAllCredential(){
+        return adminService.getAllCredentials();
     }
 
     @DeleteMapping("/credentials/{id}")
@@ -100,5 +97,15 @@ public class AdminController {
     @PutMapping("/credentials/update/{id}")
     public ResponseEntity<Credential> updateCredential(@PathVariable Long id, @RequestBody CredentialDTO credential){
         return adminService.updateCredential(id, credential);
+    }
+
+    @GetMapping("/users/players")
+    public ResponseEntity<List<PlayerDTO>> getAllPlayers(){
+        return adminService.getAllPlayers();
+    }
+
+    @GetMapping("/users/coaches")
+    public ResponseEntity<List<CoachDTO>> getAllCoaches(){
+        return adminService.getAllCoaches();
     }
 }

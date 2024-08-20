@@ -31,11 +31,11 @@ public class Training {
     @Column(nullable = false)
     private String location;
 
-    @ManyToOne
-    @JoinColumn(name = "team_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "team_id", nullable = false)
     private Team team;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "training_credential",
             joinColumns = @JoinColumn(name = "training_id"),
@@ -43,16 +43,16 @@ public class Training {
     )
     private List<Credential> credentials;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "player_training", // Nome da tabela de junção
-            joinColumns = @JoinColumn(name = "training_id"), // Chave estrangeira para a tabela Training
-            inverseJoinColumns = @JoinColumn(name = "player_id") // Chave estrangeira para a tabela Player
+            name = "player_training",
+            joinColumns = @JoinColumn(name = "training_id"),
+            inverseJoinColumns = @JoinColumn(name = "player_id")
     )
     private Set<Player> players = new HashSet<>();
 
-    @ManyToMany(mappedBy = "confirmedTrainings")
+    @ManyToMany(mappedBy = "confirmedTrainings", fetch = FetchType.LAZY)
     private Set<Player> confirmedPlayers = new HashSet<>();
-
 }
+
 

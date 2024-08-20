@@ -15,12 +15,12 @@ public class AuthController {
    private AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity registerUser(@RequestBody @Valid RegisterRequestDTO body) {
+    public ResponseEntity registerUser(@RequestBody RegisterRequestDTO body) {
         return authService.registerUser(body);
     }
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid LoginRequestDTO user) {
-        return authService.login(user);
+    public ResponseEntity login(@RequestBody LoginRequestDTO body) {
+        return authService.login(body);
     }
 }

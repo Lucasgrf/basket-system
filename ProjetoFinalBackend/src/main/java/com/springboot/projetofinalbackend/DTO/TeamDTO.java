@@ -9,12 +9,11 @@ import java.util.List;
 
 public record TeamDTO(
         Long id,
-        @NotBlank String name,
-        @NotBlank String address,
-        @NotBlank String gym,
-        @NotNull Date foundation,
-        @NotBlank String emailContact,
-        @NotBlank String phoneContact,
-        @NotNull Long coachId,
-        List<PlayerDTO> players
-) { }
+        String name,
+        String address,
+        String gym,
+        Date foundation,
+        String emailContact,
+        String phoneContact,
+        Long coachId) {
+}

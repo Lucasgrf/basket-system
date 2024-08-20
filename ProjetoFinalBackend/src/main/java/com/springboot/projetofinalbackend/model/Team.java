@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -29,7 +30,7 @@ public class Team {
     @Column(nullable = false)
     private String gym;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private Date foundation;
 
     @Column(nullable = false, unique = true)
@@ -38,15 +39,15 @@ public class Team {
     @Column(nullable = false, unique = true)
     private String phoneContact;
 
-    @OneToOne
-    @JoinColumn(name = "coach_id")
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "coach_id", nullable = false)
     private Coach coach;
 
-    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
-    private Set<Training> trainings;
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private Set<Training> trainings = new HashSet<>();
 
-    @OneToMany(mappedBy = "team")
-    private Set<Player> players;
-
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private Set<Player> players = new HashSet<>();
 }
+
 

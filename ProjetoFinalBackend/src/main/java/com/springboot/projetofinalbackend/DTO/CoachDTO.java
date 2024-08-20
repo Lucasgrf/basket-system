@@ -5,5 +5,6 @@ import jakarta.validation.constraints.NotNull;
 
 public record CoachDTO(
         Long id,
-        @NotNull Long userId
-) { }
+        Long userId,
+        Long teamId) {
+}

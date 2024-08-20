@@ -7,8 +7,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public record TrainingDTO(
+        Long id,
         String title,
         LocalDateTime dateTime,
         String location,
-        Long teamId
-) { }
+        Long teamId) {
+}

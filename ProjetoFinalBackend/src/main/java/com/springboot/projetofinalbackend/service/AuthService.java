@@ -10,7 +10,6 @@ import com.springboot.projetofinalbackend.repository.CoachRepository;
 import com.springboot.projetofinalbackend.repository.PlayerRepository;
 import com.springboot.projetofinalbackend.repository.UserRepository;
 import com.springboot.projetofinalbackend.security.TokenService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +28,7 @@ public class AuthService {
     private final PlayerRepository playerRepository;
     private final CoachRepository coachRepository;
 
-    public ResponseEntity registerUser(@Valid RegisterRequestDTO body) {
+    public ResponseEntity registerUser(RegisterRequestDTO body) {
         Optional<User> existingUser = userRepository.findByEmail(body.email());
 
         if (existingUser.isEmpty()) {
@@ -38,6 +37,8 @@ public class AuthService {
             newUser.setEmail(body.email());
             newUser.setUsername(body.username());
             newUser.setRole(body.role());
+
+            userRepository.save(newUser);
 
             switch (body.role()) {
                 case COACH -> {
@@ -56,7 +57,6 @@ public class AuthService {
                 default -> throw new IllegalStateException("Role not found: " + body.role());
             }
 
-            userRepository.save(newUser);
             credentialService.create(newUser);
             String token = tokenService.generateToken(newUser);
 
@@ -67,8 +67,8 @@ public class AuthService {
     }
 
 
-    public ResponseEntity login(@Valid LoginRequestDTO body) {
-        var user = userRepository.findByEmail(body.email()).orElseThrow(() -> new RuntimeException("User not found."));
+    public ResponseEntity login(LoginRequestDTO body) {
+        User user = userRepository.findByEmail(body.email()).orElseThrow(() -> new RuntimeException("User not found."));
         if (passwordEncoder.matches(body.password(), user.getPassword())) {
             String token = tokenService.generateToken(user);
             return ResponseEntity.ok(new ResponseDTO(user.getUsername(), token));

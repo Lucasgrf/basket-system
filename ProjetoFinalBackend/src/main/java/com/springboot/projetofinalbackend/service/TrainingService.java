@@ -43,11 +43,11 @@ public class TrainingService {
         return ResponseEntity.status(HttpStatus.OK).body(trainingRepository.save(trainingUpdate));
     }
 
-    public ResponseEntity<Void> delete(@PathVariable Long id, @RequestParam String confirmation){
+    public ResponseEntity<Void> delete(@PathVariable Long id, @RequestParam String title){
         var trainingDelete = trainingRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        if(!trainingDelete.getTitle().equals(confirmation)){
+        if(!trainingDelete.getTitle().equals(title)){
             return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();
         }
 
