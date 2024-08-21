@@ -1,0 +1,45 @@
+<div class="min-h-screen flex flex-col">
+  <header class="flex justify-between items-center p-4 bg-white shadow-md">
+    <div class="flex items-center">
+      <img src="assets/logo.svg" alt="Basket System Logo" class="h-10 m-2 w-10">
+      <span class="text-xl font-bold text-red-500"><a href="#">Basket System</a></span>
+    </div>
+    <div class="hidden lg:flex space-x-4">
+      <button class="bg-white text-red-500 font-semibold py-2 px-4 border border-red-500 rounded hover:bg-red-500 hover:text-white transition">Entrar</button>
+      <button class="bg-red-500 text-white font-semibold py-2 px-4 rounded hover:bg-red-600 transition">Registrar</button>
+    </div>
+    <button class="lg:hidden text-pink-500 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50">
+      <!-- Ícone de menu (hamburger) -->
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+      </svg>
+    </button>
+  </header>
+
+  <section class="z-10 relative flex flex-col items-center justify-center flex-1 bg-gray-200 py-8 lg:py-16">
+    <img src="assets/bg-contact.png" alt="Background Image" class="absolute inset-0 w-full h-full object-cover opacity-25">
+    <div class="z-0 text-center text-4xl md:text-5xl lg:text-4xl mb-5 font-bold text-orange-800 hover:text-red-700 transition duration-300 ease-in-out">
+      Contact Us
+    </div>
+    <div class="z-0 w-full max-w-screen-lg bg-white rounded-3xl shadow-lg p-8">
+      <h1 class="text-3xl font-bold text-gray-800 mb-6">Get in Touch</h1>
+      <form class="space-y-6">
+        <div>
+          <label for="name" class="block text-lg font-medium text-gray-700">Name</label>
+          <input type="text" id="name" name="name" required class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-pink-500 focus:border-pink-500">
+        </div>
+        <div>
+          <label for="email" class="block text-lg font-medium text-gray-700">Email</label>
+          <input type="email" id="email" name="email" required class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-pink-500 focus:border-pink-500">
+        </div>
+        <div>
+          <label for="message" class="block text-lg font-medium text-gray-700">Message</label>
+          <textarea id="message" name="message" rows="5" required class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-pink-500 focus:border-pink-500"></textarea>
+        </div>
+        <button type="submit" class="bg-pink-500 text-white font-semibold py-2 px-6 rounded hover:bg-pink-600 transition">Send Message</button>
+      </form>
+    </div>
+  </section>
+
+  <app-footer></app-footer>
+</div>

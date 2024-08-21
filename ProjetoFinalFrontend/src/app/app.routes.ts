@@ -5,6 +5,7 @@ import { AboutPageComponent } from './components/about-page/about-page.component
 import { InitialPageComponent } from './components/initial-page/initial-page.component';
 import { ProfilePageComponent } from './components/profile-page/profile-page.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
+import { ContactUsComponent } from './components/contact-us/contact-us.component';
 
 export const routes: Routes = [
   {
@@ -24,6 +25,12 @@ export const routes: Routes = [
   },
   {
     path: '', component: HomePageComponent
+  },
+  {
+    path: 'dashboard', component: InitialPageComponent
+  },
+  {
+    path: 'contact', component: ContactUsComponent
   }
 
 ];

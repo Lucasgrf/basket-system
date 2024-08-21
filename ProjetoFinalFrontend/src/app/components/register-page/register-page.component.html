@@ -18,7 +18,7 @@
       <!-- Cabeçalho com Logo -->
       <header class="flex justify-center items-center w-44 h-10 mb-8">
         <img src="./assets/logo.svg" alt="Logo" class="h-12">
-        <span class="text-2xl font-bold text-gray-900 ml-3">BasketSystem</span>
+        <span class="text-2xl font-bold text-gray-900 ml-3"><a href="#">BasketSystem</a></span>
       </header>
 
       <!-- Container do Formulário de Registro -->
@@ -29,6 +29,10 @@
 
         <!-- Início do Formulário -->
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-6">
+          <div class="mb-6">
+            <label for="text" class="block mb-2 text-sm font-medium text-gray-900">Name:</label>
+            <input type="text" formControlName="username" class="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="John Doe" required />
+          </div>
           <div class="mb-6">
             <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Email:</label>
             <input type="email" formControlName="email" class="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="john.doe@company.com" required />

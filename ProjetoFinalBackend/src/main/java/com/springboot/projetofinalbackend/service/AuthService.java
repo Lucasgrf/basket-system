@@ -73,7 +73,7 @@ public class AuthService {
             String token = tokenService.generateToken(user);
             return ResponseEntity.ok(new ResponseDTO(user.getUsername(), token));
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
     public boolean authenticate(String rawPassword, String encodedPassword) {

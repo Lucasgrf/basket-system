@@ -1,1 +1,45 @@
-<p>about-page works!</p>
+<div class="min-h-screen flex flex-col">
+  <header class="flex justify-between items-center p-4 bg-white shadow-md">
+    <div class="flex items-center">
+      <img src="assets/logo.svg" alt="Basket System Logo" class="h-10 m-2 w-10">
+      <span class="text-xl font-bold text-red-500"><a href="#">Basket System</a></span>
+    </div>
+    <div class="hidden lg:flex space-x-4">
+      <button class="bg-white text-red-500 font-semibold py-2 px-4 border border-red-500 rounded hover:bg-red-500 hover:text-white transition">Entrar</button>
+      <button class="bg-red-500 text-white font-semibold py-2 px-4 rounded hover:bg-red-600 transition">Registrar</button>
+    </div>
+    <button class="lg:hidden text-pink-500 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50">
+      <!-- Ícone de menu (hamburger) -->
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+      </svg>
+    </button>
+  </header>
+
+  <section class="z-0 relative flex flex-col items-center justify-center flex-1 bg-gray-200 py-8 lg:py-16">
+    <img src="assets/bg-about.png" alt="Background Image" class="absolute inset-0 w-full h-full object-cover opacity-25">
+    <div class="text-center text-4xl md:text-5xl lg:text-4xl mb-5 font-bold text-orange-800 hover:text-red-700 transition duration-300 ease-in-out">
+      About Basket System
+    </div>
+    <div class="z-10 w-full max-w-screen-lg bg-white rounded-3xl shadow-lg p-8">
+      <h1 class="text-3xl font-bold text-gray-800 mb-4">Our Mission</h1>
+      <p class="text-slate-700 text-lg mb-4">
+        At Basket System, we are dedicated to providing top-notch solutions for managing basketball teams, players, and trainings. Our platform is designed to streamline operations, enhance player development, and ensure smooth coordination among teams.
+      </p>
+      <h2 class="text-2xl font-bold text-gray-800 mb-4">What We Offer</h2>
+      <ul class="list-disc pl-6 text-slate-700 text-lg">
+        <li class="mb-2">Comprehensive team management tools to oversee all team activities.</li>
+        <li class="mb-2">Advanced player management to track progress and attendance.</li>
+        <li class="mb-2">Secure credential system to verify player identities and manage access to trainings.</li>
+        <li class="mb-2">A user-friendly interface that simplifies the management of basketball teams.</li>
+      </ul>
+      <h2 class="text-2xl font-bold text-gray-800 mb-4">Our Vision</h2>
+      <p class="text-slate-700 text-lg mb-4">
+        We envision a world where basketball teams are managed efficiently, allowing coaches and players to focus on what they do best - playing and improving their game. With Basket System, we're making that vision a reality.
+      </p>
+    </div>
+    <button class="z-0 mt-8 bg-pink-500 text-white font-semibold py-2 px-6 rounded hover:bg-pink-600 transition">Contact Us</button>
+  </section>
+
+  <app-footer></app-footer>
+</div>

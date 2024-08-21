@@ -1,1 +1,118 @@
-<p>initial-page works!</p>
+<div class="min-h-screen flex flex-col">
+  <header class="flex justify-between items-center p-4 bg-white shadow-md w-full">
+    <div class="flex items-center">
+      <img src="assets/logo.svg" alt="Logo" class="h-10 m-2 w-10">
+      <span class="text-xl font-bold text-red-500">TDStats</span>
+    </div>
+    <div class="hidden lg:flex space-x-4">
+      <button class="bg-white text-red-500 font-semibold py-2 px-4 border border-red-500 rounded hover:bg-red-500 hover:text-white transition">Minha conta</button>
+      <button class="bg-red-500 text-white font-semibold py-2 px-4 rounded hover:bg-red-600 transition">Sair</button>
+    </div>
+    <button id="menu-button" class="lg:hidden text-red-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
+      <!-- Ícone de menu (hamburger) -->
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+      </svg>
+    </button>
+  </header>
+
+  <!-- Menu Hamburger -->
+  <nav id="mobile-menu" class="lg:hidden fixed top-0 inset-x-0 bg-slate-100 shadow-md z-50 transform -translate-y-full transition-transform">
+    <div class="flex justify-between items-center p-4">
+      <div class="text-red-500 font-bold text-xl">
+        <img src="assets/logo.svg" alt="Logo" class="h-10 w-10">
+        <span class="text-black" >Menu</span>
+      </div>
+    </div>
+    <div class="flex flex-col">
+      <a href="#" class="p-4 hover:bg-red-100 flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a2 2 0 012-2h14a2 2 0 012 2v16a2 2 0 01-2 2H5a2 2 0 01-2-2V4z" />
+        </svg>
+        Dashboard
+      </a>
+      <a href="#" class="p-4 hover:bg-red-100 flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7" />
+        </svg>
+        <span class="text-black" >Players</span>
+      </a>
+      <a href="#" class="p-4 hover:bg-red-100 flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16l4-4 4 4M8 8l4-4 4 4" />
+        </svg>
+        <span class="text-black" >Teams</span>
+      </a>
+      <a href="#" class="p-4 hover:bg-red-100 flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+        <span class="text-black" >Trainings</span>
+      </a>
+    </div>
+  </nav>
+
+  <app-menu></app-menu>
+  <main class="flex flex-1 p-4 bg-gray-200">
+    <!-- Seção principal -->
+    <div class="flex-1">
+      <section class="bg-white rounded-xl shadow-md overflow-hidden">
+        <img src="assets/russel.png" alt="Russell Westbrook" class="w-full h-auto">
+        <div class="p-4">
+          <h2 class="text-2xl font-bold text-gray-800">Report: Russell Westbrook, Nuggets agree to 2-year deal</h2>
+          <p class="text-gray-600 mt-2">Denver and veteran guard Russell Westbrook have agreed to a 2-year deal worth $6.8 million.</p>
+        </div>
+      </section>
+
+      <!-- Jogos -->
+      <section class="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-4 rounded-xl">
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+          <img src="assets/warriors-vs-lakers.png" alt="team vs team" class="w-full h-auto">
+        </div>
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+          <img src="assets/warriors-vs-lakers.png" alt="team vs team" class="w-full h-auto">
+        </div>
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+          <img src="assets/warriors-vs-lakers.png" alt="team vs team" class="w-full h-auto">
+        </div>
+      </section>
+    </div>
+
+    <!-- Menu lateral -->
+    <aside class="hidden lg:flex flex-col bg-white shadow-md w-64 ml-5 rounded-xl">
+      <div class="p-4 text-center text-red-500 font-bold">
+        <img src="assets/logo.svg" alt="Logo">
+        <span class="text-2xl">Menu</span>
+      </div>
+      <nav class="flex flex-col space-y-2 text-gray-700 rounded-xl">
+        <a href="#" class="p-4 hover:bg-red-100 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a2 2 0 012-2h14a2 2 0 012 2v16a2 2 0 01-2 2H5a2 2 0 01-2-2V4z" />
+          </svg>
+          Dashboard
+        </a>
+        <a href="#" class="p-4 hover:bg-red-100 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+          Players
+        </a>
+        <a href="#" class="p-4 hover:bg-red-100 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16l4-4 4 4M8 8l4-4 4 4" />
+          </svg>
+          Teams
+        </a>
+        <a href="#" class="p-4 hover:bg-red-100 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+          Trainings
+        </a>
+      </nav>
+    </aside>
+  </main>
+
+  <!-- Footer -->
+  <app-footer></app-footer>
+</div>
