@@ -1,0 +1,17 @@
+/* Cor de fundo para força de senha fraca */
+.weak {
+  width: 33%;
+  background-color: red;
+}
+
+/* Cor de fundo para força de senha média */
+.medium {
+  width: 66%;
+  background-color: orange;
+}
+
+/* Cor de fundo para força de senha forte */
+.strong {
+  width: 100%;
+  background-color: green;
+}

@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FooterComponent } from "../footer/footer.component";
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-page',
@@ -10,19 +12,29 @@ import { FooterComponent } from "../footer/footer.component";
   styleUrl: './login-page.component.scss'
 })
 export class LoginPageComponent {
-  loginForm: FormGroup;
+  private fb = inject(FormBuilder);
 
-  constructor(private fb: FormBuilder) {
-    this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]],
-    });
-  }
+  constructor(
+    private service: AuthService,
+    private router: Router
+  ) { }
+
+  loginForm = this.fb.group({
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required]],
+  })
 
   onSubmit() {
-    if (this.loginForm.valid) {
-      console.log(this.loginForm.value);
-      // Aqui você pode adicionar a lógica para enviar os dados do formulário ao backend
-    }
+      this.service.login(this.loginForm.value).subscribe({
+        next: () => {
+          alert("Login Successful");
+          this.router.navigate(['home/dashboard']);
+        },
+        error: (error) => {
+          alert("Login Failed, Please try again");
+          console.log(error);
+        }
+      })
   }
+
 }

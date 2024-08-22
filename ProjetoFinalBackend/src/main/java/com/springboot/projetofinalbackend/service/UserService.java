@@ -3,7 +3,6 @@ package com.springboot.projetofinalbackend.service;
 import com.springboot.projetofinalbackend.DTO.RequestDeleteDTO;
 import com.springboot.projetofinalbackend.DTO.RequestUpdateProfileDTO;
 import com.springboot.projetofinalbackend.DTO.UserDTO;
-import com.springboot.projetofinalbackend.model.User;
 import com.springboot.projetofinalbackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

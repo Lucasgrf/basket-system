@@ -30,34 +30,51 @@
         <!-- Início do Formulário -->
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-6">
           <div class="mb-6">
-            <label for="text" class="block mb-2 text-sm font-medium text-gray-900">Name:</label>
-            <input type="text" formControlName="username" class="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="John Doe" required />
+            <label for="username" class="block mb-2 text-sm font-medium text-gray-900">Nome:</label>
+            <input type="text" formControlName="username" class="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="John Doe" />
+            <div *ngIf="submitted && registerForm.get('username')?.invalid" class="text-red-600 text-sm mt-2">
+              <div *ngIf="registerForm.get('username')?.errors?.['required']">O nome é obrigatório.</div>
+            </div>
           </div>
           <div class="mb-6">
             <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Email:</label>
-            <input type="email" formControlName="email" class="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="john.doe@company.com" required />
+            <input type="email" formControlName="email" class="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="john.doe@company.com" />
+            <div *ngIf="submitted && registerForm.get('email')?.invalid" class="text-red-600 text-sm mt-2">
+              <div *ngIf="registerForm.get('email')?.errors?.['required']">O email é obrigatório.</div>
+              <div *ngIf="registerForm.get('email')?.errors?.['email']">Digite um email válido.</div>
+            </div>
           </div>
           <div class="mb-6">
             <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Senha:</label>
-            <input type="password" formControlName="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="•••••••••" required />
+            <input type="password" formControlName="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="•••••••••" />
+            <div *ngIf="submitted && registerForm.get('password')?.invalid" class="text-red-600 text-sm mt-2">
+              <div *ngIf="registerForm.get('password')?.errors?.['required']">A senha é obrigatória.</div>
+              <div *ngIf="registerForm.get('password')?.errors?.['minlength']">A senha deve ter pelo menos 8 caracteres.</div>
+            </div>
           </div>
           <div class="mb-6">
-            <label for="confirm_password" class="block mb-2 text-sm font-medium text-gray-900">Confirmar Senha:</label>
-            <input type="password" id="confirm_password" formControlName="confirmPassword" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="•••••••••" required />
+            <label for="confirmPassword" class="block mb-2 text-sm font-medium text-gray-900">Confirmar Senha:</label>
+            <input type="password" formControlName="confirmPassword" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="•••••••••" />
+            <div *ngIf="submitted && registerForm.get('confirmPassword')?.invalid" class="text-red-600 text-sm mt-2">
+              <div *ngIf="registerForm.get('confirmPassword')?.errors?.['required']">A confirmação da senha é obrigatória.</div>
+            </div>
           </div>
           <div class="mb-6">
             <label for="role" class="block mb-2 text-sm font-medium text-gray-900">Escolha o Papel:</label>
-            <select id="role" formControlName="role" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+            <select id="role" formControlName="role" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
               <option value="" disabled selected>Selecione um papel</option>
               <option value="PLAYER">Jogador</option>
               <option value="COACH">Treinador</option>
             </select>
+            <div *ngIf="submitted && registerForm.get('role')?.invalid" class="text-red-600 text-sm mt-2">
+              <div *ngIf="registerForm.get('role')?.errors?.['required']">Escolher um papel é obrigatório.</div>
+            </div>
           </div>
           <div class="">
             <button type="submit" class="w-full py-2 px-4 bg-red-500 text-white font-semibold rounded-md shadow hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-600">Registrar</button>
           </div>
         </form>
-        <p class="mt-8 text-center text-sm text-gray-600">Já tem uma conta? <a href="#" class="text-indigo-600 hover:text-indigo-500">Entre aqui</a></p>
+        <p class="mt-8 py-5 text-center text-sm text-gray-600">Já tem uma conta? <a href="#" class="text-indigo-600 hover:text-indigo-500">Entre aqui</a></p>
       </section>
     </div>
   </main>

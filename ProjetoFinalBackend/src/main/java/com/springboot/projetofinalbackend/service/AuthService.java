@@ -60,7 +60,7 @@ public class AuthService {
             credentialService.create(newUser);
             String token = tokenService.generateToken(newUser);
 
-            return ResponseEntity.ok(new ResponseDTO(newUser.getUsername(), token));
+            return ResponseEntity.ok(new ResponseDTO(newUser.getUsername(), token,newUser.getRole()));
         }
 
         return ResponseEntity.badRequest().build();
@@ -71,7 +71,7 @@ public class AuthService {
         User user = userRepository.findByEmail(body.email()).orElseThrow(() -> new RuntimeException("User not found."));
         if (passwordEncoder.matches(body.password(), user.getPassword())) {
             String token = tokenService.generateToken(user);
-            return ResponseEntity.ok(new ResponseDTO(user.getUsername(), token));
+            return ResponseEntity.ok(new ResponseDTO(user.getUsername(), token, user.getRole()));
         }
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }

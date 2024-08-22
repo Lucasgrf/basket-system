@@ -8,44 +8,51 @@
       <button class="bg-white text-red-500 font-semibold py-2 px-4 border border-red-500 rounded hover:bg-red-500 hover:text-white transition">Entrar</button>
       <button class="bg-red-500 text-white font-semibold py-2 px-4 rounded hover:bg-red-600 transition">Registrar</button>
     </div>
-    <button class="lg:hidden text-pink-500 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50">
-      <!-- Ícone de menu (hamburger) -->
+    <button (click)="toggleMenu()" class="lg:hidden text-pink-500 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50 transition-transform transform hover:rotate-90">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
       </svg>
     </button>
   </header>
 
-    <section class="relative flex flex-col items-center justify-center flex-1 bg-gray-200 py-8 lg:py-16">
-      <img src="assets/bg.png" alt="Background Image" class="absolute inset-0 w-full h-full object-cover opacity-25">
-      <div class="z-0 text-center text-4xl md:text-5xl lg:text-4xl mb-5 font-bold text-orange-800 hover:text-red-700 transition duration-300 ease-in-out">
-        System for Managing Basketball Teams
-      </div>
-      <div class="w-full max-w-screen-lg flex flex-col space-y-8 lg:flex-row lg:space-y-0 lg:space-x-4">
-        <div class="flex flex-col lg:flex-row lg:items-center bg-white rounded-3xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl">
-          <img src="./assets/Mask group1.png" alt="Image 1" class="w-full h-auto lg:w-48">
-          <div class="p-4">
-            <h1 class="text-xl font-bold text-gray-800">Player Manager</h1>
-            <p class="text-slate-700 mt-2">Manages player development and trainings presences.</p>
-          </div>
-        </div>
-        <div class="flex flex-col lg:flex-row lg:items-center bg-white rounded-3xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl">
-          <img src="./assets/Mask group2.png" alt="Image 2" class="w-full h-auto lg:w-48">
-          <div class="p-4">
-            <h1 class="text-xl font-bold text-gray-800">Team Manager</h1>
-            <p class="text-slate-700 mt-2">Coordinates team operations and trainings dates.</p>
-          </div>
-        </div>
-        <div class="flex flex-col lg:flex-row lg:items-center bg-white rounded-3xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl">
-          <img src="./assets/Mask group3.png" alt="Image 3" class="w-full h-auto lg:w-48">
-          <div class="p-4">
-            <h1 class="text-xl font-bold text-gray-800">System of Credential</h1>
-            <p class="text-slate-700 mt-2">Verifies player identities to secure access for trainings.</p>
-          </div>
+  <!-- Menu Hamburguer com animação -->
+  <nav *ngIf="isMenuOpen" class="lg:hidden bg-white shadow-md mt-2 p-4 transform transition-transform duration-300 ease-in-out" [class.translate-x-0]="isMenuOpen" [class.-translate-x-full]="!isMenuOpen">
+    <ul class="space-y-4">
+      <li><a href="#" class="block text-red-500 font-semibold hover:text-red-700 transition">Entrar</a></li>
+      <li><a href="#" class="block text-red-500 font-semibold hover:text-red-700 transition">Registrar</a></li>
+    </ul>
+  </nav>
+
+  <section class="relative flex flex-col items-center justify-center flex-1 bg-gray-200 py-8 lg:py-16">
+    <img src="assets/bg.png" alt="Background Image" class="absolute inset-0 w-full h-full object-cover opacity-25">
+    <div class="z-0 text-center text-4xl md:text-5xl lg:text-4xl mb-5 font-bold text-orange-800 hover:text-red-700 transition duration-300 ease-in-out">
+      System for Managing Basketball Teams
+    </div>
+    <div class="w-full max-w-screen-lg flex flex-col space-y-8 lg:flex-row lg:space-y-0 lg:space-x-4">
+      <div class="flex flex-col lg:flex-row lg:items-center bg-white rounded-3xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl sm:w-full md:w-full">
+        <img src="./assets/Mask group1.png" alt="Image 1" class="w-full h-auto lg:w-48">
+        <div class="p-4">
+          <h1 class="text-xl font-bold text-gray-800">Player Manager</h1>
+          <p class="text-slate-700 mt-2">Manages player development and trainings presences.</p>
         </div>
       </div>
-      <button class="z-0 mt-8 bg-pink-500 text-white font-semibold py-2 px-6 rounded hover:bg-pink-600 transition">Saber mais</button>
-    </section>
+      <div class="flex flex-col lg:flex-row lg:items-center bg-white rounded-3xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl sm:w-full md:w-full">
+        <img src="./assets/Mask group2.png" alt="Image 2" class="w-full h-auto lg:w-48">
+        <div class="p-4">
+          <h1 class="text-xl font-bold text-gray-800">Team Manager</h1>
+          <p class="text-slate-700 mt-2">Coordinates team operations and trainings dates.</p>
+        </div>
+      </div>
+      <div class="flex flex-col lg:flex-row lg:items-center bg-white rounded-3xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl sm:w-full md:w-full">
+        <img src="./assets/Mask group3.png" alt="Image 3" class="w-full h-auto lg:w-48">
+        <div class="p-4">
+          <h1 class="text-xl font-bold text-gray-800">System of Credential</h1>
+          <p class="text-slate-700 mt-2">Verifies player identities to secure access for trainings.</p>
+        </div>
+      </div>
+    </div>
+    <button class="z-0 mt-8 bg-pink-500 text-white font-semibold py-2 px-6 rounded hover:bg-pink-600 transition">Saber mais</button>
+  </section>
 
   <app-footer></app-footer>
 </div>

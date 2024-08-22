@@ -1,4 +1,6 @@
 package com.springboot.projetofinalbackend.DTO;
 
-public record ResponseDTO(String name, String token) {
+import com.springboot.projetofinalbackend.model.User;
+
+public record ResponseDTO(String name, String token, User.Role role) {
 }
