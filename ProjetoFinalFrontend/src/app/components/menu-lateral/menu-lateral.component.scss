@@ -1,0 +1,35 @@
+.sidebar {
+  @apply hidden lg:flex flex-col bg-white shadow-md w-64 ml-5 rounded-xl;
+}
+
+.logo-section {
+  @apply p-4 text-center text-red-500 font-bold;
+}
+
+.logo-section img {
+  @apply h-12 mx-auto;
+}
+
+.logo-section span {
+  @apply text-2xl;
+}
+
+.nav-item {
+  @apply p-4 hover:bg-red-100 flex items-center rounded-md transition-transform transform hover:scale-105;
+}
+
+.nav-item svg {
+  @apply h-6 w-6 mr-3 text-red-500 transition-colors;
+}
+
+.nav-item span {
+  @apply text-black transition-colors;
+}
+
+.nav-item:hover svg {
+  @apply text-red-600;
+}
+
+.nav-item:hover span {
+  @apply text-red-600;
+}

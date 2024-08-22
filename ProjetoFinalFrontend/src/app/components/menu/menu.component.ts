@@ -9,18 +9,9 @@ import { Component, HostListener } from '@angular/core';
   styleUrl: './menu.component.scss'
 })
 export class MenuComponent {
-  isMobile: boolean = false;
+  isMenuOpen = false;
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event: Event): void {
-    this.isMobile = window.innerWidth < 768; // Ajuste conforme necessário
-  }
-
-  toggleMenu(): void {
-    this.isMobile = !this.isMobile;
-  }
-
-  ngOnInit(): void {
-    this.isMobile = window.innerWidth < 768;
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
   }
 }

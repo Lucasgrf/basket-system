@@ -27,10 +27,17 @@
           <div class="mb-6">
             <label for="email" class="block mb-2 text-sm font-medium text-gray-900">E-mail:</label>
             <input type="email" formControlName="email" id="email" class="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="john.doe@company.com" required />
+            <div *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.touched || loginForm.get('email')?.dirty)" class="text-red-600 text-sm mt-2">
+              <div *ngIf="loginForm.get('email')?.errors?.['required']">O e-mail é obrigatório.</div>
+              <div *ngIf="loginForm.get('email')?.errors?.['email']">O e-mail deve ser válido.</div>
+            </div>
           </div>
           <div class="mb-6">
             <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Senha:</label>
             <input type="password" formControlName="password" id="password" class="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="•••••••••" required />
+            <div *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.touched || loginForm.get('password')?.dirty)" class="text-red-600 text-sm mt-2">
+              <div *ngIf="loginForm.get('password')?.errors?.['required']">A senha é obrigatória.</div>
+            </div>
           </div>
           <div class="flex items-center justify-between">
             <label class="flex items-center">
@@ -43,7 +50,7 @@
             <button type="submit" class="w-full py-2 px-4 bg-red-500 text-white font-semibold rounded-md shadow hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-600">Logar</button>
           </div>
         </form>
-        <p class="mt-8 text-center text-sm text-gray-600">Não tem uma conta? <a href="#" class="text-indigo-600 hover:text-indigo-500">Cadastre-se grátis!</a></p>
+        <p class="mt-8 py-5 text-center text-sm text-gray-600">Não tem uma conta? <a href="#" class="text-indigo-600 hover:text-indigo-500">Cadastre-se grátis!</a></p>
       </section>
     </div>
 
