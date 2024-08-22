@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { LoginResponse } from '../Types/login-response-type';
 
-const BASE_URL = ['https://localhost:8080/']
+const BASE_URL = ['http://localhost:8080/']
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +14,8 @@ export class AuthService {
     private http: HttpClient
   ) { }
 
-  signup(signupRequest: any): Observable<any> {
-    return this.http.post<LoginResponse>(BASE_URL + "auth/register", signupRequest).pipe(
+  signup(username: string,email: string, password: string, role: string): Observable<any> {
+    return this.http.post<LoginResponse>(BASE_URL + "auth/register", {username,email,password,role}).pipe(
       tap(
         (value) => {
             const jwtToken = value['token'];

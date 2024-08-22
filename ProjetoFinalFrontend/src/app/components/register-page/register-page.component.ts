@@ -14,8 +14,6 @@ import { AuthService } from '../../services/auth.service';
 export class RegisterPageComponent {
   private fb = inject(FormBuilder);
   submitted = false;
-  strengthMessage!: string;
-  strengthClass!: string;
 
 
   constructor(private router: Router, private service: AuthService) {}
@@ -39,7 +37,7 @@ export class RegisterPageComponent {
       const { confirmPassword, ...registerData } = this.registerForm.value;
 
       console.log(registerData);
-      this.service.signup(registerData).subscribe({
+      this.service.signup(registerData.username ?? '', registerData.email ?? '', registerData.password ?? '', registerData.role ?? '').subscribe({
         next: () => {
           alert('Cadastro realizado com sucesso');
           this.router.navigate(['login']);
