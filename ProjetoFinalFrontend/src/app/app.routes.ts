@@ -18,13 +18,13 @@ export const routes: Routes = [
     path: 'about', component: AboutPageComponent
   },
   {
-    path: 'initial', component: InitialPageComponent
-  },
-  {
     path: 'profile', component: ProfilePageComponent
   },
   {
     path: '', component: HomePageComponent
+  },
+  {
+    path: 'home', component: HomePageComponent
   },
   {
     path: 'dashboard', component: InitialPageComponent

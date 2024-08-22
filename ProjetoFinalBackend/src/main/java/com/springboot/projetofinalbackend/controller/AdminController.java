@@ -25,7 +25,6 @@ public class AdminController {
         return adminService.getAllUser();
     }
 
-    //Revisar o delete.
     @DeleteMapping("/users/delete/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id, @RequestBody RequestDeleteDTO body){
         return adminService.deleteUser(id,body);

@@ -52,7 +52,7 @@ public class AuthService {
                     playerRepository.save(player);
                 }
                 case ADMIN -> {
-                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
                 }
                 default -> throw new IllegalStateException("Role not found: " + body.role());
             }

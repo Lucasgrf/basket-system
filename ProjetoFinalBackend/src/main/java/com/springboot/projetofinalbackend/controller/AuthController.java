@@ -3,7 +3,6 @@ package com.springboot.projetofinalbackend.controller;
 import com.springboot.projetofinalbackend.DTO.LoginRequestDTO;
 import com.springboot.projetofinalbackend.DTO.RegisterRequestDTO;
 import com.springboot.projetofinalbackend.service.AuthService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
