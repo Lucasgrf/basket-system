@@ -1,0 +1,82 @@
+<app-admin-header></app-admin-header>
+<div class="min-h-screen flex flex-col">
+  <!-- Menu lateral móvel -->
+  <nav *ngIf="isMenuOpen" class="lg:hidden bg-white shadow-md mt-2 p-4 transform transition-transform duration-300 ease-in-out">
+    <ul class="space-y-4">
+      <li><a routerLink="/admin/users" class="block text-red-500 font-semibold hover:text-red-700">Users</a></li>
+      <li><a routerLink="/admin/teams" class="block text-red-500 font-semibold hover:text-red-700">Teams</a></li>
+      <li><a routerLink="/admin/trainings" class="block text-red-500 font-semibold hover:text-red-700">Trainings</a></li>
+      <li><a routerLink="/" class="block text-red-500 font-semibold hover:text-red-700">Logout</a></li>
+    </ul>
+  </nav>
+
+  <!-- Conteúdo principal -->
+  <section class="relative flex flex-col items-center justify-center flex-1 bg-gray-100 py-8 lg:py-16">
+    <div class="container mx-auto p-6 bg-white rounded-3xl shadow-lg">
+      <div class="text-center text-3xl sm:text-4xl lg:text-5xl mb-8 font-extrabold text-orange-700 animate__animated animate__fadeInDown">
+        <span class="block text-center text-4xl lg:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-t from-teal-400 to-purple-600 shadow-lg border-4 border-transparent rounded-lg p-4 bg-gradient-to-r from-teal-400 to-purple-600 bg-origin-border">
+          Welcome to the <span class="text-yellow-400">Admin Dashboard</span>
+        </span>
+      </div>
+      <div class="w-full flex flex-wrap gap-8 justify-center">
+        <!-- Card User Management -->
+        <div class="flex flex-col bg-gradient-to-r from-red-500 to-red-700 rounded-2xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl w-full sm:w-80">
+          <div class="p-6 flex flex-col items-center text-white">
+            <span class="material-icons text-4xl">people</span>
+            <h1 class="text-2xl font-bold mt-4">User Management</h1>
+            <p class="text-white mt-4 text-center">Manage users, their roles, and permissions.</p>
+            <a routerLink="/admin/users" class="mt-6 inline-block bg-white text-red-700 font-semibold py-2 px-6 rounded hover:bg-gray-200 transition">Manage Users</a>
+          </div>
+        </div>
+        <!-- Card Team Management -->
+        <div class="flex flex-col bg-gradient-to-r from-green-500 to-green-700 rounded-2xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl w-full sm:w-80">
+          <div class="p-6 flex flex-col items-center text-white">
+            <span class="material-icons text-4xl">group</span>
+            <h1 class="text-2xl font-bold mt-4">Team Management</h1>
+            <p class="text-white mt-4 text-center">Manage teams, their details, and members.</p>
+            <a routerLink="/admin/teams" class="mt-6 inline-block bg-white text-green-700 font-semibold py-2 px-6 rounded hover:bg-gray-200 transition">Manage Teams</a>
+          </div>
+        </div>
+        <!-- Card Training Management -->
+        <div class="flex flex-col bg-gradient-to-r from-blue-500 to-blue-700 rounded-2xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl w-full sm:w-80">
+          <div class="p-6 flex flex-col items-center text-white">
+            <span class="material-icons text-4xl">event</span>
+            <h1 class="text-2xl font-bold mt-4">Training Management</h1>
+            <p class="text-white mt-4 text-center">Schedule and manage training sessions.</p>
+            <a routerLink="/admin/trainings" class="mt-6 inline-block bg-white text-blue-700 font-semibold py-2 px-6 rounded hover:bg-gray-200 transition">Manage Trainings</a>
+          </div>
+        </div>
+        <!-- Card Player Management -->
+        <div class="flex flex-col bg-gradient-to-r from-yellow-500 to-yellow-700 rounded-2xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl w-full sm:w-80">
+          <div class="p-6 flex flex-col items-center text-white">
+            <span class="material-icons text-4xl">sports_baseball</span>
+            <h1 class="text-2xl font-bold mt-4">Player Management</h1>
+            <p class="text-white mt-4 text-center">Manage players and their details.</p>
+            <a routerLink="/admin/players" class="mt-6 inline-block bg-white text-yellow-700 font-semibold py-2 px-6 rounded hover:bg-gray-200 transition">Manage Players</a>
+          </div>
+        </div>
+        <!-- Card Coach Management -->
+        <div class="flex flex-col bg-gradient-to-r from-purple-500 to-purple-700 rounded-2xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl w-full sm:w-80">
+          <div class="p-6 flex flex-col items-center text-white">
+            <span class="material-icons text-4xl">sports_soccer</span>
+            <h1 class="text-2xl font-bold mt-4">Coach Management</h1>
+            <p class="text-white mt-4 text-center">Manage coaches and their details.</p>
+            <a routerLink="/admin/coaches" class="mt-6 inline-block bg-white text-purple-700 font-semibold py-2 px-6 rounded hover:bg-gray-200 transition">Manage Coaches</a>
+          </div>
+        </div>
+        <!-- Card Overview -->
+        <div class="flex flex-col bg-gradient-to-r from-gray-500 to-gray-700 rounded-2xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl w-full sm:w-80">
+          <div class="p-6 flex flex-col items-center text-white">
+            <span class="material-icons text-4xl">dashboard</span>
+            <h1 class="text-2xl font-bold mt-4">System Overview</h1>
+            <p class="text-white mt-4 text-center">View general statistics and data across the system.</p>
+            <a routerLink="/admin/overview" class="mt-6 inline-block bg-white text-gray-700 font-semibold py-2 px-6 rounded hover:bg-gray-200 transition">View Overview</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Rodapé -->
+  <app-footer></app-footer>
+</div>

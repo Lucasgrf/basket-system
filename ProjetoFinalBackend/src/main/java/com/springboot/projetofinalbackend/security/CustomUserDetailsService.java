@@ -27,10 +27,10 @@ public class CustomUserDetailsService implements UserDetailsService {
         List<GrantedAuthority> authorities;
         if (user.getRole() == User.Role.ADMIN) {
             authorities = Stream.of(User.Role.values())
-                    .map(role -> new SimpleGrantedAuthority("ROLE_" + role.name()))
+                    .map(role -> new SimpleGrantedAuthority(role.name()))
                     .collect(Collectors.toList());
         } else {
-            authorities = List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()));
+            authorities = List.of(new SimpleGrantedAuthority(user.getRole().name()));
         }
 
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);

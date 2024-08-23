@@ -1,0 +1,24 @@
+<h1 mat-dialog-title>{{ data.id ? 'Edit User' : 'New User' }}</h1>
+<div mat-dialog-content>
+  <mat-form-field>
+    <mat-label>Username</mat-label>
+    <input matInput [(ngModel)]="data.username" required>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Email</mat-label>
+    <input matInput [(ngModel)]="data.email" required>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Role</mat-label>
+    <mat-select [(value)]="data.role" required>
+      <mat-option value="COACH">Coach</mat-option>
+      <mat-option value="PLAYER">Player</mat-option>
+      <mat-option value="ADMIN">Admin</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <!-- Adicione outros campos conforme necessário -->
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-button (click)="onSave()">Save</button>
+</div>

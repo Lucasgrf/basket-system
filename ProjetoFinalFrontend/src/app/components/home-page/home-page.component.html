@@ -18,8 +18,8 @@
   <!-- Menu Hamburguer com animação -->
   <nav *ngIf="isMenuOpen" class="lg:hidden bg-white shadow-md mt-2 p-4 transform transition-transform duration-300 ease-in-out" [class.translate-x-0]="isMenuOpen" [class.-translate-x-full]="!isMenuOpen">
     <ul class="space-y-4">
-      <li><a href="#" class="block text-red-500 font-semibold hover:text-red-700 transition">Entrar</a></li>
-      <li><a href="#" class="block text-red-500 font-semibold hover:text-red-700 transition">Registrar</a></li>
+      <li><a [routerLink]="'/auth/login'" class="block text-red-500 font-semibold hover:text-red-700 transition">Entrar</a></li>
+      <li><a [routerLink]="'/auth/register'" class="block text-red-500 font-semibold hover:text-red-700 transition">Registrar</a></li>
     </ul>
   </nav>
 

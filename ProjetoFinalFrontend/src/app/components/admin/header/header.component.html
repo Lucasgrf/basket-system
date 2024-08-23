@@ -1,0 +1,30 @@
+<header class="flex justify-between items-center p-4 bg-white shadow-md">
+  <div class="flex items-center">
+    <img src="assets/logo.svg" alt="Logo" class="h-10 w-10">
+    <a routerLink="/admin" class="text-red-500 font-bold text-xl ml-2">
+    <span class="text-xl font-bold text-red-500 ml-2">Admin Dashboard</span>
+    </a>
+  </div>
+  <button (click)="toggleMenu()" class="lg:hidden text-pink-500 focus:outline-none">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+    </svg>
+  </button>
+  <nav id="desktop-menu" class="hidden lg:flex space-x-4">
+    <a routerLink="/admin/" class="text-red-500 font-semibold hover:text-red-700 flex items-center space-x-2">
+      <span class="material-icons">home</span> <span>Home</span>
+    </a>
+    <a routerLink="/admin/users" class="text-red-500 font-semibold hover:text-red-700 flex items-center space-x-2">
+      <span class="material-icons">people</span> <span>Users</span>
+    </a>
+    <a routerLink="/admin/teams" class="text-red-500 font-semibold hover:text-red-700 flex items-center space-x-2">
+      <span class="material-icons">group</span> <span>Teams</span>
+    </a>
+    <a routerLink="/admin/trainings" class="text-red-500 font-semibold hover:text-red-700 flex items-center space-x-2">
+      <span class="material-icons">event</span> <span>Trainings</span>
+    </a>
+    <a routerLink="/" class="text-red-500 font-semibold hover:text-red-700 flex items-center space-x-2">
+      <span class="material-icons">logout</span> <span>Logout</span>
+    </a>
+  </nav>
+</header>

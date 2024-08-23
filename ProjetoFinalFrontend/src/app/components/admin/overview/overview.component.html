@@ -1,0 +1,74 @@
+<app-admin-header></app-admin-header>
+<div class="min-h-screen flex flex-col">
+  <!-- Menu lateral móvel -->
+  <nav *ngIf="isMenuOpen" class="lg:hidden bg-white shadow-md mt-2 p-4 transform transition-transform duration-300 ease-in-out">
+    <ul class="space-y-4">
+      <li><a routerLink="/admin/users" class="block text-red-500 font-semibold hover:text-red-700">Users</a></li>
+      <li><a routerLink="/admin/teams" class="block text-red-500 font-semibold hover:text-red-700">Teams</a></li>
+      <li><a routerLink="/admin/trainings" class="block text-red-500 font-semibold hover:text-red-700">Trainings</a></li>
+      <li><a routerLink="/" class="block text-red-500 font-semibold hover:text-red-700">Logout</a></li>
+    </ul>
+  </nav>
+
+  <!-- Conteúdo principal -->
+  <section class="relative flex flex-col items-center justify-center flex-1 bg-gray-100 py-8 lg:py-16">
+    <div class="container mx-auto p-6 bg-white rounded-3xl shadow-lg">
+      <div class="text-center text-3xl sm:text-4xl lg:text-5xl mb-8 font-extrabold text-orange-700 animate__animated animate__fadeInDown">
+        <span class="block text-4xl lg:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-orange-500 to-yellow-600 shadow-lg border-4 border-transparent rounded-lg p-4 bg-gradient-to-r from-orange-500 to-yellow-600 bg-origin-border">
+          System <span class="text-yellow-400">Overview</span>
+        </span>
+      </div>
+      <div class="w-full flex flex-wrap gap-8 justify-center">
+        <!-- Card Total Users -->
+        <div class="card flex flex-col bg-gradient-to-r from-orange-600 to-orange-800 rounded-2xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl w-full sm:w-80">
+          <div class="p-6 flex flex-col items-center text-white">
+            <span class="material-icons text-4xl">people</span>
+            <h1 class="text-2xl font-bold mt-4">Total Users</h1>
+            <p class="text-white mt-4 text-center">View the total number of users in the system.</p>
+            <!-- Placeholder for total users count -->
+            <div class="mt-6 text-3xl font-bold">{{ totalUsers }}</div>
+          </div>
+        </div>
+        <!-- Card Total Teams -->
+        <div class="card flex flex-col bg-gradient-to-r from-red-600 to-red-800 rounded-2xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl w-full sm:w-80">
+          <div class="p-6 flex flex-col items-center text-white">
+            <span class="material-icons text-4xl">group</span>
+            <h1 class="text-2xl font-bold mt-4">Total Teams</h1>
+            <p class="text-white mt-4 text-center">View the total number of teams in the system.</p>
+            <!-- Placeholder for total teams count -->
+            <div class="mt-6 text-3xl font-bold">{{ totalTeams }}</div>
+          </div>
+        </div>
+        <!-- Card Total Trainings -->
+        <div class="card flex flex-col bg-gradient-to-r from-red-600 to-red-800 rounded-2xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl w-full sm:w-80">
+          <div class="p-6 flex flex-col items-center text-white">
+            <span class="material-icons text-4xl">event</span>
+            <h1 class="text-2xl font-bold mt-4">Total Trainings</h1>
+            <p class="text-white mt-4 text-center">View the total number of trainings scheduled.</p>
+            <!-- Placeholder for total trainings count -->
+            <div class="mt-6 text-3xl font-bold">{{ totalTrainings }}</div>
+          </div>
+        </div>
+        <!-- Card Recent Activities -->
+        <div class="card flex flex-col bg-gradient-to-r from-gray-600 to-gray-800 rounded-2xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl w-full sm:w-80">
+          <div class="p-6 flex flex-col items-center text-white">
+            <span class="material-icons text-4xl">dashboard</span>
+            <h1 class="text-2xl font-bold mt-4">Recent Activities</h1>
+            <p class="text-white mt-4 text-center">View recent activities and updates in the system.</p>
+            <!-- Placeholder for recent activities -->
+            <div class="mt-6 text-lg font-semibold">
+              <ul class="list-disc list-inside">
+                <li>User John Doe created a new team.</li>
+                <li>Training session scheduled for tomorrow.</li>
+                <li>Coach Jane Smith updated their profile.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Rodapé -->
+  <app-footer></app-footer>
+</div>

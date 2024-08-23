@@ -28,7 +28,7 @@ public class AuthService {
     private final PlayerRepository playerRepository;
     private final CoachRepository coachRepository;
 
-    public ResponseEntity registerUser(RegisterRequestDTO body) {
+    public ResponseEntity<ResponseDTO> registerUser(RegisterRequestDTO body) {
         Optional<User> existingUser = userRepository.findByEmail(body.email());
 
         if (existingUser.isEmpty()) {
@@ -60,18 +60,18 @@ public class AuthService {
             credentialService.create(newUser);
             String token = tokenService.generateToken(newUser);
 
-            return ResponseEntity.ok(new ResponseDTO(newUser.getUsername(), token,newUser.getRole()));
+            return ResponseEntity.ok(new ResponseDTO(newUser.getId(), token,newUser.getRole()));
         }
 
         return ResponseEntity.badRequest().build();
     }
 
 
-    public ResponseEntity login(LoginRequestDTO body) {
+    public ResponseEntity<ResponseDTO> login(LoginRequestDTO body) {
         User user = userRepository.findByEmail(body.email()).orElseThrow(() -> new RuntimeException("User not found."));
         if (passwordEncoder.matches(body.password(), user.getPassword())) {
             String token = tokenService.generateToken(user);
-            return ResponseEntity.ok(new ResponseDTO(user.getUsername(), token, user.getRole()));
+            return ResponseEntity.ok(new ResponseDTO(user.getId(), token, user.getRole()));
         }
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }

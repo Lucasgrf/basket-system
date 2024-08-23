@@ -36,7 +36,6 @@ export class RegisterPageComponent {
 
       const { confirmPassword, ...registerData } = this.registerForm.value;
 
-      console.log(registerData);
       this.service.signup(registerData.username ?? '', registerData.email ?? '', registerData.password ?? '', registerData.role ?? '').subscribe({
         next: () => {
           alert('Cadastro realizado com sucesso');

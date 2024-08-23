@@ -1,0 +1,35 @@
+<div class="p-6">
+  <div class="flex justify-between items-center mb-4">
+    <h2 class="text-2xl font-bold">Player Management</h2>
+    <button (click)="openCreateDialog()" class="bg-teal-500 text-white font-semibold py-2 px-4 rounded hover:bg-teal-600 transition">Add Player</button>
+  </div>
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-white border border-gray-200">
+      <thead>
+        <tr>
+          <th class="py-2 px-4 border-b">ID</th>
+          <th class="py-2 px-4 border-b">Name</th>
+          <th class="py-2 px-4 border-b">Email</th>
+          <th class="py-2 px-4 border-b">Photo</th>
+          <th class="py-2 px-4 border-b">Team</th>
+          <th class="py-2 px-4 border-b">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let player of players">
+          <td class="py-2 px-4 border-b">{{ player.id }}</td>
+          <td class="py-2 px-4 border-b">{{ player.position }}</td>
+          <td class="py-2 px-4 border-b">{{ player.age }}</td>
+          <td class="py-2 px-4 border-b">{{ player.height }}</td>
+          <td class="py-2 px-4 border-b">{{ player.weight }}</td>
+          <td class="py-2 px-4 border-b">{{ player.teamId }}</td>
+          <td class="py-2 px-4 border-b">{{ player.userId }}</td>
+          <td class="py-2 px-4 border-b">
+            <button (click)="openEditDialog(player)" class="bg-blue-500 text-white font-semibold py-1 px-3 rounded hover:bg-blue-600 transition">Edit</button>
+            <button (click)="deletePlayer(player.id)" class="bg-red-500 text-white font-semibold py-1 px-3 rounded hover:bg-red-600 transition">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

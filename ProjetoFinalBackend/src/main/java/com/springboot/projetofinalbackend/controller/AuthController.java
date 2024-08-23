@@ -2,6 +2,7 @@ package com.springboot.projetofinalbackend.controller;
 
 import com.springboot.projetofinalbackend.DTO.LoginRequestDTO;
 import com.springboot.projetofinalbackend.DTO.RegisterRequestDTO;
+import com.springboot.projetofinalbackend.DTO.ResponseDTO;
 import com.springboot.projetofinalbackend.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,12 +15,12 @@ public class AuthController {
    private AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity registerUser(@RequestBody RegisterRequestDTO body) {
+    public ResponseEntity<ResponseDTO> registerUser(@RequestBody RegisterRequestDTO body) {
         return authService.registerUser(body);
     }
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody LoginRequestDTO body) {
+    public ResponseEntity<ResponseDTO> login(@RequestBody LoginRequestDTO body) {
         return authService.login(body);
     }
 }

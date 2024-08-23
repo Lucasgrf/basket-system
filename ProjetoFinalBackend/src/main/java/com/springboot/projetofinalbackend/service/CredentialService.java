@@ -5,11 +5,13 @@ import com.springboot.projetofinalbackend.model.Credential;
 import com.springboot.projetofinalbackend.model.User;
 import com.springboot.projetofinalbackend.repository.CredentialRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class CredentialService {
@@ -27,22 +29,22 @@ public class CredentialService {
         return credential;
     }
 
-    public ResponseEntity<Credential> update(@PathVariable Long id, @RequestBody CredentialDTO credential) {
+    public ResponseEntity<CredentialDTO> update(@PathVariable Long id, @RequestBody CredentialDTO credential) {
         var cred = credentialRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Credential not found"));
-
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         cred.setPhotoName(credential.photoName());
         cred.setName(credential.name());
         cred.setTeamId(credential.teamId());
         credentialRepository.save(cred);
-
-        return ResponseEntity.ok().build();
-
+        CredentialDTO credentialDTO = new CredentialDTO(
+          cred.getId(),cred.getPhotoName(),cred.getName(),cred.getTeamId(),cred.getUserType(),cred.getUser().getId()
+        );
+        return ResponseEntity.status(HttpStatus.OK).body(credentialDTO);
     }
 
     public ResponseEntity<Void> delete(@PathVariable Long id, @RequestParam String confirmation) {
         var cred = credentialRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Credential not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         if(confirmation.equals(cred.getName())){
             credentialRepository.delete(cred);
             return ResponseEntity.noContent().build();

@@ -65,6 +65,7 @@
               <option value="" disabled selected>Selecione um papel</option>
               <option value="PLAYER">Jogador</option>
               <option value="COACH">Treinador</option>
+              <option value="ADMIN">Administrador</option>
             </select>
             <div *ngIf="submitted && registerForm.get('role')?.invalid" class="text-red-600 text-sm mt-2">
               <div *ngIf="registerForm.get('role')?.errors?.['required']">Escolher um papel é obrigatório.</div>

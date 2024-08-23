@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,8 +26,8 @@ public class Training {
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false)
-    private LocalDateTime dateTime;
+    @Column(nullable = false, unique = true)
+    private Date date;
 
     @Column(nullable = false)
     private String location;

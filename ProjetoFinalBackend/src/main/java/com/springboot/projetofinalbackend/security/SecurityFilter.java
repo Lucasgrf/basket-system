@@ -35,10 +35,10 @@ public class SecurityFilter extends OncePerRequestFilter {
             List<SimpleGrantedAuthority> authorities;
             if (user.getRole() == User.Role.ADMIN) {
                 authorities = Stream.of(User.Role.values())
-                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role.name()))
+                        .map(role -> new SimpleGrantedAuthority(role.name()))
                         .collect(Collectors.toList());
             } else {
-                authorities = List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()));
+                authorities = List.of(new SimpleGrantedAuthority(user.getRole().name()));
             }
             var authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
             SecurityContextHolder.getContext().setAuthentication(authentication);

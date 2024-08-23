@@ -2,8 +2,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { LoginResponse } from '../Types/login-response-type';
+import { environment } from '../environment';
 
-const BASE_URL = ['http://localhost:8080/']
+const BASE_URL = environment.apiUrl;
 
 @Injectable({
   providedIn: 'root'
@@ -19,11 +20,11 @@ export class AuthService {
       tap(
         (value) => {
             const jwtToken = value['token'];
-            const username = value['username'];
+            const userId = value['id'];
             const role = value['role'];
             localStorage.setItem('role', role);
             localStorage.setItem('JWT', jwtToken);
-            localStorage.setItem('username', username);
+            localStorage.setItem('userId', userId.toString());
         }
       )
     )
@@ -34,11 +35,11 @@ export class AuthService {
       tap(
         (value) => {
             const jwtToken = value['token'];
-            const username = value['username'];
             const role = value['role'];
+            const userId = value['id'];
             localStorage.setItem('role', role);
             localStorage.setItem('JWT', jwtToken);
-            localStorage.setItem('username', username);
+            localStorage.setItem('userId', userId.toString());
         }
       )
     )

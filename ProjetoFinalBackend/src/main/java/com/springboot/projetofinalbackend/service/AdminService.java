@@ -32,7 +32,7 @@ public class AdminService {
     private final TeamService teamService;
     private final CredentialRepository credentialRepository;
 
-    public ResponseEntity<User> createUser(@RequestBody UserDTO user, @RequestParam String password) {
+    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO user, @RequestParam String password) {
         var existingUser = userRepository.findByEmail(user.email());
         if (existingUser.isEmpty()) {
             User newUser = new User();
@@ -64,7 +64,7 @@ public class AdminService {
 
             credentialService.create(newUser);
 
-            return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
+            return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(newUser));
         }
         return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
@@ -77,22 +77,21 @@ public class AdminService {
         return ResponseEntity.ok(userDTOs);
     }
 
-    public ResponseEntity<Void> deleteUser(@PathVariable Long userId, @RequestBody RequestDeleteDTO body) {
+    public ResponseEntity<Void> deleteUser(@PathVariable Long userId, @RequestBody RequestConfirmDTO body) {
         return userService.deleteProfile(userId, body);
     }
 
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody ResponseUpdateUser body) {
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody RequestUpdateUser body) {
         var userUpdate = userRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         userUpdate.setUsername(body.username());
         userUpdate.setPassword(passwordEncoder.encode(body.password()));
-        userUpdate.setRole(body.role());
         userUpdate.setPhotoName(body.photoName());
         userUpdate.setEmail(body.email());
 
         userRepository.save(userUpdate);
-        return ResponseEntity.status(HttpStatus.OK).body(userUpdate);
+        return ResponseEntity.status(HttpStatus.OK).body(toDTO(userUpdate));
 
     }
 
@@ -108,11 +107,11 @@ public class AdminService {
         return trainingService.delete(id, title);
     }
 
-    public ResponseEntity<Training> createTraining(TrainingDTO body) {
+    public ResponseEntity<TrainingDTO> createTraining(TrainingDTO body) {
         return trainingService.create(body);
     }
 
-    public ResponseEntity<Training> updateTraining(@PathVariable Long id, @RequestBody TrainingDTO body) {
+    public ResponseEntity<TrainingDTO> updateTraining(@PathVariable Long id, @RequestBody TrainingDTO body) {
         return trainingService.update(id, body);
     }
 
@@ -128,11 +127,11 @@ public class AdminService {
         return teamService.delete(id, confirmation);
     }
 
-    public ResponseEntity<Team> createTeam(TeamDTO body) {
+    public ResponseEntity<TeamDTO> createTeam(TeamDTO body) {
         return teamService.create(body);
     }
 
-    public ResponseEntity<Team> updateTeam(@PathVariable Long id, @RequestBody TeamDTO team) {
+    public ResponseEntity<TeamDTO> updateTeam(@PathVariable Long id, @RequestBody TeamDTO team) {
         return teamService.update(id, team);
     }
 
@@ -148,8 +147,7 @@ public class AdminService {
         return credentialService.delete(id, confirmation);
     }
 
-
-    public ResponseEntity<Credential> createCredential(CredentialDTO body, UserDTO userDTO) {
+    public ResponseEntity<CredentialDTO> createCredential(CredentialDTO body, UserDTO userDTO) {
         var existsCredential = credentialRepository.findByName(body.name());
         var existsUser = userRepository.findByEmail(userDTO.email());
         if (existsCredential.isEmpty() && existsUser.isEmpty()) {
@@ -162,12 +160,12 @@ public class AdminService {
             credential.setTeamId(null);
             credential.setUserType(user.getRole().name());
             credentialRepository.save(credential);
-            return ResponseEntity.status(HttpStatus.CREATED).body(credential);
+            return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(credential));
         }
         return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
 
-    public ResponseEntity<Credential> updateCredential(@PathVariable Long id, @RequestBody CredentialDTO credential) {
+    public ResponseEntity<CredentialDTO> updateCredential(@PathVariable Long id, @RequestBody CredentialDTO credential) {
         return credentialService.update(id, credential);
     }
 
@@ -237,7 +235,7 @@ public class AdminService {
         return new TrainingDTO(
                 training.getId(),
                 training.getTitle(),
-                training.getDateTime(),
+                training.getDate(),
                 training.getLocation(),
                 training.getTeam() != null ? training.getTeam().getId() : null
         );

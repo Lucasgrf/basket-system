@@ -13,6 +13,7 @@ import com.springboot.projetofinalbackend.repository.PlayerRepository;
 import com.springboot.projetofinalbackend.repository.TeamRepository;
 import com.springboot.projetofinalbackend.repository.TrainingRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,10 +31,8 @@ import java.util.Optional;
 public class PlayerService {
     @Autowired
     private PlayerRepository playerRepository;
-
     @Autowired
     private TeamRepository teamRepository;
-
     @Autowired
     private TrainingRepository trainingRepository;
     @Autowired
@@ -149,7 +148,7 @@ public class PlayerService {
         for (Training training : trainings) {
             if(training.getTeam().getId().equals(player.getTeam().getId())){
                 TrainingDTO trainingDTO = new TrainingDTO(
-                        training.getId(),training.getTitle(),training.getDateTime(),
+                        training.getId(),training.getTitle(),training.getDate(),
                         training.getLocation(), training.getTeam().getId()
                 );
                 trainingDTOs.add(trainingDTO);
@@ -157,4 +156,17 @@ public class PlayerService {
         }
         return trainingDTOs;
     }
+
+    public ResponseEntity<PlayerDTO> updatePlayer(@RequestBody PlayerDTO playerDTO, @PathVariable Long id){
+        var player = playerRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        if(player.getTeam() != null){
+            BeanUtils.copyProperties(playerDTO, player);
+            playerRepository.save(player);
+            BeanUtils.copyProperties(player, playerDTO);
+            return ResponseEntity.status(HttpStatus.OK).body(playerDTO);
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
 }
