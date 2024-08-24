@@ -49,21 +49,21 @@ public class PlayerController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','PLAYER')")
-    @GetMapping("/team")
-    public ResponseEntity<TeamDTO> viewTeam(@RequestBody PlayerDTO playerDTO){
-        return playerService.team(playerDTO);
+    @GetMapping("/team/{playerId}")
+    public ResponseEntity<TeamDTO> viewTeam(@PathVariable Long playerId){
+        return playerService.team(playerId);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','PLAYER')")
-    @GetMapping("/credential")
-    public ResponseEntity<CredentialDTO> viewCredential(@RequestBody PlayerDTO playerDTO){
-        return playerService.credential(playerDTO);
+    @GetMapping("/credential/{playerId}")
+    public ResponseEntity<CredentialDTO> viewCredential(@PathVariable Long playerId){
+        return playerService.credential(playerId);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','PLAYER')")
-    @GetMapping("/trainings")
-    public ResponseEntity<List<TrainingDTO>> viewTrainings(@RequestBody PlayerDTO playerDTO){
-        return playerService.trainings(playerDTO);
+    @GetMapping("/trainings/{playerId}")
+    public ResponseEntity<List<TrainingDTO>> viewTrainings(@PathVariable Long playerId){
+        return playerService.trainings(playerId);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")
@@ -73,7 +73,7 @@ public class PlayerController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','PLAYER', 'COACH')")
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<PlayerDTO> update(@RequestBody PlayerDTO playerDTO, @PathVariable Long id){
         return playerService.updatePlayer(playerDTO,id);
     }

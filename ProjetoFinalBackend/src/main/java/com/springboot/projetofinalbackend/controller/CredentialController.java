@@ -24,8 +24,8 @@ public class CredentialController {
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCredential(@PathVariable Long id, @RequestParam String confirmation){
-        return adminService.deleteCredential(id,confirmation);
+    public ResponseEntity<Void> deleteCredential(@PathVariable Long id){
+        return adminService.deleteCredential(id);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")
@@ -35,7 +35,7 @@ public class CredentialController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<CredentialDTO> updateCredential(@PathVariable Long id, @RequestBody CredentialDTO credential){
         return adminService.updateCredential(id, credential);
     }

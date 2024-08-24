@@ -1,12 +1,13 @@
 package com.springboot.projetofinalbackend.service;
 
-import com.springboot.projetofinalbackend.DTO.RequestConfirmDTO;
+import com.springboot.projetofinalbackend.DTO.RequestUpdateUser;
 import com.springboot.projetofinalbackend.DTO.UserDTO;
 import com.springboot.projetofinalbackend.model.User;
 import com.springboot.projetofinalbackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +22,7 @@ public class UserService {
     private UserRepository userRepository;
 
     @Autowired
-    private AuthService authService;
+    private PasswordEncoder passwordEncoder;
 
     public ResponseEntity<UserDTO> getById(@PathVariable Long id){
         Optional<User> user = userRepository.findById(id);
@@ -37,38 +38,46 @@ public class UserService {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
-    public ResponseEntity<UserDTO> updateProfile(@PathVariable Long id, @RequestBody RequestConfirmDTO body) {
+    public ResponseEntity<UserDTO> updateProfile(@PathVariable Long id, @RequestBody RequestUpdateUser user) {
         var userUpdate = userRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        userUpdate.setUsername(body.username());
-        UserDTO user = new UserDTO(userUpdate.getId(),
-                userUpdate.getUsername(),
-                userUpdate.getEmail(),
-                userUpdate.getPhotoName(),
-                userUpdate.getRole(),
-                userUpdate.getPlayer().getId(),
-                userUpdate.getCoach().getId(),
-                userUpdate.getCredential().getId());
-
-        if(authService.authenticate(body.password(),userUpdate.getPassword())) {
+        if(userUpdate != null){
+            userUpdate.setUsername(user.username());
+            userUpdate.setEmail(user.email());
+            userUpdate.setPhotoName(user.photoName());
+            userUpdate.setPassword(passwordEncoder.encode(user.password()));
             userRepository.save(userUpdate);
-            return ResponseEntity.status(HttpStatus.OK).body(user);
-        }else{
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+            return ResponseEntity.status(HttpStatus.OK).body(toDTO(userUpdate));
         }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
 
-    public ResponseEntity<Void> deleteProfile(@PathVariable Long userId, @RequestBody RequestConfirmDTO body) {
+    public ResponseEntity<Void> deleteProfile(@PathVariable Long userId) {
         var userDelete = userRepository.findById(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        if(authService.authenticate(body.password(),userDelete.getPassword())){
+        if(userDelete != null){
             userRepository.delete(userDelete);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
 
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    public UserDTO toDTO(User user) {
+        return new UserDTO(
+                user.getId(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getPhotoName(),
+                user.getRole(),
+                user.getPlayer() != null ? user.getPlayer().getId() : null,
+                user.getCoach() != null ? user.getCoach().getId() : null,
+                user.getCredential() != null ? user.getCredential().getId() : null
+        );
     }
 
 }

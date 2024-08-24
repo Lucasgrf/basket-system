@@ -77,22 +77,25 @@ public class AdminService {
         return ResponseEntity.ok(userDTOs);
     }
 
-    public ResponseEntity<Void> deleteUser(@PathVariable Long userId, @RequestBody RequestConfirmDTO body) {
-        return userService.deleteProfile(userId, body);
+    public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
+        return userService.deleteProfile(userId);
     }
 
-    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody RequestUpdateUser body) {
-        var userUpdate = userRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
-        userUpdate.setUsername(body.username());
-        userUpdate.setPassword(passwordEncoder.encode(body.password()));
-        userUpdate.setPhotoName(body.photoName());
-        userUpdate.setEmail(body.email());
-
-        userRepository.save(userUpdate);
-        return ResponseEntity.status(HttpStatus.OK).body(toDTO(userUpdate));
-
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO body) {
+        var existsUser = userRepository.findById(id);
+        if(existsUser.isPresent()) {
+            User userUpdate = existsUser.get();
+            userUpdate.setUsername(body.username());
+            userUpdate.setPhotoName(body.photoName());
+            userUpdate.setEmail(body.email());
+            userUpdate.setRole(body.role());
+            userUpdate.setAdmin(adminRepository.findById(body.coachId()).orElse(null));
+            userUpdate.setCoach(coachRepository.findById(body.coachId()).orElse(null));
+            userUpdate.setPlayer(playerRepository.findById(body.playerId()).orElse(null));
+            userRepository.save(userUpdate);
+            return ResponseEntity.ok(toDTO(userUpdate));
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
     public ResponseEntity<List<TrainingDTO>> getAllTrainings() {
@@ -103,8 +106,8 @@ public class AdminService {
         return ResponseEntity.ok(trainingDTOs);
     }
 
-    public ResponseEntity<Void> deleteTraining(@PathVariable Long id, @RequestParam String title) {
-        return trainingService.delete(id, title);
+    public ResponseEntity<Void> deleteTraining(@PathVariable Long id) {
+        return trainingService.delete(id);
     }
 
     public ResponseEntity<TrainingDTO> createTraining(TrainingDTO body) {
@@ -123,8 +126,8 @@ public class AdminService {
         return ResponseEntity.ok(teamDTOs);
     }
 
-    public ResponseEntity<Void> deleteTeam(@PathVariable Long id, @RequestParam String confirmation) {
-        return teamService.delete(id, confirmation);
+    public ResponseEntity<Void> deleteTeam(@PathVariable Long id) {
+        return teamService.delete(id);
     }
 
     public ResponseEntity<TeamDTO> createTeam(TeamDTO body) {
@@ -143,12 +146,12 @@ public class AdminService {
         return ResponseEntity.ok(credentialDTOs);
     }
 
-    public ResponseEntity<Void> deleteCredential(@PathVariable Long id, @RequestParam String confirmation) {
-        return credentialService.delete(id, confirmation);
+    public ResponseEntity<Void> deleteCredential(@PathVariable Long id) {
+        return credentialService.delete(id);
     }
 
-    public ResponseEntity<CredentialDTO> createCredential(CredentialDTO body, UserDTO userDTO) {
-        var existsCredential = credentialRepository.findByName(body.name());
+    public ResponseEntity<CredentialDTO> createCredential(@PathVariable CredentialDTO credentialDTO, @RequestBody UserDTO userDTO) {
+        var existsCredential = credentialRepository.findById(credentialDTO.id());
         var existsUser = userRepository.findByEmail(userDTO.email());
         if (existsCredential.isEmpty() && existsUser.isEmpty()) {
             var user = new User();

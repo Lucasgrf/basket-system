@@ -61,10 +61,10 @@ public class TeamService {
     }
 
 
-    public ResponseEntity<Void> delete(@PathVariable Long id, @RequestParam String confirmation) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         var teamDelete = teamRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        if(confirmation.equals(teamDelete.getName())) {
+        if(teamDelete != null) {
             teamRepository.delete(teamDelete);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }

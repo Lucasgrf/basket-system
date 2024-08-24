@@ -106,41 +106,60 @@ public class PlayerService {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    public ResponseEntity<TeamDTO> team(@RequestBody PlayerDTO playerDTO){
-        Player player = playerRepository.findById(playerDTO.id())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        Optional<Team> team = teamRepository.findById(player.getTeam().getId());
-        if(team.isPresent()){
-            TeamDTO teamDTO = new TeamDTO(team.get().getId(), team.get().getName(), team.get().getAddress(),
-                    team.get().getGym(), team.get().getFoundation(), team.get().getEmailContact(), team.get().getPhoneContact(), team.get().getCoach().getId());
-            return ResponseEntity.status(HttpStatus.OK).body(teamDTO);
+    public ResponseEntity<TeamDTO> team(@PathVariable Long playerId) {
+        Player player = playerRepository.findById(playerId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Player not found"));
+
+        Team team = player.getTeam();
+        if (team == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // Retorna 404 se o jogador não tiver um time
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
+        TeamDTO teamDTO = new TeamDTO(
+                team.getId(),
+                team.getName(),
+                team.getAddress(),
+                team.getGym(),
+                team.getFoundation(),
+                team.getEmailContact(),
+                team.getPhoneContact(),
+                team.getCoach().getId()
+        );
+
+        return ResponseEntity.status(HttpStatus.OK).body(teamDTO);
     }
 
-    public ResponseEntity<CredentialDTO> credential(@RequestBody PlayerDTO playerDTO){
-        Player player = playerRepository.findById(playerDTO.userId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        Optional<Credential> credential = credentialRepository.findById(player.getId());
-        if(credential.isPresent()){
-            CredentialDTO credentialDTO = new CredentialDTO(
-                    credential.get().getId(),credential.get().getPhotoName(),credential.get().getName(),
-                    credential.get().getTeamId(),credential.get().getUserType(),credential.get().getUser().getId()
-            );
-            return ResponseEntity.status(HttpStatus.OK).body(credentialDTO);
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    public ResponseEntity<CredentialDTO> credential(@PathVariable Long playerId) {
+        Player player = playerRepository.findById(playerId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Player not found"));
+
+        Credential credential = credentialRepository.findByPlayerId(player.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Credential not found"));
+
+        CredentialDTO credentialDTO = new CredentialDTO(
+                credential.getId(),
+                credential.getPhotoName(),
+                credential.getName(),
+                credential.getTeamId(),
+                credential.getUserType(),
+                credential.getUser().getId()
+        );
+
+        return ResponseEntity.status(HttpStatus.OK).body(credentialDTO);
     }
 
-    public ResponseEntity<List<TrainingDTO>> trainings(@RequestBody PlayerDTO playerDTO){
-        Player player = playerRepository.findById(playerDTO.userId())
+    public ResponseEntity<List<TrainingDTO>> trainings(@PathVariable Long playerId){
+        Player player = playerRepository.findById(playerId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        if(player.getTeam() != null){
-            List<Training> trainings = trainingRepository.findAll();
-            List<TrainingDTO> trainingDTOs = getTrainingDTOS(trainings, player);
-            return ResponseEntity.status(HttpStatus.OK).body(trainingDTOs);   
+
+        List<Training> trainings = trainingRepository.findByPlayersId(player.getId());
+        List<TrainingDTO> trainingDTOs = getTrainingDTOS(trainings, player);
+
+        if (trainingDTOs.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body(trainingDTOs);
         }
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     private List<TrainingDTO> getTrainingDTOS(List<Training> trainings, Player player) {

@@ -4,7 +4,7 @@ import com.springboot.projetofinalbackend.DTO.CoachDTO;
 import com.springboot.projetofinalbackend.DTO.PlayerDTO;
 import com.springboot.projetofinalbackend.DTO.TeamDTO;
 import com.springboot.projetofinalbackend.DTO.TrainingDTO;
-import com.springboot.projetofinalbackend.service.AdminService;
+import com.springboot.projetofinalbackend.service.CoachService;
 import com.springboot.projetofinalbackend.service.TeamService;
 import com.springboot.projetofinalbackend.service.TrainingService;
 import jakarta.persistence.EntityNotFoundException;
@@ -29,7 +29,7 @@ public class CoachController {
     private TeamService teamService;
 
     @Autowired
-    private AdminService adminService;
+    private CoachService coachService;
 
     @PreAuthorize("hasAnyRole('ADMIN','COACH')")
     @PostMapping("/team")
@@ -39,8 +39,8 @@ public class CoachController {
 
     @PreAuthorize("hasAnyRole('ADMIN','COACH')")
     @DeleteMapping("/team/{id}")
-    public ResponseEntity<Void> deleteTeam(@PathVariable Long id, @RequestParam String confirmation) {
-        return teamService.delete(id, confirmation);
+    public ResponseEntity<Void> deleteTeam(@PathVariable Long id) {
+        return teamService.delete(id);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','COACH')")
@@ -63,8 +63,8 @@ public class CoachController {
 
     @PreAuthorize("hasAnyRole('ADMIN','COACH')")
     @DeleteMapping("/training/{id}")
-    public ResponseEntity<Void> deleteTraining(@PathVariable Long id, @RequestParam String confirmation) {
-        return trainingService.delete(id,confirmation);
+    public ResponseEntity<Void> deleteTraining(@PathVariable Long id) {
+        return trainingService.delete(id);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','COACH')")
@@ -91,6 +91,30 @@ public class CoachController {
     @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<CoachDTO>> getAllCoaches(){
-        return adminService.getAllCoaches();
+        return coachService.getAllCoaches();
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PostMapping("/add")
+    public ResponseEntity<CoachDTO> createCoach(@RequestBody @Valid CoachDTO coachDTO) {
+        return coachService.createCoach(coachDTO);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @GetMapping("/{id}")
+    public ResponseEntity<CoachDTO> getCoachById(@PathVariable Long id) {
+        return coachService.getCoach(id);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCoach(@PathVariable Long id) {
+        return coachService.deleteCoach(id);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PutMapping("/{id}")
+    public ResponseEntity<CoachDTO> updateCoach(@PathVariable Long id, @RequestBody CoachDTO coachDTO) {
+        return coachService.updateCoach(id,coachDTO);
     }
 }

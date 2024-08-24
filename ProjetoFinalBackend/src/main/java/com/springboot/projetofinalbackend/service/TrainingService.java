@@ -70,16 +70,16 @@ public class TrainingService {
         return ResponseEntity.status(HttpStatus.OK).body(trainingDTO);
     }
 
-    public ResponseEntity<Void> delete(@PathVariable Long id, @RequestParam String title){
+    public ResponseEntity<Void> delete(@PathVariable Long id){
         var trainingDelete = trainingRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        if(!trainingDelete.getTitle().equals(title)){
-            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();
+        if(trainingDelete != null){
+            trainingRepository.delete(trainingDelete);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
 
-        trainingRepository.delete(trainingDelete);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
     public Set<PlayerDTO> addPlayer(Long trainingId, Long playerId) {

@@ -1,6 +1,5 @@
 package com.springboot.projetofinalbackend.controller;
 
-import com.springboot.projetofinalbackend.DTO.RequestConfirmDTO;
 import com.springboot.projetofinalbackend.DTO.RequestUpdateUser;
 import com.springboot.projetofinalbackend.DTO.UserDTO;
 import com.springboot.projetofinalbackend.service.AdminService;
@@ -25,14 +24,14 @@ public class UserController {
 
     @PreAuthorize("hasAnyRole('ADMIN','COACH','PLAYER')")
     @PutMapping("/profile/{id}")
-    public ResponseEntity<UserDTO> updateProfile(@PathVariable Long id, @RequestBody RequestConfirmDTO user){
+    public ResponseEntity<UserDTO> updateProfile(@PathVariable Long id, @RequestBody RequestUpdateUser user){
         return userService.updateProfile(id,user);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','COACH','PLAYER')")
     @DeleteMapping("/profile/{id}")
-    public ResponseEntity<Void> deleteProfile(@PathVariable Long id, @RequestBody RequestConfirmDTO body) {
-        return userService.deleteProfile(id, body);
+    public ResponseEntity<Void> deleteProfile(@PathVariable Long id) {
+        return userService.deleteProfile(id);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','COACH','PLAYER')")
@@ -48,9 +47,9 @@ public class UserController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id, @RequestBody RequestConfirmDTO body){
-        return adminService.deleteUser(id,body);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id){
+        return adminService.deleteUser(id);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")
@@ -60,8 +59,8 @@ public class UserController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")
-    @PutMapping("/update/{id}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody RequestUpdateUser user){
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO user){
         return adminService.updateUser(id,user);
     }
 }

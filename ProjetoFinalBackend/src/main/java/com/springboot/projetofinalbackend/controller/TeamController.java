@@ -41,9 +41,9 @@ public class TeamController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteTeam(@PathVariable Long id, @RequestParam String confirmation){
-        return adminService.deleteTeam(id, confirmation);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteTeam(@PathVariable Long id){
+        return adminService.deleteTeam(id);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")
@@ -52,7 +52,7 @@ public class TeamController {
         return adminService.createTeam(body);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<TeamDTO> updateTeam(@PathVariable Long id, @RequestBody TeamDTO team){
         return adminService.updateTeam(id, team);
     }

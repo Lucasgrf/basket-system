@@ -35,8 +35,8 @@ public class TrainingController {
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteTraining(@PathVariable Long id, @RequestParam String title){
-        return adminService.deleteTraining(id,title);
+    public ResponseEntity<Void> deleteTraining(@PathVariable Long id){
+        return adminService.deleteTraining(id);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")

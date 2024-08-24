@@ -42,10 +42,10 @@ public class CredentialService {
         return ResponseEntity.status(HttpStatus.OK).body(credentialDTO);
     }
 
-    public ResponseEntity<Void> delete(@PathVariable Long id, @RequestParam String confirmation) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         var cred = credentialRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        if(confirmation.equals(cred.getName())){
+        if(cred != null){
             credentialRepository.delete(cred);
             return ResponseEntity.noContent().build();
         }
