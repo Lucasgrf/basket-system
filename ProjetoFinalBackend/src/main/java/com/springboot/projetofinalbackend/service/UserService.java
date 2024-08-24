@@ -27,16 +27,11 @@ public class UserService {
     public ResponseEntity<UserDTO> getById(@PathVariable Long id){
         Optional<User> user = userRepository.findById(id);
         if(user.isPresent()){
-            UserDTO userDTO = new UserDTO(user.get().getId(),
-                    user.get().getUsername(),
-                    user.get().getEmail(),
-                    user.get().getPhotoName(),
-                    user.get().getRole(), user.get().getPlayer().getId(),
-                    user.get().getCoach().getId(),user.get().getCredential().getId());
-            return ResponseEntity.status(HttpStatus.OK).body(userDTO);
+            return ResponseEntity.status(HttpStatus.OK).body(toDTO(user.get()));
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
+
 
     public ResponseEntity<UserDTO> updateProfile(@PathVariable Long id, @RequestBody RequestUpdateUser user) {
         var userUpdate = userRepository.findById(id)

@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { HeaderComponent } from "../../header/header.component";
 
 @Component({
   selector: 'app-form-update-coach',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, HeaderComponent],
   templateUrl: './form-update-coach.component.html',
   styleUrl: './form-update-coach.component.scss'
 })

@@ -3,9 +3,11 @@ package com.springboot.projetofinalbackend.service;
 import com.springboot.projetofinalbackend.DTO.LoginRequestDTO;
 import com.springboot.projetofinalbackend.DTO.RegisterRequestDTO;
 import com.springboot.projetofinalbackend.DTO.ResponseDTO;
+import com.springboot.projetofinalbackend.model.Admin;
 import com.springboot.projetofinalbackend.model.Coach;
 import com.springboot.projetofinalbackend.model.Player;
 import com.springboot.projetofinalbackend.model.User;
+import com.springboot.projetofinalbackend.repository.AdminRepository;
 import com.springboot.projetofinalbackend.repository.CoachRepository;
 import com.springboot.projetofinalbackend.repository.PlayerRepository;
 import com.springboot.projetofinalbackend.repository.UserRepository;
@@ -27,6 +29,7 @@ public class AuthService {
     private final TokenService tokenService;
     private final PlayerRepository playerRepository;
     private final CoachRepository coachRepository;
+    private final AdminRepository adminRepository;
 
     public ResponseEntity<ResponseDTO> registerUser(RegisterRequestDTO body) {
         Optional<User> existingUser = userRepository.findByEmail(body.email());
@@ -52,7 +55,9 @@ public class AuthService {
                     playerRepository.save(player);
                 }
                 case ADMIN -> {
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+                    Admin admin = new Admin();
+                    admin.setUser(newUser);
+                    adminRepository.save(admin);
                 }
                 default -> throw new IllegalStateException("Role not found: " + body.role());
             }

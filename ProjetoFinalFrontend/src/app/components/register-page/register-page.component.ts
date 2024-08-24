@@ -36,15 +36,15 @@ export class RegisterPageComponent {
 
       const { confirmPassword, ...registerData } = this.registerForm.value;
 
-      this.service.signup(registerData.username ?? '', registerData.email ?? '', registerData.password ?? '', registerData.role ?? '').subscribe({
+      this.service.signup(registerData.username!, registerData.email!, registerData.password!, registerData.role!).subscribe({
         next: () => {
           alert('Cadastro realizado com sucesso');
           this.router.navigate(['login']);
         },
-        error: () => {
-          alert('Erro ao realizar cadastro, tente novamente');
+        error: (error) => {
+          alert('Erro ao realizar cadastro, tente novamente' + error);
         }
-      })
+      });
     }
   }
 }

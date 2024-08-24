@@ -16,15 +16,13 @@ export class AuthService {
   ) { }
 
   signup(username: string,email: string, password: string, role: string): Observable<any> {
-    return this.http.post<LoginResponse>(BASE_URL + "auth/register", {username,email,password,role}).pipe(
+    return this.http.post<LoginResponse>(BASE_URL + "/auth/register", {username,email,password,role}).pipe(
       tap(
         (value) => {
             const jwtToken = value['token'];
-            const userId = value['id'];
             const role = value['role'];
             localStorage.setItem('role', role);
             localStorage.setItem('JWT', jwtToken);
-            localStorage.setItem('userId', userId.toString());
         }
       )
     )
@@ -43,18 +41,6 @@ export class AuthService {
         }
       )
     )
-  }
-
-  private createAuthorizationHeader(): HttpHeaders {
-    const jwtToken = localStorage.getItem('JWT');
-    if (jwtToken) {
-      return new HttpHeaders({
-        'Authorization': 'Bearer ' + jwtToken
-      });
-    } else {
-      console.log("JWT token not found in the Local Storage");
-      return new HttpHeaders();
-    }
   }
 
   private logout (){

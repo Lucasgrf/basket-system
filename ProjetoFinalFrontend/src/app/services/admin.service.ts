@@ -10,18 +10,12 @@ import { Team } from '../models/team.model';
   providedIn: 'root'
 })
 export class AdminService {
-  private apiUrl = `${environment.apiUrl}/admin`;
+  private apiUrl = `${environment.apiUrl}`;
 
   constructor(private http: HttpClient) { }
 
   createUser(user: User, password: string): Observable<any> {
     return this.http.post<User>(`${this.apiUrl}/createUser`, { user, password }).pipe(
-      catchError(this.handleError)
-    );
-  }
-
-  getAllUsers(): Observable<any[]> {
-    return this.http.get<User[]>(`${this.apiUrl}/users`).pipe(
       catchError(this.handleError)
     );
   }

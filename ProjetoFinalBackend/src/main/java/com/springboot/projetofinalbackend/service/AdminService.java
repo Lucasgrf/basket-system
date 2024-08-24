@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -89,9 +88,6 @@ public class AdminService {
             userUpdate.setPhotoName(body.photoName());
             userUpdate.setEmail(body.email());
             userUpdate.setRole(body.role());
-            userUpdate.setAdmin(adminRepository.findById(body.coachId()).orElse(null));
-            userUpdate.setCoach(coachRepository.findById(body.coachId()).orElse(null));
-            userUpdate.setPlayer(playerRepository.findById(body.playerId()).orElse(null));
             userRepository.save(userUpdate);
             return ResponseEntity.ok(toDTO(userUpdate));
         }
@@ -180,14 +176,6 @@ public class AdminService {
         return ResponseEntity.ok(playerDTOs);
     }
 
-    public ResponseEntity<List<CoachDTO>> getAllCoaches() {
-        List<Coach> coaches = coachRepository.findAll();
-        List<CoachDTO> coachDTOs = coaches.stream()
-                .map(this::toDTO)
-                .toList();
-        return ResponseEntity.ok(coachDTOs);
-    }
-
     public UserDTO toDTO(User user) {
         return new UserDTO(
                 user.getId(),
@@ -226,13 +214,13 @@ public class AdminService {
         );
     }
 
-    public CoachDTO toDTO(Coach coach) {
+    /*public CoachDTO toDTO(Coach coach) {
         return new CoachDTO(
                 coach.getId(),
                 coach.getUser() != null ? coach.getUser().getId() : null,
                 coach.getTeam() != null ? coach.getTeam().getId() : null
         );
-    }
+    }*/
 
     public TrainingDTO toDTO(Training training) {
         return new TrainingDTO(

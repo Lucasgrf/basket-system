@@ -48,14 +48,10 @@ public class CoachService {
 
     public ResponseEntity<List<CoachDTO>> getAllCoaches() {
         List<Coach> coaches = coachRepository.findAll();
-        List<CoachDTO> coachDTOS = new ArrayList<>();
-        if(coaches.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-        for (Coach coach : coaches) {
-            coachDTOS.add(toDTO(coach));
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(coachDTOS);
+        List<CoachDTO> coachDTOs = coaches.stream()
+                .map(this::toDTO)
+                .toList();
+        return ResponseEntity.ok(coachDTOs);
     }
 
     public ResponseEntity<CoachDTO> updateCoach(Long id, CoachDTO updatedCoach) {

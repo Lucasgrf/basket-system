@@ -3,7 +3,6 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
 import { environment } from '../environment';
-import { RequestConfirm } from '../models/requestConfirm';
 import { UserResponse } from '../Types/user-response-type';
 import { RequestUpdateUser } from '../models/requestUpdateUser';
 
@@ -19,6 +18,12 @@ export class UserService {
   // Método para obter um usuário pelo ID
   getUserById(id: number): Observable<any> {
     return this.http.get<UserResponse>(`${this.apiUrl}/${id}`).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  getAllUsers(): Observable<any[]> {
+    return this.http.get<User[]>(`${this.apiUrl}`).pipe(
       catchError(this.handleError)
     );
   }

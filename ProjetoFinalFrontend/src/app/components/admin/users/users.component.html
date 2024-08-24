@@ -1,3 +1,4 @@
+<app-admin-header></app-admin-header>
 <div class="p-6">
   <div class="flex justify-between items-center mb-4">
     <h2 class="text-2xl font-bold">User Management</h2>
@@ -15,6 +16,7 @@
           <th class="py-3 px-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Username</th>
           <th class="py-3 px-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Email</th>
           <th class="py-3 px-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Role</th>
+          <th class="py-3 px-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Credential ID</th>
           <th class="py-3 px-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Actions</th>
         </tr>
       </thead>
@@ -24,16 +26,20 @@
           <td class="py-3 px-4 text-sm text-gray-700">{{ user.username }}</td>
           <td class="py-3 px-4 text-sm text-gray-700">{{ user.email }}</td>
           <td class="py-3 px-4 text-sm text-gray-700">{{ user.role }}</td>
+          <td class="py-3 px-4 text-sm text-gray-700">{{ user.credentialId }}</td>
           <td class="py-3 px-4 text-sm text-gray-700 flex space-x-2">
             <a routerLink="/admin/users/edit/{{ user.id }}" class="bg-blue-500 text-white font-semibold py-1 px-3 rounded hover:bg-blue-600 transition">
               Edit
             </a>
-            <a routerLink="/admin/users/delete/{{ user.id }}" class="bg-red-500 text-white font-semibold py-1 px-3 rounded hover:bg-red-600 transition">
+            <button (click)="openDeleteModal(user.id)" class="bg-red-500 text-white font-semibold py-1 px-3 rounded hover:bg-red-600 transition">
               Delete
-            </a>
+            </button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
+
+  <!-- Modal de Confirmação -->
+  <app-confirmation-dialog *ngIf="showModal" (confirm)="confirmDelete()" (cancel)="closeDeleteModal()"></app-confirmation-dialog>
 </div>

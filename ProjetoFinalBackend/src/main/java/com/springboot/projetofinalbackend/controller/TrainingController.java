@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/training")
-@PreAuthorize("hasAnyRole('ADMIN','COACH', 'PLAYER')")
+//@PreAuthorize("hasAnyRole('ADMIN','COACH', 'PLAYER')")
 public class TrainingController {
     @Autowired
     private TrainingService trainingService;
@@ -21,31 +21,31 @@ public class TrainingController {
     @Autowired
     private AdminService adminService;
 
-    @PreAuthorize("hasAnyRole('ADMIN','COACH', 'PLAYER')")
+    //@PreAuthorize("hasAnyRole('ADMIN','COACH', 'PLAYER')")
     @GetMapping("/{id}")
     public ResponseEntity<TrainingDTO> getTraining(@PathVariable Long id) {
         return trainingService.getTraining(id);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<TrainingDTO>> getAllTrainings(){
         return adminService.getAllTrainings();
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteTraining(@PathVariable Long id){
         return adminService.deleteTraining(id);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/add")
     public ResponseEntity<TrainingDTO> addTraining(TrainingDTO body){
         return adminService.createTraining(body);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/update/{id}")
     public ResponseEntity<TrainingDTO> updateTraining(@PathVariable Long id, @RequestBody TrainingDTO body){
         return adminService.updateTraining(id,body);

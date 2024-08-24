@@ -13,7 +13,7 @@ import { AuthService } from './auth.service';
 export class PlayerService {
   private apiUrl = `${environment.apiUrl}/player`;  // URL base da API para jogadores
 
-  constructor(private http: HttpClient, private header: HttpHeaders, private auth: AuthService) { }
+  constructor(private http: HttpClient, private auth: AuthService) { }
 
   // Método para associar um jogador a um time
   joinTeam(player: Player): Observable<any> {

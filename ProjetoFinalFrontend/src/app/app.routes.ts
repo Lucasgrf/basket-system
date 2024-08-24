@@ -17,7 +17,6 @@ import { TeamsComponent } from './components/admin/teams/teams.component';
 import { TrainingsComponent } from './components/admin/trainings/trainings.component';
 import { FormAddUserComponent } from './components/admin/forms/form-add-user/form-add-user.component';
 import { FormUpdateUserComponent } from './components/admin/forms/form-update-user/form-update-user.component';
-import { FormDeleteUserComponent } from './components/admin/forms/form-delete-user/form-delete-user.component';
 import { FormAddTeamComponent } from './components/admin/forms/form-add-team/form-add-team.component';
 import { FormUpdateTeamComponent } from './components/admin/forms/form-update-team/form-update-team.component';
 import { FormDeleteTeamComponent } from './components/admin/forms/form-delete-team/form-delete-team.component';
@@ -41,7 +40,6 @@ export const routes: Routes = [
   { path: 'admin/trainings', component: TrainingsComponent},
   { path: 'admin/users/add', component: FormAddUserComponent },
   { path: 'admin/users/edit/:id', component: FormUpdateUserComponent },
-  { path: 'admin/users/delete/:id', component: FormDeleteUserComponent },
   { path: 'admin/teams/add', component: FormAddTeamComponent },
   { path: 'admin/teams/edit/:id', component: FormUpdateTeamComponent },
   { path: 'admin/teams/delete/:id', component: FormDeleteTeamComponent },

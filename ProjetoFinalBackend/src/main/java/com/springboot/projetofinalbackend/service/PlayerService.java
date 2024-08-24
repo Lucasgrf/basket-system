@@ -133,7 +133,7 @@ public class PlayerService {
         Player player = playerRepository.findById(playerId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Player not found"));
 
-        Credential credential = credentialRepository.findByPlayerId(player.getId())
+        Credential credential = credentialRepository.findByUserId(player.getUser().getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Credential not found"));
 
         CredentialDTO credentialDTO = new CredentialDTO(

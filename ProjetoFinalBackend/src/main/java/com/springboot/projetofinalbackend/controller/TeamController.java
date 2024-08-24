@@ -14,7 +14,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/team")
-@PreAuthorize("hasAnyRole('ADMIN','COACH')")
+//@PreAuthorize("hasAnyRole('ADMIN','COACH')")
 public class TeamController {
     @Autowired
     private TeamService teamService;
@@ -22,31 +22,31 @@ public class TeamController {
     @Autowired
     private AdminService adminService;
 
-    @PreAuthorize("hasAnyRole('ADMIN','COACH')")
+    //@PreAuthorize("hasAnyRole('ADMIN','COACH')")
     @GetMapping("/{teamId}/players")
     public ResponseEntity<Set<PlayerDTO>> getAllPlayers(@PathVariable Long teamId) {
         return teamService.getAllPlayersTeam(teamId);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','COACH')")
+    //@PreAuthorize("hasAnyRole('ADMIN','COACH')")
     @GetMapping("/{id}")
     public ResponseEntity<TeamDTO> getTeamById(@PathVariable Long id) {
         return teamService.getTeam(id);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<TeamDTO>> getAllTeam(){
         return adminService.getAllTeams();
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTeam(@PathVariable Long id){
         return adminService.deleteTeam(id);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/add")
     public ResponseEntity<TeamDTO> addTeam(TeamDTO body){
         return adminService.createTeam(body);

@@ -1,58 +1,78 @@
 <div class="min-h-screen flex flex-col">
   <header class="flex justify-between items-center p-4 bg-white shadow-md">
     <div class="flex items-center">
-      <img src="assets/logo.svg" alt="TDStats Logo" class="h-10 m-2 w-10">
-      <span class="text-xl font-bold text-red-500"><a href="#">Basket System</a></span>
+      <img src="assets/logo.svg" alt="TDStats Logo" class="h-10 w-10">
+      <span class="text-xl font-bold text-red-500">
+        <a [routerLink]="'/home'">Basket System</a>
+      </span>
     </div>
     <div class="hidden lg:flex space-x-4">
-      <button class="bg-white text-red-500 font-semibold py-2 px-4 border border-red-500 rounded hover:bg-red-500 hover:text-white transition">Entrar</button>
-      <button class="bg-red-500 text-white font-semibold py-2 px-4 rounded hover:bg-red-600 transition">Registrar</button>
+      <button [routerLink]="'/auth/login'" class="bg-white text-red-500 font-semibold py-2 px-4 border border-red-500 rounded hover:bg-red-500 hover:text-white transition">Entrar</button>
+      <button [routerLink]="'/auth/register'" class="bg-red-500 text-white font-semibold py-2 px-4 rounded hover:bg-red-600 transition">Registrar</button>
     </div>
-    <button (click)="toggleMenu()" class="lg:hidden text-pink-500 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50 transition-transform transform hover:rotate-90">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-      </svg>
-    </button>
+    <div class="relative lg:hidden flex items-center">
+      <!-- Menu Hambúrguer e Botões -->
+      <div class="flex items-center space-x-4">
+        <button *ngIf="!isMenuOpen" (click)="toggleMenu()" class="text-red-500 focus:outline-none focus:ring-2 focus:ring-red-500 transition-transform transform hover:scale-110">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+          </svg>
+        </button>
+        <button *ngIf="isMenuOpen" (click)="toggleMenu()" class="text-red-500 focus:outline-none focus:ring-2 focus:ring-red-500 transition-transform transform hover:scale-110">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+        <div #menuBox class="flex flex-col space-y-2 absolute right-12 top-0 mt-12 bg-white shadow-lg border border-gray-200 rounded-lg p-4 z-50 opacity-0 transform translate-x-full transition-transform duration-300 ease-in-out">
+          <button [routerLink]="'/auth/login'" class="text-red-500 font-semibold py-2 px-4 border border-red-500 rounded hover:bg-red-500 hover:text-white transition">Entrar</button>
+          <button [routerLink]="'/auth/register'" class="bg-red-500 text-white font-semibold py-2 px-4 rounded hover:bg-red-600 transition">Registrar</button>
+        </div>
+      </div>
+    </div>
   </header>
 
-  <!-- Menu Hamburguer com animação -->
-  <nav *ngIf="isMenuOpen" class="lg:hidden bg-white shadow-md mt-2 p-4 transform transition-transform duration-300 ease-in-out" [class.translate-x-0]="isMenuOpen" [class.-translate-x-full]="!isMenuOpen">
-    <ul class="space-y-4">
-      <li><a [routerLink]="'/auth/login'" class="block text-red-500 font-semibold hover:text-red-700 transition">Entrar</a></li>
-      <li><a [routerLink]="'/auth/register'" class="block text-red-500 font-semibold hover:text-red-700 transition">Registrar</a></li>
-    </ul>
-  </nav>
+  <main class="flex flex-col items-center justify-center flex-1 bg-gray-100 py-12 lg:py-24">
+    <div class="relative w-full max-w-5xl mx-auto text-center mb-12">
+      <h1 class="text-4xl font-bold text-gray-800 mb-4">Gerencie Seu Time de Basquete</h1>
+      <p class="text-lg text-gray-600 mb-6">A melhor plataforma para administrar jogadores, equipes e treinos.</p>
+      <button [routerLink]="'/about'" class="bg-red-500 text-white font-semibold py-2 px-6 rounded-lg hover:bg-red-600 transition">Saiba Mais</button>
+    </div>
 
-  <section class="relative flex flex-col items-center justify-center flex-1 bg-gray-200 py-8 lg:py-16">
-    <img src="assets/bg.png" alt="Background Image" class="absolute inset-0 w-full h-full object-cover opacity-25">
-    <div class="z-0 text-center text-4xl md:text-5xl lg:text-4xl mb-5 font-bold text-orange-800 hover:text-red-700 transition duration-300 ease-in-out">
-      System for Managing Basketball Teams
-    </div>
-    <div class="w-full max-w-screen-lg flex flex-col space-y-8 lg:flex-row lg:space-y-0 lg:space-x-4">
-      <div class="flex flex-col lg:flex-row lg:items-center bg-white rounded-3xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl sm:w-full md:w-full">
-        <img src="./assets/Mask group1.png" alt="Image 1" class="w-full h-auto lg:w-48">
-        <div class="p-4">
-          <h1 class="text-xl font-bold text-gray-800">Player Manager</h1>
-          <p class="text-slate-700 mt-2">Manages player development and trainings presences.</p>
+    <section class="w-full max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Card 1 -->
+      <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-transform transform hover:scale-105 text-center">
+        <div class="flex items-center justify-center mb-4">
+          <svg class="h-16 w-16 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm0 0c-4.418 0-8 3.582-8 8v2h16v-2c0-4.418-3.582-8-8-8z" />
+          </svg>
         </div>
+        <h2 class="text-xl font-semibold text-gray-800 mb-2">Gerenciador de Jogadores</h2>
+        <p class="text-gray-600">Controle o desenvolvimento dos jogadores e gerencie suas presenças em treinos.</p>
       </div>
-      <div class="flex flex-col lg:flex-row lg:items-center bg-white rounded-3xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl sm:w-full md:w-full">
-        <img src="./assets/Mask group2.png" alt="Image 2" class="w-full h-auto lg:w-48">
-        <div class="p-4">
-          <h1 class="text-xl font-bold text-gray-800">Team Manager</h1>
-          <p class="text-slate-700 mt-2">Coordinates team operations and trainings dates.</p>
+
+      <!-- Card 2 -->
+      <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-transform transform hover:scale-105 text-center">
+        <div class="flex items-center justify-center mb-4">
+          <svg class="h-16 w-16 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 21h5a1 1 0 001-1v-6a1 1 0 00-1-1h-5m-5 0H6a1 1 0 00-1 1v6a1 1 0 001 1h6m6-12V5a1 1 0 00-1-1h-5a1 1 0 00-1 1v4m4 0v6" />
+          </svg>
         </div>
+        <h2 class="text-xl font-semibold text-gray-800 mb-2">Gerenciador de Equipes</h2>
+        <p class="text-gray-600">Coordene as operações das equipes e datas dos treinos.</p>
       </div>
-      <div class="flex flex-col lg:flex-row lg:items-center bg-white rounded-3xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl sm:w-full md:w-full">
-        <img src="./assets/Mask group3.png" alt="Image 3" class="w-full h-auto lg:w-48">
-        <div class="p-4">
-          <h1 class="text-xl font-bold text-gray-800">System of Credential</h1>
-          <p class="text-slate-700 mt-2">Verifies player identities to secure access for trainings.</p>
+
+      <!-- Card 3 -->
+      <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-transform transform hover:scale-105 text-center">
+        <div class="flex items-center justify-center mb-4">
+          <svg class="h-16 w-16 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h1m2 0h-1v4h1m-1-2v-1h1v1h-1zm0-3v1h-1v-1h1zM8 8h8v12H8V8zm0-2c0-.553.447-1 1-1h8c.553 0 1 .447 1 1v1H8V6zm8-3H8c-2.21 0-4 1.79-4 4v13c0 2.21 1.79 4 4 4h8c2.21 0 4-1.79 4-4V7c0-2.21-1.79-4-4-4z" />
+          </svg>
         </div>
+        <h2 class="text-xl font-semibold text-gray-800 mb-2">Sistema de Credenciais</h2>
+        <p class="text-gray-600">Verifique a identidade dos jogadores para garantir o acesso aos treinos.</p>
       </div>
-    </div>
-    <button class="z-0 mt-8 bg-pink-500 text-white font-semibold py-2 px-6 rounded hover:bg-pink-600 transition">Saber mais</button>
-  </section>
+    </section>
+  </main>
 
   <app-footer></app-footer>
 </div>

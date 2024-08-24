@@ -16,25 +16,25 @@ public class CredentialController {
     @Autowired
     private AdminService adminService;
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<CredentialDTO>> getAllCredential(){
         return adminService.getAllCredentials();
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCredential(@PathVariable Long id){
         return adminService.deleteCredential(id);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/add")
     public ResponseEntity<CredentialDTO> addCredential(@RequestBody CredentialDTO body, @RequestBody UserDTO userDTO){
         return adminService.createCredential(body, userDTO);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<CredentialDTO> updateCredential(@PathVariable Long id, @RequestBody CredentialDTO credential){
         return adminService.updateCredential(id, credential);
