@@ -48,7 +48,7 @@ public class TeamController {
 
     //@PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/add")
-    public ResponseEntity<TeamDTO> addTeam(TeamDTO body){
+    public ResponseEntity<TeamDTO> addTeam(@RequestBody TeamDTO body){
         return adminService.createTeam(body);
     }
 

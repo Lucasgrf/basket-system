@@ -1,19 +1,48 @@
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HeaderComponent } from "../../header/header.component";
+import { TeamService } from '../../../../services/team.service';
 
 @Component({
   selector: 'app-form-add-team',
   standalone: true,
-  imports: [FormsModule, HeaderComponent],
+  imports: [ReactiveFormsModule, HeaderComponent],
   templateUrl: './form-add-team.component.html',
   styleUrl: './form-add-team.component.scss'
 })
-export class FormAddTeamComponent {
-team: any;
+export class FormAddTeamComponent implements OnInit {
+  teamForm!: FormGroup;
 
-onSubmitTeam() {
-throw new Error('Method not implemented.');
-}
+  constructor(private fb: FormBuilder, private service: TeamService) {}
 
+  ngOnInit(): void {
+    this.teamForm = this.fb.group({
+      name: ['', Validators.required],
+      address: ['', Validators.required],
+      gym: ['', Validators.required],
+      foundation: ['', Validators.required],
+      emailContact: ['', [Validators.required, Validators.email]],
+      phoneContact: ['', Validators.required],
+      coachId: ['', Validators.required]
+    });
+  }
+
+  onSubmitTeam(): void {
+    if (this.teamForm.valid) {
+      const coachId: number = this.teamForm.value.coachId;
+      const teamData = this.teamForm.value;
+      teamData.coachId = coachId;
+      console.log(teamData);
+      this.service.addTeam(teamData).subscribe({
+        next: (team) => {
+          console.log('Equipe criada com sucesso' + team);
+          alert('Equipe criada com sucesso');
+        },
+        error: (error) => {
+          alert('Erro ao criar equipe');
+          alert(error);
+        }
+      });
+    }
+  }
 }

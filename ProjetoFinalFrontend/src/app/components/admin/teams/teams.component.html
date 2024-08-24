@@ -3,9 +3,9 @@
   <div class="flex justify-between items-center mb-4">
     <h2 class="text-2xl font-bold">Team Management</h2>
     <a [routerLink]="'/admin/teams/add'">
-    <button class="bg-pink-500 text-white font-semibold py-2 px-4 rounded hover:bg-pink-600 transition">
-      Add Team
-    </button>
+      <button class="bg-pink-500 text-white font-semibold py-2 px-4 rounded hover:bg-pink-600 transition">
+        Add Team
+      </button>
     </a>
   </div>
   <div class="overflow-x-auto">
@@ -19,6 +19,7 @@
           <th class="py-3 px-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Foundation Date</th>
           <th class="py-3 px-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Email Contact</th>
           <th class="py-3 px-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Phone Contact</th>
+          <th class="py-3 px-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Coach ID</th>
           <th class="py-3 px-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Actions</th>
         </tr>
       </thead>
@@ -31,16 +32,22 @@
           <td class="py-3 px-4 text-sm text-gray-700">{{ team.foundation | date }}</td>
           <td class="py-3 px-4 text-sm text-gray-700">{{ team.emailContact }}</td>
           <td class="py-3 px-4 text-sm text-gray-700">{{ team.phoneContact }}</td>
+          <td class="py-3 px-4 text-sm text-gray-700">{{ team.coachId }}</td>
           <td class="py-3 px-4 text-sm text-gray-700 flex space-x-2">
             <a [routerLink]="'/admin/teams/edit/' + team.id" class="bg-blue-500 text-white font-semibold py-1 px-3 rounded hover:bg-blue-600 transition">
-            <button>Edit</button>
+              Edit
             </a>
-            <a [routerLink]="'/admin/teams/delete/' + team.id" class="bg-red-500 text-white font-semibold py-1 px-3 rounded hover:bg-red-600 transition">
-            <button>Delete</button>
-            </a>
+            <button (click)="openDeleteModal(team.id)" class="bg-red-500 text-white font-semibold py-1 px-3 rounded hover:bg-red-600 transition">
+              Delete
+            </button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
+
+  <!-- Modal de Confirmação de Exclusão -->
+  <app-confirmation-dialog *ngIf="showModal"
+    (confirm)="confirmDelete()"
+    (cancel)="closeDeleteModal()"></app-confirmation-dialog>
 </div>

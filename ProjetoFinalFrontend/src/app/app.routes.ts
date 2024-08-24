@@ -19,18 +19,15 @@ import { FormAddUserComponent } from './components/admin/forms/form-add-user/for
 import { FormUpdateUserComponent } from './components/admin/forms/form-update-user/form-update-user.component';
 import { FormAddTeamComponent } from './components/admin/forms/form-add-team/form-add-team.component';
 import { FormUpdateTeamComponent } from './components/admin/forms/form-update-team/form-update-team.component';
-import { FormDeleteTeamComponent } from './components/admin/forms/form-delete-team/form-delete-team.component';
 import { FormAddTrainingComponent } from './components/admin/forms/form-add-training/form-add-training.component';
 import { FormUpdateTrainingComponent } from './components/admin/forms/form-update-training/form-update-training.component';
 import { FormDeleteTrainingComponent } from './components/admin/forms/form-delete-training/form-delete-training.component';
 import { PlayersComponent } from './components/admin/players/players.component';
 import { FormAddPlayerComponent } from './components/admin/forms/form-add-player/form-add-player.component';
 import { FormUpdatePlayerComponent } from './components/admin/forms/form-update-player/form-update-player.component';
-import { FormDeletePlayerComponent } from './components/admin/forms/form-delete-player/form-delete-player.component';
 import { CoachesComponent } from './components/admin/coaches/coaches.component';
 import { FormAddCoachComponent } from './components/admin/forms/form-add-coach/form-add-coach.component';
 import { FormUpdateCoachComponent } from './components/admin/forms/form-update-coach/form-update-coach.component';
-import { FormDeleteCoachComponent } from './components/admin/forms/form-delete-coach/form-delete-coach.component';
 import { OverviewComponent } from './components/admin/overview/overview.component';
 
 export const routes: Routes = [
@@ -42,18 +39,15 @@ export const routes: Routes = [
   { path: 'admin/users/edit/:id', component: FormUpdateUserComponent },
   { path: 'admin/teams/add', component: FormAddTeamComponent },
   { path: 'admin/teams/edit/:id', component: FormUpdateTeamComponent },
-  { path: 'admin/teams/delete/:id', component: FormDeleteTeamComponent },
   { path: 'admin/trainings/add', component: FormAddTrainingComponent},
   { path: 'admin/trainings/edit/:id', component: FormUpdateTrainingComponent },
   { path: 'admin/trainings/delete/:id', component: FormDeleteTrainingComponent },
   { path: 'admin/players', component: PlayersComponent},
   { path: 'admin/players/add', component: FormAddPlayerComponent },
   { path: 'admin/players/edit/:id', component: FormUpdatePlayerComponent },
-  { path: 'admin/players/delete/:id', component: FormDeletePlayerComponent },
   { path: 'admin/coaches', component: CoachesComponent},
   { path: 'admin/coaches/add', component: FormAddCoachComponent },
   { path: 'admin/coaches/edit/:id', component: FormUpdateCoachComponent },
-  { path: 'admin/coaches/delete/:id', component: FormDeleteCoachComponent },
   { path: 'admin/overview', component: OverviewComponent},
   {
     path: '',
