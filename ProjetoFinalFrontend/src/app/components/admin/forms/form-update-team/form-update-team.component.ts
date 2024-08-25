@@ -39,8 +39,12 @@ export class FormUpdateTeamComponent implements OnInit {
   }
 
   loadTeam(id: number) {
-    // Fetch user data and patch the form
+    // Carregando os dados do time e atualizando o formulário
     this.service.getTeamById(id).subscribe(team => {
+      if (team.foundation) {
+        // Formatando a data para o formato esperado pelo input date
+        team.foundation = this.datePipe.transform(team.foundation, 'yyyy-MM-dd');
+      }
       this.teamForm.patchValue(team);
     });
   }
@@ -48,7 +52,9 @@ export class FormUpdateTeamComponent implements OnInit {
   onSubmitTeam() {
     if (this.teamForm.valid) {
       const id: number = +this.route.snapshot.paramMap.get('id')!;
-      this.service.updateTeam(id, this.teamForm.value).subscribe({
+      const teamData = this.teamForm.value;
+
+      this.service.updateTeam(id, teamData).subscribe({
         next: (team) => {
           console.log('Time atualizado com sucesso', team);
           alert('Time atualizado com sucesso');
@@ -58,6 +64,8 @@ export class FormUpdateTeamComponent implements OnInit {
           alert('Erro ao atualizar o time');
         }
       });
+    } else {
+      console.error('Formulário inválido');
     }
   }
 

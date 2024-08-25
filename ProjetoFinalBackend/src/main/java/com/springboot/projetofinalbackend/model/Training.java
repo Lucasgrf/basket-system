@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -27,6 +28,7 @@ public class Training {
     private String title;
 
     @Column(nullable = false, unique = true)
+    @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
     private Date date;
 
     @Column(nullable = false)

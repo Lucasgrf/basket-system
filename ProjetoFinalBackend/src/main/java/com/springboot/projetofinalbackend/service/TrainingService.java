@@ -10,6 +10,7 @@ import com.springboot.projetofinalbackend.repository.TrainingRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.text.SimpleDateFormat;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,43 +33,31 @@ public class TrainingService {
     private TeamRepository teamRepository;
 
     public ResponseEntity<TrainingDTO> create(@RequestBody TrainingDTO trainingDto){
-        var existsTraining = trainingRepository.findByDate(trainingDto.date());
+        var existsTraining = trainingRepository.findByTitle(trainingDto.title());
         if(existsTraining.isEmpty()){
             Training training = new Training();
             training.setDate(trainingDto.date());
             training.setTitle(trainingDto.title());
             training.setLocation(trainingDto.location());
-            training.setTeam(teamRepository.findById(trainingDto.teamId()).orElseThrow(EntityNotFoundException::new));
+            var existsTeam = teamRepository.findById(trainingDto.teamId());
+            if(existsTeam.isEmpty()){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+            training.setTeam(existsTeam.get());
             trainingRepository.save(training);
-            TrainingDTO trainingDTO = new TrainingDTO(
-                    training.getId(),
-                    training.getTitle(),
-                    training.getDate(),
-                    training.getLocation(),
-                    training.getTeam().getId()
-            );
-            return ResponseEntity.status(HttpStatus.CREATED).body(trainingDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(training));
         }
         return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
 
     public ResponseEntity<TrainingDTO> update(@PathVariable Long id ,@RequestBody TrainingDTO training){
-        var trainingUpdate = trainingRepository.findById(id).orElse(null);
-        if(trainingUpdate == null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
+        var trainingUpdate = trainingRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         trainingUpdate.setTitle(training.title());
         trainingUpdate.setLocation(training.location());
         trainingUpdate.setDate(training.date());
         trainingRepository.save(trainingUpdate);
-        TrainingDTO trainingDTO = new TrainingDTO(trainingUpdate.getId(),
-                trainingUpdate.getTitle(),
-                trainingUpdate.getDate(),
-                trainingUpdate.getLocation(),
-                trainingUpdate.getTeam().getId()
-        );
-
-        return ResponseEntity.status(HttpStatus.OK).body(trainingDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(toDTO(trainingUpdate));
     }
 
     public ResponseEntity<Void> delete(@PathVariable Long id){
@@ -139,6 +129,16 @@ public class TrainingService {
                 player.getWeight(),
                 player.getAge(),
                 player.getTeam() != null ? player.getTeam().getId() : null
+        );
+    }
+
+    public TrainingDTO toDTO(Training training) {
+        return new TrainingDTO(
+                training.getId(),
+                training.getTitle(),
+                training.getDate(),
+                training.getLocation(),
+                training.getTeam() != null ? training.getTeam().getId() : null
         );
     }
 

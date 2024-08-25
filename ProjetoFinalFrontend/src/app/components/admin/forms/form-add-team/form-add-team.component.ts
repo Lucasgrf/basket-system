@@ -32,14 +32,11 @@ export class FormAddTeamComponent implements OnInit {
       const coachId: number = this.teamForm.value.coachId;
       const teamData = this.teamForm.value;
       teamData.coachId = coachId;
-      console.log(teamData);
       this.service.addTeam(teamData).subscribe({
-        next: (team) => {
-          console.log('Equipe criada com sucesso' + team);
+        next: () => {
           alert('Equipe criada com sucesso');
         },
         error: (error) => {
-          alert('Erro ao criar equipe');
           alert(error);
         }
       });

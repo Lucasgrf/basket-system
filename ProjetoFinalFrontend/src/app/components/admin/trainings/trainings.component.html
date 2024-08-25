@@ -14,9 +14,9 @@
         <tr>
           <th class="py-3 px-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">ID</th>
           <th class="py-3 px-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Title</th>
-          <th class="py-3 px-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">DateTime</th>
+          <th class="py-3 px-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Timetable</th>
           <th class="py-3 px-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Location</th>
-          <th class="py-3 px-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Team</th>
+          <th class="py-3 px-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Team ID</th>
           <th class="py-3 px-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Actions</th>
         </tr>
       </thead>
@@ -24,23 +24,24 @@
         <tr *ngFor="let training of trainings" class="hover:bg-gray-50 transition">
           <td class="py-3 px-4 text-sm text-gray-700">{{ training.id }}</td>
           <td class="py-3 px-4 text-sm text-gray-700">{{ training.title }}</td>
-          <td class="py-3 px-4 text-sm text-gray-700">{{ training.dateTime | date }}</td>
+          <td class="py-3 px-4 text-sm text-gray-700">{{ training.date | date:'dd/MM/yyyy, HH:mm' }}</td>
           <td class="py-3 px-4 text-sm text-gray-700">{{ training.location }}</td>
           <td class="py-3 px-4 text-sm text-gray-700">{{ training.teamId }}</td>
           <td class="py-3 px-4 text-sm text-gray-700 flex space-x-2">
             <a [routerLink]="'/admin/trainings/edit/' + training.id" class="bg-blue-500 text-white font-semibold py-1 px-3 rounded hover:bg-blue-600 transition">
-            <button class="bg-blue-500 text-white font-semibold py-1 px-3 rounded hover:bg-blue-600 transition">
               Edit
-            </button>
             </a>
-            <a [routerLink]="'/admin/trainings/delete' + training.id" class="bg-red-500 text-white font-semibold py-1 px-3 rounded hover:bg-red-600 transition">
-            <button class="bg-red-500 text-white font-semibold py-1 px-3 rounded hover:bg-red-600 transition">
+            <button (click)="openDeleteModal(training.id)" class="bg-red-500 text-white font-semibold py-1 px-3 rounded hover:bg-red-600 transition">
               Delete
             </button>
-            </a>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
+
+  <app-confirmation-dialog *ngIf="showModal"
+    (confirm)="confirmDelete()"
+    (cancel)="closeDeleteModal()">
+  </app-confirmation-dialog>
 </div>

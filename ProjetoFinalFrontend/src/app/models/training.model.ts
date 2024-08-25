@@ -1,7 +1,7 @@
 export interface Training {
   id: number;
   title: string;
-  dateTime: Date;
+  date: Date;
   location: string;
   teamId: number;
 }

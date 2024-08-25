@@ -22,15 +22,20 @@
           <td class="py-2 px-4 border-b">{{ coach.teamId }}</td>
           <td class="py-2 px-4 border-b">{{ coach.userId }}</td>
           <td class="py-2 px-4 border-b">
-            <a routerLink="/admin/coaches/edit/{{ coach.id }}" class="bg-blue-500 text-white font-semibold py-1 px-3 rounded hover:bg-blue-600 transition">
+            <a [routerLink]="'/admin/coaches/edit/' + coach.id" class="bg-blue-500 text-white font-semibold py-1 px-3 rounded hover:bg-blue-600 transition">
               Edit
             </a>
-            <a routerLink="/admin/coaches/delete/{{ coach.id }}" class="bg-red-500 text-white font-semibold py-1 px-3 rounded hover:bg-red-600 transition">
+            <button (click)="openDeleteModal(coach.id)" class="bg-red-500 text-white font-semibold py-1 px-3 rounded hover:bg-red-600 transition">
               Delete
-            </a>
+            </button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
+
+  <app-confirmation-dialog *ngIf="showModal"
+    (confirm)="confirmDelete()"
+    (cancel)="closeDeleteModal()">
+  </app-confirmation-dialog>
 </div>

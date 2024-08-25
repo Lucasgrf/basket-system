@@ -11,9 +11,14 @@ import { AuthService } from './auth.service';
   providedIn: 'root'
 })
 export class PlayerService {
+
   private apiUrl = `${environment.apiUrl}/player`;  // URL base da API para jogadores
 
   constructor(private http: HttpClient, private auth: AuthService) { }
+
+  deletePlayer(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
 
   // Método para associar um jogador a um time
   joinTeam(player: Player): Observable<any> {

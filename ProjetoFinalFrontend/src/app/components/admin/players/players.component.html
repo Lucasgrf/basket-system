@@ -11,10 +11,12 @@
       <thead>
         <tr>
           <th class="py-2 px-4 border-b">ID</th>
-          <th class="py-2 px-4 border-b">Name</th>
-          <th class="py-2 px-4 border-b">Email</th>
-          <th class="py-2 px-4 border-b">Photo</th>
+          <th class="py-2 px-4 border-b">Position</th>
+          <th class="py-2 px-4 border-b">Age</th>
+          <th class="py-2 px-4 border-b">Height</th>
+          <th class="py-2 px-4 border-b">Weight</th>
           <th class="py-2 px-4 border-b">Team</th>
+          <th class="py-2 px-4 border-b">User</th>
           <th class="py-2 px-4 border-b">Actions</th>
         </tr>
       </thead>
@@ -28,11 +30,20 @@
           <td class="py-2 px-4 border-b">{{ player.teamId }}</td>
           <td class="py-2 px-4 border-b">{{ player.userId }}</td>
           <td class="py-2 px-4 border-b">
-            <button class="bg-blue-500 text-white font-semibold py-1 px-3 rounded hover:bg-blue-600 transition">Edit</button>
-            <button class="bg-red-500 text-white font-semibold py-1 px-3 rounded hover:bg-red-600 transition">Delete</button>
+            <a [routerLink]="'/admin/players/edit/' + player.id" class="bg-blue-500 text-white font-semibold py-1 px-3 rounded hover:bg-blue-600 transition">
+              Edit
+            </a>
+            <button (click)="openDeleteModal(player.id)" class="bg-red-500 text-white font-semibold py-1 px-3 rounded hover:bg-red-600 transition">
+              Delete
+            </button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
+
+  <app-confirmation-dialog *ngIf="showModal"
+    (confirm)="confirmDelete()"
+    (cancel)="closeDeleteModal()">
+  </app-confirmation-dialog>
 </div>

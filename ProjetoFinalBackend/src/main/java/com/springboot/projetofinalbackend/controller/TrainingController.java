@@ -41,7 +41,7 @@ public class TrainingController {
 
     //@PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/add")
-    public ResponseEntity<TrainingDTO> addTraining(TrainingDTO body){
+    public ResponseEntity<TrainingDTO> addTraining(@RequestBody TrainingDTO body){
         return adminService.createTraining(body);
     }
 
