@@ -2,7 +2,9 @@ package com.springboot.projetofinalbackend.controller;
 
 import com.springboot.projetofinalbackend.DTO.CredentialDTO;
 import com.springboot.projetofinalbackend.DTO.UserDTO;
+import com.springboot.projetofinalbackend.model.Credential;
 import com.springboot.projetofinalbackend.service.AdminService;
+import com.springboot.projetofinalbackend.service.CredentialService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,6 +17,8 @@ import java.util.List;
 public class CredentialController {
     @Autowired
     private AdminService adminService;
+    @Autowired
+    private CredentialService credentialService;
 
     //@PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping
@@ -22,16 +26,15 @@ public class CredentialController {
         return adminService.getAllCredentials();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<CredentialDTO> getCredentialById(@PathVariable Long id){
+        return credentialService.get(id);
+    }
+
     //@PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCredential(@PathVariable Long id){
         return adminService.deleteCredential(id);
-    }
-
-    //@PreAuthorize("hasAnyRole('ADMIN')")
-    @PostMapping("/add")
-    public ResponseEntity<CredentialDTO> addCredential(@RequestBody CredentialDTO body, @RequestBody UserDTO userDTO){
-        return adminService.createCredential(body, userDTO);
     }
 
     //@PreAuthorize("hasAnyRole('ADMIN')")

@@ -3,6 +3,7 @@ package com.springboot.projetofinalbackend.service;
 import com.springboot.projetofinalbackend.DTO.RequestUpdateUser;
 import com.springboot.projetofinalbackend.DTO.UserDTO;
 import com.springboot.projetofinalbackend.model.User;
+import com.springboot.projetofinalbackend.repository.CredentialRepository;
 import com.springboot.projetofinalbackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,10 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private CredentialService credentialService;
+    @Autowired
+    private CredentialRepository credentialRepository;
 
     public ResponseEntity<UserDTO> getById(@PathVariable Long id){
         Optional<User> user = userRepository.findById(id);
@@ -36,18 +41,38 @@ public class UserService {
     public ResponseEntity<UserDTO> updateProfile(@PathVariable Long id, @RequestBody RequestUpdateUser user) {
         var userUpdate = userRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
-        if(userUpdate != null){
-            userUpdate.setUsername(user.username());
-            userUpdate.setEmail(user.email());
-            userUpdate.setPhotoName(user.photoName());
-            userUpdate.setPassword(passwordEncoder.encode(user.password()));
+        if(userUpdate.getCredential() != null){
+            if(user.username() != null){
+                userUpdate.setUsername(user.username());
+            }
+            if(user.email() != null){
+                userUpdate.setEmail(user.email());
+            }
+            if(user.photoName() != null){
+                userUpdate.setPhotoName(user.photoName());
+            }
+            if(user.password() != null){
+                userUpdate.setPassword(passwordEncoder.encode(user.password()));
+            }
             userRepository.save(userUpdate);
-
+            return ResponseEntity.status(HttpStatus.OK).body(toDTO(userUpdate));
+        }else{
+            if(user.username() != null){
+                userUpdate.setUsername(user.username());
+            }
+            if(user.email() != null){
+                userUpdate.setEmail(user.email());
+            }
+            if(user.photoName() != null){
+                userUpdate.setPhotoName(user.photoName());
+            }
+            if(user.password() != null){
+                userUpdate.setPassword(passwordEncoder.encode(user.password()));
+            }
+            userRepository.save(userUpdate);
+            credentialRepository.save(credentialService.create(userUpdate));
             return ResponseEntity.status(HttpStatus.OK).body(toDTO(userUpdate));
         }
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
 

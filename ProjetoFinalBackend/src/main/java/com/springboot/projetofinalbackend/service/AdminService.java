@@ -144,24 +144,6 @@ public class AdminService {
         return credentialService.delete(id);
     }
 
-    public ResponseEntity<CredentialDTO> createCredential(@PathVariable CredentialDTO credentialDTO, @RequestBody UserDTO userDTO) {
-        var existsCredential = credentialRepository.findById(credentialDTO.id());
-        var existsUser = userRepository.findByEmail(userDTO.email());
-        if (existsCredential.isEmpty() && existsUser.isEmpty()) {
-            var user = new User();
-            var credential = new Credential();
-            BeanUtils.copyProperties(userDTO, user);
-            credential.setUser(user);
-            credential.setPhotoName(null);
-            credential.setName(user.getUsername());
-            credential.setTeamId(null);
-            credential.setUserType(user.getRole().name());
-            credentialRepository.save(credential);
-            return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(credential));
-        }
-        return ResponseEntity.status(HttpStatus.CONFLICT).build();
-    }
-
     public ResponseEntity<CredentialDTO> updateCredential(@PathVariable Long id, @RequestBody CredentialDTO credential) {
         return credentialService.update(id, credential);
     }

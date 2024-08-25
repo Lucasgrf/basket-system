@@ -5,5 +5,5 @@ export interface Player {
   height: number;
   weight: number;
   age: number;
-  teamId: number;
+  teamId?: number;
 }

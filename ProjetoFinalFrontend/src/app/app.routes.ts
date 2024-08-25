@@ -28,6 +28,8 @@ import { CoachesComponent } from './components/admin/coaches/coaches.component';
 import { FormAddCoachComponent } from './components/admin/forms/form-add-coach/form-add-coach.component';
 import { FormUpdateCoachComponent } from './components/admin/forms/form-update-coach/form-update-coach.component';
 import { OverviewComponent } from './components/admin/overview/overview.component';
+import { CredentialsComponent } from './components/admin/credentials/credentials.component';
+import { FormUpdateCredentialComponent } from './components/admin/forms/form-update-credential/form-update-credential.component';
 
 export const routes: Routes = [
   { path: 'admin', component: HomeComponent },
@@ -47,6 +49,8 @@ export const routes: Routes = [
   { path: 'admin/coaches/add', component: FormAddCoachComponent },
   { path: 'admin/coaches/edit/:id', component: FormUpdateCoachComponent },
   { path: 'admin/overview', component: OverviewComponent},
+  { path: 'admin/users/credentials', component: CredentialsComponent},
+  { path: 'admin/credentials/edit/:id', component: FormUpdateCredentialComponent},
   {
     path: '',
     component: HomePageComponent

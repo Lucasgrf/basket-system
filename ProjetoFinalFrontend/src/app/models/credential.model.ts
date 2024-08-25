@@ -1,8 +1,8 @@
 export interface Credential {
   id: number;
-  photoName: string;
+  photoName?: string;
   name: string;
-  teamId: number;
+  teamId?: number;
   userType: string;
   userId: number;
 }

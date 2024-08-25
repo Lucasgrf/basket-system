@@ -24,10 +24,10 @@ export class FormUpdatePlayerComponent implements OnInit {
   ) {
     this.playerForm = this.fb.group({
       position: ['', Validators.required],
-      age: ['', Validators.required],
+      age: ['', [Validators.required, Validators.min(16), Validators.max(45)]],
       height: ['', Validators.required],
       weight: ['', Validators.required],
-      teamId: ['', Validators.required],
+      teamId: [''],
       userId: ['', Validators.required],
     });
 
@@ -58,14 +58,14 @@ export class FormUpdatePlayerComponent implements OnInit {
     if (this.playerForm.valid) {
       const id: number = +this.route.snapshot.paramMap.get('id')!;
       console.log(this.playerForm.value);
-      this.playerService.updatePlayer(id,this.playerForm.value).subscribe({
+      this.playerService.updatePlayer(id, this.playerForm.value).subscribe({
         next: (player) => {
-          console.log('Player updated successfully', player);
-          alert('Player updated successfully');
+          console.log('Jogador atualizado com sucesso!', player);
+          alert('Jogador atualizado com sucesso!');
         },
         error: (error) => {
-          console.error('Error updating player', error);
-          alert('Error updating player');
+          console.error('Erro ao atualizar jogador', error);
+          alert('Erro ao tentar atualizar o jogador!');
         },
       });
     }

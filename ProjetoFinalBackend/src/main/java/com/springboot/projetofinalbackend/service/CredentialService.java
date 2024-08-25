@@ -20,7 +20,7 @@ public class CredentialService {
     public Credential create(User user) {
         var credential = new Credential();
         credential.setUser(user);
-        credential.setPhotoName(null);
+        credential.setPhotoName("");
         credential.setName(user.getUsername());
         credential.setTeamId(null);
         credential.setUserType(user.getRole().name());
@@ -31,24 +31,44 @@ public class CredentialService {
     public ResponseEntity<CredentialDTO> update(@PathVariable Long id, @RequestBody CredentialDTO credential) {
         var cred = credentialRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        cred.setPhotoName(credential.photoName());
-        cred.setName(credential.name());
-        cred.setTeamId(credential.teamId());
+        if(credential.name() != null){
+            cred.setName(credential.name());
+        }
+        if(credential.teamId() != null){
+            cred.setTeamId(credential.teamId());
+        }
+        if(credential.userType() != null){
+            cred.setUserType(credential.userType());
+        }
+        if(credential.photoName() != null){
+            cred.setPhotoName(credential.photoName());
+        }
         credentialRepository.save(cred);
-        CredentialDTO credentialDTO = new CredentialDTO(
-          cred.getId(),cred.getPhotoName(),cred.getName(),cred.getTeamId(),cred.getUserType(),cred.getUser().getId()
-        );
-        return ResponseEntity.status(HttpStatus.OK).body(credentialDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(toDTO(cred));
     }
 
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         var cred = credentialRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        if(cred != null){
-            credentialRepository.delete(cred);
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.badRequest().build();
+        credentialRepository.delete(cred);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    public ResponseEntity<CredentialDTO> get(@PathVariable Long id) {
+        var cred = credentialRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return ResponseEntity.status(HttpStatus.OK).body(toDTO(cred));
+    }
+
+    public CredentialDTO toDTO(Credential credential) {
+        return new CredentialDTO(
+                credential.getId(),
+                credential.getPhotoName() != null ? credential.getPhotoName() : null,
+                credential.getName(),
+                credential.getTeamId() != null ? credential.getTeamId() : null,
+                credential.getUserType(),
+                credential.getUser().getId()
+        );
     }
 }
 

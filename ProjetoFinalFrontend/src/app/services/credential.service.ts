@@ -13,13 +13,6 @@ export class CredentialService {
 
   constructor(private http: HttpClient) { }
 
-  // Método para criar um Credential
-  create(credential: Credential, user: User): Observable<any> {
-    return this.http.post<Credential>(`${this.apiUrl}/add`, { credential, user }).pipe(
-      catchError(this.handleError)
-    );
-  }
-
   // Método para atualizar um Credential
   update(id: number, credential: Credential): Observable<any> {
     return this.http.put<Credential>(`${this.apiUrl}/${id}`, credential).pipe(
@@ -30,6 +23,12 @@ export class CredentialService {
   // Método para excluir um Credential
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  getCredentialById(id: number): Observable<any> {
+    return this.http.get<Credential>(`${this.apiUrl}/${id}`).pipe(
       catchError(this.handleError)
     );
   }

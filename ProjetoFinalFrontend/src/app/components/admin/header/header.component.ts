@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import anime from 'animejs';
@@ -5,7 +6,7 @@ import anime from 'animejs';
 @Component({
   selector: 'app-admin-header',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink,CommonModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })

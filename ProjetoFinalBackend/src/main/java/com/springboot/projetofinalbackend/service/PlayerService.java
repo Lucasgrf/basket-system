@@ -157,15 +157,24 @@ public class PlayerService {
     public ResponseEntity<PlayerDTO> updatePlayer(@RequestBody PlayerDTO playerDTO, @PathVariable Long id){
         var player = playerRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        var existsTeam  = teamRepository.findById(playerDTO.teamId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         var existsUser = userRepository.findById(playerDTO.userId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         player.setUser(existsUser);
-        player.setTeam(existsTeam);
-        player.setHeight(playerDTO.height());
-        player.setWeight(playerDTO.weight());
-        player.setPosition(playerDTO.position());
+        if(playerDTO.teamId() != null){
+            teamRepository.findById(playerDTO.teamId()).ifPresent(player::setTeam);
+        }
+        if(playerDTO.age() != 0){
+            player.setAge(playerDTO.age());
+        }
+        if(playerDTO.height() != 0){
+            player.setHeight(playerDTO.height());
+        }
+        if(playerDTO.weight() != 0){
+            player.setWeight(playerDTO.weight());
+        }
+        if(playerDTO.position() != null){
+            player.setPosition(playerDTO.position());
+        }
         playerRepository.save(player);
         return ResponseEntity.status(HttpStatus.OK).body(toDTO(player));
     }
