@@ -74,7 +74,22 @@ public class PlayerController {
 
     //@PreAuthorize("hasAnyRole('ADMIN','PLAYER', 'COACH')")
     @PutMapping("/{id}")
-    public ResponseEntity<PlayerDTO> update(@RequestBody PlayerDTO playerDTO, @PathVariable Long id){
+    public ResponseEntity<PlayerDTO> update(@PathVariable Long id,@RequestBody PlayerDTO playerDTO){
         return playerService.updatePlayer(playerDTO,id);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PlayerDTO> getById(@PathVariable Long id){
+        return playerService.getPlayer(id);
+    }
+
+    @PostMapping
+    public ResponseEntity<PlayerDTO> create(@RequestBody PlayerDTO playerDTO){
+        return playerService.create(playerDTO);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity delete(@PathVariable Long id){
+        return playerService.delete(id);
     }
 }

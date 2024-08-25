@@ -3,33 +3,35 @@
   <div class="flex justify-between items-center mb-4">
     <h2 class="text-2xl font-bold">Player Management</h2>
     <a routerLink="/admin/players/add">
-      <button class="bg-teal-500 text-white font-semibold py-2 px-4 rounded hover:bg-teal-600 transition">Add Player</button>
+      <button class="bg-teal-500 text-white font-semibold py-2 px-4 rounded hover:bg-teal-600 transition">
+        Add Player
+      </button>
     </a>
   </div>
   <div class="overflow-x-auto">
-    <table class="min-w-full bg-white border border-gray-200">
-      <thead>
+    <table class="min-w-full bg-white border border-gray-200 divide-y divide-gray-200">
+      <thead class="bg-gray-50">
         <tr>
-          <th class="py-2 px-4 border-b">ID</th>
-          <th class="py-2 px-4 border-b">Position</th>
-          <th class="py-2 px-4 border-b">Age</th>
-          <th class="py-2 px-4 border-b">Height</th>
-          <th class="py-2 px-4 border-b">Weight</th>
-          <th class="py-2 px-4 border-b">Team</th>
-          <th class="py-2 px-4 border-b">User</th>
-          <th class="py-2 px-4 border-b">Actions</th>
+          <th class="py-3 px-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">ID</th>
+          <th class="py-3 px-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Position</th>
+          <th class="py-3 px-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Age</th>
+          <th class="py-3 px-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Height</th>
+          <th class="py-3 px-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Weight</th>
+          <th class="py-3 px-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Team ID</th>
+          <th class="py-3 px-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">User ID</th>
+          <th class="py-3 px-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Actions</th>
         </tr>
       </thead>
-      <tbody>
-        <tr *ngFor="let player of players">
-          <td class="py-2 px-4 border-b">{{ player.id }}</td>
-          <td class="py-2 px-4 border-b">{{ player.position }}</td>
-          <td class="py-2 px-4 border-b">{{ player.age }}</td>
-          <td class="py-2 px-4 border-b">{{ player.height }}</td>
-          <td class="py-2 px-4 border-b">{{ player.weight }}</td>
-          <td class="py-2 px-4 border-b">{{ player.teamId }}</td>
-          <td class="py-2 px-4 border-b">{{ player.userId }}</td>
-          <td class="py-2 px-4 border-b">
+      <tbody class="bg-white divide-y divide-gray-200">
+        <tr *ngFor="let player of players" class="hover:bg-gray-50 transition">
+          <td class="py-3 px-4 text-sm text-gray-700">{{ player.id }}</td>
+          <td class="py-3 px-4 text-sm text-gray-700">{{ player.position }}</td>
+          <td class="py-3 px-4 text-sm text-gray-700">{{ player.age }}</td>
+          <td class="py-3 px-4 text-sm text-gray-700">{{ player.height }}</td>
+          <td class="py-3 px-4 text-sm text-gray-700">{{ player.weight }}</td>
+          <td class="py-3 px-4 text-sm text-gray-700">{{ player.teamId }}</td>
+          <td class="py-3 px-4 text-sm text-gray-700">{{ player.userId }}</td>
+          <td class="py-3 px-4 text-sm text-gray-700 flex space-x-2">
             <a [routerLink]="'/admin/players/edit/' + player.id" class="bg-blue-500 text-white font-semibold py-1 px-3 rounded hover:bg-blue-600 transition">
               Edit
             </a>
@@ -42,8 +44,6 @@
     </table>
   </div>
 
-  <app-confirmation-dialog *ngIf="showModal"
-    (confirm)="confirmDelete()"
-    (cancel)="closeDeleteModal()">
-  </app-confirmation-dialog>
+  <!-- Modal de Confirmação -->
+  <app-confirmation-dialog *ngIf="showModal" (confirm)="confirmDelete()" (cancel)="closeDeleteModal()"></app-confirmation-dialog>
 </div>

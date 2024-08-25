@@ -6,6 +6,8 @@ import { Player } from '../models/player.model';
 import { Team } from '../models/team.model';
 import { Training } from '../models/training.model';
 import { AuthService } from './auth.service';
+import { TeamService } from './team.service';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +17,12 @@ export class PlayerService {
   private apiUrl = `${environment.apiUrl}/player`;  // URL base da API para jogadores
 
   constructor(private http: HttpClient, private auth: AuthService) { }
+
+  createPlayer(player: Player): Observable<any> {
+    return this.http.post<Player>(`${this.apiUrl}`, player).pipe(
+      catchError(this.handleError)
+    );
+  }
 
   deletePlayer(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
@@ -77,8 +85,14 @@ viewTrainings(playerId: number): Observable<any[]> {
   }
 
   // Método para atualizar as informações do jogador
-  updatePlayer(player: Player, id: number): Observable<any> {
+  updatePlayer(id: number,player: Player): Observable<any> {
     return this.http.put<Player>(`${this.apiUrl}/${id}`, player).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  getPlayerById(id: number): Observable<any> {
+    return this.http.get<Player>(`${this.apiUrl}/${id}`).pipe(
       catchError(this.handleError)
     );
   }

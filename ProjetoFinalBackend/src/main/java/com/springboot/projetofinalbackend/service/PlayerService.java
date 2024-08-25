@@ -4,27 +4,20 @@ import com.springboot.projetofinalbackend.DTO.CredentialDTO;
 import com.springboot.projetofinalbackend.DTO.PlayerDTO;
 import com.springboot.projetofinalbackend.DTO.TeamDTO;
 import com.springboot.projetofinalbackend.DTO.TrainingDTO;
-import com.springboot.projetofinalbackend.model.Credential;
-import com.springboot.projetofinalbackend.model.Player;
-import com.springboot.projetofinalbackend.model.Team;
-import com.springboot.projetofinalbackend.model.Training;
-import com.springboot.projetofinalbackend.repository.CredentialRepository;
-import com.springboot.projetofinalbackend.repository.PlayerRepository;
-import com.springboot.projetofinalbackend.repository.TeamRepository;
-import com.springboot.projetofinalbackend.repository.TrainingRepository;
+import com.springboot.projetofinalbackend.model.*;
+import com.springboot.projetofinalbackend.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 @Service
@@ -37,6 +30,12 @@ public class PlayerService {
     private TrainingRepository trainingRepository;
     @Autowired
     private CredentialRepository credentialRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private CredentialService credentialService;
 
     public ResponseEntity joinTeam(@RequestBody PlayerDTO playerDTO) {
         var player = playerRepository.findById(playerDTO.userId())
@@ -114,19 +113,7 @@ public class PlayerService {
         if (team == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // Retorna 404 se o jogador não tiver um time
         }
-
-        TeamDTO teamDTO = new TeamDTO(
-                team.getId(),
-                team.getName(),
-                team.getAddress(),
-                team.getGym(),
-                team.getFoundation(),
-                team.getEmailContact(),
-                team.getPhoneContact(),
-                team.getCoach().getId()
-        );
-
-        return ResponseEntity.status(HttpStatus.OK).body(teamDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(toDTO(team));
     }
 
     public ResponseEntity<CredentialDTO> credential(@PathVariable Long playerId) {
@@ -136,16 +123,7 @@ public class PlayerService {
         Credential credential = credentialRepository.findByUserId(player.getUser().getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Credential not found"));
 
-        CredentialDTO credentialDTO = new CredentialDTO(
-                credential.getId(),
-                credential.getPhotoName(),
-                credential.getName(),
-                credential.getTeamId(),
-                credential.getUserType(),
-                credential.getUser().getId()
-        );
-
-        return ResponseEntity.status(HttpStatus.OK).body(credentialDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(toDTO(credential));
     }
 
     public ResponseEntity<List<TrainingDTO>> trainings(@PathVariable Long playerId){
@@ -179,13 +157,113 @@ public class PlayerService {
     public ResponseEntity<PlayerDTO> updatePlayer(@RequestBody PlayerDTO playerDTO, @PathVariable Long id){
         var player = playerRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        if(player.getTeam() != null){
-            BeanUtils.copyProperties(playerDTO, player);
+        var existsTeam  = teamRepository.findById(playerDTO.teamId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        var existsUser = userRepository.findById(playerDTO.userId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        player.setUser(existsUser);
+        player.setTeam(existsTeam);
+        player.setHeight(playerDTO.height());
+        player.setWeight(playerDTO.weight());
+        player.setPosition(playerDTO.position());
+        playerRepository.save(player);
+        return ResponseEntity.status(HttpStatus.OK).body(toDTO(player));
+    }
+
+    public CredentialDTO toDTO(Credential credential) {
+        return new CredentialDTO(
+                credential.getId(),
+                credential.getPhotoName(),
+                credential.getName(),
+                credential.getTeamId(),
+                credential.getUserType(),
+                credential.getUser() != null ? credential.getUser().getId() : null
+        );
+    }
+
+    public TeamDTO toDTO(Team team) {
+        return new TeamDTO(
+                team.getId(),
+                team.getName(),
+                team.getAddress(),
+                team.getGym(),
+                team.getFoundation(),
+                team.getEmailContact(),
+                team.getPhoneContact(),
+                team.getCoach() != null ? team.getCoach().getId() : null
+        );
+    }
+
+    public PlayerDTO toDTO(Player player) {
+        return new PlayerDTO(
+                player.getId(),
+                player.getUser() != null ? player.getUser().getId() : null,
+                player.getPosition(),
+                player.getHeight(),
+                player.getWeight(),
+                player.getAge(),
+                player.getTeam() != null ? player.getTeam().getId() : null
+        );
+    }
+
+    public ResponseEntity<PlayerDTO> getPlayer(@PathVariable Long id) {
+        var player = playerRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return ResponseEntity.status(HttpStatus.OK).body(toDTO(player));
+    }
+
+    public ResponseEntity<PlayerDTO> create(PlayerDTO playerDTO) {
+        var existsPlayer = playerRepository.findById(playerDTO.userId());
+        var existsTeam = teamRepository.findById(playerDTO.teamId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        var existsUser = userRepository.findById(playerDTO.userId());
+
+        if(existsPlayer.isEmpty()){
+            Player player = new Player();
+            player.setAge(playerDTO.age());
+            player.setPosition(playerDTO.position());
+            player.setHeight(playerDTO.height());
+            player.setWeight(playerDTO.weight());
+            player.setTeam(existsTeam);
+            if (existsUser.isEmpty()) {
+                User user = new User();
+
+                // Lista de nomes
+                List<String> nomes = Arrays.asList("João", "Maria", "Pedro", "Ana", "Carlos", "Beatriz", "Lucas", "Fernanda");
+
+                // Gerar número aleatório
+                Random random = new Random();
+                int randomNumber = random.nextInt(100); // Gera um número entre 0 e 99
+                String randomName = nomes.get(random.nextInt(nomes.size())) + random.nextInt(100); // Seleciona um nome aleatório e adiciona um número aleatório
+
+                // Adicionar número aleatório ao e-mail
+                String email = randomName + randomNumber + "@gmail.com";
+                user.setEmail(email);
+
+                // Definir nome aleatório com número
+                user.setUsername(randomName);
+                user.setPassword("12345678");
+                user.setPhotoName("");
+                user.setPassword(passwordEncoder.encode("padrao@user"));
+                user.setRole(User.Role.PLAYER);
+                userRepository.save(user);
+                Credential credential = credentialService.create(user);
+                user.setCredential(credential);
+                userRepository.save(user);
+                player.setUser(user);
+                playerRepository.save(player);
+                return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(player));
+            }
+            player.setUser(existsUser.get());
             playerRepository.save(player);
-            BeanUtils.copyProperties(player, playerDTO);
-            return ResponseEntity.status(HttpStatus.OK).body(playerDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(player));
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
+    public ResponseEntity delete(Long id) {
+        var player = playerRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        playerRepository.delete(player);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }
