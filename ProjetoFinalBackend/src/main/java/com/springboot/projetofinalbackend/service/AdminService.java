@@ -212,14 +212,6 @@ public class AdminService {
         );
     }
 
-    /*public CoachDTO toDTO(Coach coach) {
-        return new CoachDTO(
-                coach.getId(),
-                coach.getUser() != null ? coach.getUser().getId() : null,
-                coach.getTeam() != null ? coach.getTeam().getId() : null
-        );
-    }*/
-
     public TrainingDTO toDTO(Training training) {
         return new TrainingDTO(
                 training.getId(),

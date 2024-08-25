@@ -17,7 +17,6 @@ export class FormAddCoachComponent {
     // Inicialize o FormGroup com as validações necessárias
     this.coachForm = this.fb.group({
       nickname: ['', Validators.required],
-      teamId: ['', ],
       userId: ['', Validators.required]
     });
   }

@@ -22,9 +22,8 @@ export class FormUpdateCoachComponent {
     private route: ActivatedRoute
   ) {
     this.coachForm = this.fb.group({
-      nickname: ['', ],
-      teamId: ['', ],
-      userId: ['', ]
+      nickname: ['', Validators.required ],
+      userId: ['', Validators.required ],
     });
   }
 

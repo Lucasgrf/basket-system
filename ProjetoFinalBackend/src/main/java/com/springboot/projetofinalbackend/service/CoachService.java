@@ -44,9 +44,6 @@ public class CoachService {
                 return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(newCoach));
             }
             newCoach.setUser(existsUser.get());
-            if(coach.teamId() != null) {
-                teamRepository.findById(coach.teamId()).ifPresent(newCoach::setTeam);
-            }
             coachRepository.save(newCoach);
             return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(newCoach));
         }
@@ -57,7 +54,6 @@ public class CoachService {
         Optional<Coach> coach = coachRepository.findById(id);
         if(coach.isPresent()) {
             Coach coachAux = coach.get();
-            coachRepository.findById(coachAux.getId());
             return ResponseEntity.status(HttpStatus.OK).body(toDTO(coachAux));
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -81,9 +77,6 @@ public class CoachService {
             }
             if (updatedCoach.userId() != null) {
                 userRepository.findById(updatedCoach.userId()).ifPresent(coach::setUser);
-            }
-            if (updatedCoach.teamId() != null) {
-                teamRepository.findById(updatedCoach.teamId()).ifPresent(coach::setTeam);
             }
 
             coachRepository.save(coach);

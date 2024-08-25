@@ -41,7 +41,7 @@ public class Team {
     @Column(nullable = false, unique = true)
     private String phoneContact;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "coach_id")
     private Coach coach;
 
