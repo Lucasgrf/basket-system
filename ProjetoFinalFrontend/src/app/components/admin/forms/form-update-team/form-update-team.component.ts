@@ -53,7 +53,6 @@ export class FormUpdateTeamComponent implements OnInit {
     if (this.teamForm.valid) {
       const id: number = +this.route.snapshot.paramMap.get('id')!;
       const teamData = this.teamForm.value;
-
       this.service.updateTeam(id, teamData).subscribe({
         next: (team) => {
           console.log('Time atualizado com sucesso', team);

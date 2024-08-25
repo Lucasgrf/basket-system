@@ -5,8 +5,6 @@ import { CommonModule } from '@angular/common';
 import { HeaderComponent } from "../header/header.component";
 import { RouterLink } from '@angular/router';
 import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
-import { UserService } from '../../../services/user.service';
-import { TeamService } from '../../../services/team.service';
 
 @Component({
   selector: 'app-players',
@@ -19,10 +17,8 @@ export class PlayersComponent implements OnInit {
   players: Player[] = [];
   selectedPlayerId: number | null = null;
   showModal: boolean = false;
-  userName: any;
-  teamName: any;
 
-  constructor(private playerService: PlayerService, private userService: UserService, private teamService: TeamService) {}
+  constructor(private playerService: PlayerService) {}
 
   ngOnInit() {
     this.loadPlayers();

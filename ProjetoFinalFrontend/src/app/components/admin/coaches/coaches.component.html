@@ -1,27 +1,31 @@
 <app-admin-header></app-admin-header>
 <div class="p-6">
-  <div class="flex justify-between jus items-center mb-4">
+  <div class="flex justify-between items-center mb-4">
     <h2 class="text-2xl font-bold">Coach Management</h2>
     <a routerLink="/admin/coaches/add">
-      <button class="bg-pink-500 text-white font-semibold py-2 px-4 rounded hover:bg-pink-600 transition">Add Coach</button>
+      <button class="bg-pink-500 text-white font-semibold py-2 px-4 rounded hover:bg-pink-600 transition">
+        Add Coach
+      </button>
     </a>
   </div>
   <div class="overflow-x-auto">
-    <table class="min-w-full bg-white border border-gray-200">
-      <thead>
+    <table class="min-w-full bg-white border border-gray-200 divide-y divide-gray-200">
+      <thead class="bg-gray-50">
         <tr>
-          <th class="py-2 px-4 border-b">ID</th>
-          <th class="py-2 px-4 border-b">Team</th>
-          <th class="py-2 px-4 border-b">User</th>
-          <th class="py-2 px-4 border-b">Actions</th>
+          <th class="py-3 px-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">ID</th>
+          <th class="py-3 px-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Nickname</th>
+          <th class="py-3 px-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Team</th>
+          <th class="py-3 px-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">User</th>
+          <th class="py-3 px-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Actions</th>
         </tr>
       </thead>
-      <tbody>
-        <tr *ngFor="let coach of coaches">
-          <td class="py-2 px-4 border-b">{{ coach.id }}</td>
-          <td class="py-2 px-4 border-b">{{ coach.teamId }}</td>
-          <td class="py-2 px-4 border-b">{{ coach.userId }}</td>
-          <td class="py-2 px-4 border-b">
+      <tbody class="bg-white divide-y divide-gray-200">
+        <tr *ngFor="let coach of coaches" class="hover:bg-gray-50 transition">
+          <td class="py-3 px-4 text-sm text-gray-700">{{ coach.id }}</td>
+          <td class="py-3 px-4 text-sm text-gray-700">{{ coach.nickname }}</td>
+          <td class="py-3 px-4 text-sm text-gray-700">{{ coach.teamId }}</td>
+          <td class="py-3 px-4 text-sm text-gray-700">{{ coach.userId }}</td>
+          <td class="py-3 px-4 text-sm text-gray-700 flex space-x-2">
             <a [routerLink]="'/admin/coaches/edit/' + coach.id" class="bg-blue-500 text-white font-semibold py-1 px-3 rounded hover:bg-blue-600 transition">
               Edit
             </a>
@@ -34,8 +38,6 @@
     </table>
   </div>
 
-  <app-confirmation-dialog *ngIf="showModal"
-    (confirm)="confirmDelete()"
-    (cancel)="closeDeleteModal()">
-  </app-confirmation-dialog>
+  <!-- Modal de Confirmação -->
+  <app-confirmation-dialog *ngIf="showModal" (confirm)="confirmDelete()" (cancel)="closeDeleteModal()"></app-confirmation-dialog>
 </div>

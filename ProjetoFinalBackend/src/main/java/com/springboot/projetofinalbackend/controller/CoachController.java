@@ -21,7 +21,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/coach")
-@PreAuthorize("hasAnyRole('ADMIN','COACH')")
+//@PreAuthorize("hasAnyRole('ADMIN','COACH')")
 public class CoachController {
     @Autowired
     private TrainingService trainingService;
@@ -96,8 +96,8 @@ public class CoachController {
     }
 
     //@PreAuthorize("hasAnyRole('ADMIN')")
-    @PostMapping("/add")
-    public ResponseEntity<CoachDTO> createCoach(@RequestBody @Valid CoachDTO coachDTO) {
+    @PostMapping
+    public ResponseEntity<CoachDTO> createCoach(@RequestBody CoachDTO coachDTO) {
         return coachService.createCoach(coachDTO);
     }
 

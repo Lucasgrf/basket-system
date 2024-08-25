@@ -6,5 +6,5 @@ export interface Team {
   foundation: Date;
   emailContact: string;
   phoneContact: string;
-  coachId: number;
+  coachId?: number;
 }

@@ -33,52 +33,25 @@ public class TeamService {
 
     public ResponseEntity<TeamDTO> create(@RequestBody TeamDTO teamDto) {
         var existsTeam = teamRepository.findByName(teamDto.name());
-        var existsCoach = coachRepository.findById(teamDto.coachId());
-        if (existsTeam.isEmpty()) {
-            Team team = new Team();
-            team.setName(teamDto.name());
-            team.setAddress(teamDto.address());
-            team.setGym(teamDto.gym());
-            team.setFoundation(teamDto.foundation());
-            team.setEmailContact(teamDto.emailContact());
-            team.setPhoneContact(teamDto.phoneContact());
-            if (existsCoach.isEmpty()) {
-                Coach coach = new Coach();
-                User user = new User();
-
-                // Lista de nomes
-                List<String> nomes = Arrays.asList("João", "Maria", "Pedro", "Ana", "Carlos", "Beatriz", "Lucas", "Fernanda");
-
-                // Gerar número aleatório
-                Random random = new Random();
-                int randomNumber = random.nextInt(100); // Gera um número entre 0 e 99
-                String randomName = nomes.get(random.nextInt(nomes.size())) + random.nextInt(100); // Seleciona um nome aleatório e adiciona um número aleatório
-
-                // Adicionar número aleatório ao e-mail
-                String email = randomName + randomNumber + "@gmail.com";
-                user.setEmail(email);
-
-                // Definir nome aleatório com número
-                user.setUsername(randomName);
-                user.setPassword("12345678");
-                user.setPhotoName("");
-                user.setPassword(passwordEncoder.encode("padrao@user"));
-                user.setRole(User.Role.COACH);
-                userRepository.save(user);
-                Credential credential = credentialService.create(user);
-                user.setCredential(credential);
-                userRepository.save(user);
-                coach.setUser(user);
-                coachRepository.save(coach);
-                team.setCoach(coach);
-                teamRepository.save(team);
-                return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(team));
-            }
-            team.setCoach(existsCoach.get());
-            teamRepository.save(team);
-            return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(team));
+        if (existsTeam.isPresent()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-        return ResponseEntity.status(HttpStatus.CONFLICT).build();
+
+        Team team = new Team();
+        team.setName(teamDto.name());
+        team.setAddress(teamDto.address());
+        team.setGym(teamDto.gym());
+        team.setFoundation(teamDto.foundation());
+        team.setEmailContact(teamDto.emailContact());
+        team.setPhoneContact(teamDto.phoneContact());
+
+        // Verifica se o coachId está presente antes de buscar o Coach
+        if (teamDto.coachId() != null) {
+            coachRepository.findById(teamDto.coachId()).ifPresent(team::setCoach);
+        }
+
+        teamRepository.save(team);
+        return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(team));
     }
 
 

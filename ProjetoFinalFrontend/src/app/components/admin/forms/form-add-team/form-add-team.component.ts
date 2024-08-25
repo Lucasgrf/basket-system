@@ -23,7 +23,7 @@ export class FormAddTeamComponent implements OnInit {
       foundation: ['', Validators.required],
       emailContact: ['', [Validators.required, Validators.email]],
       phoneContact: ['', Validators.required],
-      coachId: ['', Validators.required]
+      coachId: ['',]
     });
   }
 
@@ -31,7 +31,9 @@ export class FormAddTeamComponent implements OnInit {
     if (this.teamForm.valid) {
       const coachId: number = this.teamForm.value.coachId;
       const teamData = this.teamForm.value;
-      teamData.coachId = coachId;
+      if(coachId !== null && coachId !== undefined) {
+        teamData.coachId = coachId;
+      }
       this.service.addTeam(teamData).subscribe({
         next: () => {
           alert('Equipe criada com sucesso');

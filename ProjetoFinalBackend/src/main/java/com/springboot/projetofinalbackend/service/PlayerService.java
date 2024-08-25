@@ -225,30 +225,7 @@ public class PlayerService {
             player.setWeight(playerDTO.weight());
             player.setTeam(existsTeam);
             if (existsUser.isEmpty()) {
-                User user = new User();
-
-                // Lista de nomes
-                List<String> nomes = Arrays.asList("João", "Maria", "Pedro", "Ana", "Carlos", "Beatriz", "Lucas", "Fernanda");
-
-                // Gerar número aleatório
-                Random random = new Random();
-                int randomNumber = random.nextInt(100); // Gera um número entre 0 e 99
-                String randomName = nomes.get(random.nextInt(nomes.size())) + random.nextInt(100); // Seleciona um nome aleatório e adiciona um número aleatório
-
-                // Adicionar número aleatório ao e-mail
-                String email = randomName + randomNumber + "@gmail.com";
-                user.setEmail(email);
-
-                // Definir nome aleatório com número
-                user.setUsername(randomName);
-                user.setPassword("12345678");
-                user.setPhotoName("");
-                user.setPassword(passwordEncoder.encode("padrao@user"));
-                user.setRole(User.Role.PLAYER);
-                userRepository.save(user);
-                Credential credential = credentialService.create(user);
-                user.setCredential(credential);
-                userRepository.save(user);
+                User user = generateRandomUser();
                 player.setUser(user);
                 playerRepository.save(player);
                 return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(player));
@@ -265,5 +242,28 @@ public class PlayerService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         playerRepository.delete(player);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    public User generateRandomUser(){
+        User user = new User();
+
+        List<String> nomes = Arrays.asList("João", "Maria", "Pedro", "Ana", "Carlos", "Beatriz", "Lucas", "Fernanda");
+
+        Random random = new Random();
+        int randomNumber = random.nextInt(100); // Gera um número entre 0 e 99
+        String randomName = nomes.get(random.nextInt(nomes.size())) + random.nextInt(100); // Seleciona um nome aleatório e adiciona um número aleatório
+
+        String email = randomName + randomNumber + "@gmail.com";
+        user.setEmail(email);
+
+        user.setUsername(randomName);
+        user.setPhotoName("");
+        user.setPassword(passwordEncoder.encode("padrao@user"));
+        user.setRole(User.Role.PLAYER);
+        userRepository.save(user);
+        Credential credential = credentialService.create(user);
+        user.setCredential(credential);
+        userRepository.save(user);
+        return user;
     }
 }

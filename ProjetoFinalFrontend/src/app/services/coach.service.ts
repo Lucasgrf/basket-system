@@ -8,13 +8,13 @@ import { Coach } from '../models/coach.model';
   providedIn: 'root'
 })
 export class CoachService {
-  private apiUrl = `${environment.apiUrl}/coaches`; // URL base para o serviço
+  private apiUrl = `${environment.apiUrl}/coach`; // URL base para o serviço
 
   constructor(private http: HttpClient) { }
 
   // Método para criar um Coach
   createCoach(coach: Coach): Observable<any> {
-    return this.http.post<Coach>(`${this.apiUrl}/add`, coach);
+    return this.http.post<Coach>(`${this.apiUrl}`, coach);
   }
 
   // Método para obter um Coach por ID
@@ -28,12 +28,12 @@ export class CoachService {
   }
 
   // Método para atualizar um Coach
-  updateCoach(id: number, coach: Coach): Observable<void> {
-    return this.http.put<void>(`${this.apiUrl}/update/${id}`, coach);
+  updateCoach(id: number, coach: Coach): Observable<any> {
+    return this.http.put<Coach>(`${this.apiUrl}/${id}`, coach);
   }
 
   // Método para excluir um Coach
   deleteCoach(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/delete/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

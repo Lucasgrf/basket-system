@@ -60,9 +60,7 @@ public class AdminService {
                 }
                 default -> throw new IllegalStateException("Role not found: " + user.role());
             }
-
             credentialService.create(newUser);
-
             return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(newUser));
         }
         return ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -205,7 +203,7 @@ public class AdminService {
     public PlayerDTO toDTO(Player player) {
         return new PlayerDTO(
                 player.getId(),
-                player.getUser() != null ? player.getUser().getId() : null,
+                player.getUser().getId(),
                 player.getPosition(),
                 player.getHeight(),
                 player.getWeight(),
