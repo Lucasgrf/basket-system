@@ -3,6 +3,9 @@ import { FooterComponent } from "../../footer/footer.component";
 import { CommonModule } from '@angular/common';
 import anime from 'animejs';
 import { HeaderComponent } from '../header/header.component';
+import { TeamService } from '../../../services/team.service';
+import { TrainingService } from '../../../services/training.service';
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'app-overview',
@@ -11,19 +14,20 @@ import { HeaderComponent } from '../header/header.component';
   templateUrl: './overview.component.html',
   styleUrl: './overview.component.scss'
 })
-export class OverviewComponent implements OnInit, AfterViewInit{
+export class OverviewComponent implements OnInit, AfterViewInit {
   isMenuOpen = false;
-  totalUsers = 0; // Placeholder values, replace with actual data
-  totalTeams = 0; // Placeholder values, replace with actual data
-  totalTrainings = 0; // Placeholder values, replace with actual data
+  totalUsers = 0;
+  totalTeams = 0;
+  totalTrainings = 0;
 
-  constructor() { }
+  constructor(
+    private userService: UserService,
+    private teamService: TeamService,
+    private trainingService: TrainingService
+  ) { }
 
   ngOnInit(): void {
-    // Simulate fetching data
-    this.totalUsers = 1234; // Fetch actual data from a service
-    this.totalTeams = 56; // Fetch actual data from a service
-    this.totalTrainings = 78; // Fetch actual data from a service
+    this.fetchData();
   }
 
   ngAfterViewInit(): void {
@@ -42,6 +46,20 @@ export class OverviewComponent implements OnInit, AfterViewInit{
       easing: 'easeOutQuad',
       duration: 800,
       delay: anime.stagger(100) // Stagger animation delay for each card
+    });
+  }
+
+  private fetchData(): void {
+    this.userService.getAllUsers().subscribe(users => {
+      this.totalUsers = users.length;
+    });
+
+    this.teamService.getAllTeams().subscribe(teams => {
+      this.totalTeams = teams.length;
+    });
+
+    this.trainingService.getAllTrainings().subscribe(trainings => {
+      this.totalTrainings = trainings.length;
     });
   }
 }
