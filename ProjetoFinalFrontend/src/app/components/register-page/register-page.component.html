@@ -18,10 +18,11 @@
         <img src="./assets/logo.svg" alt="Logo" class="h-12">
         <span class="text-3xl font-bold text-white ml-3"><a href="#">BasketSystem</a></span>
       </header>
-      <section class="border-none p-10 w-full max-w-md bg-white rounded-lg shadow-lg mx-auto relative z-20">
+      <section class="border-none p-10 w-full max-w-md bg-white rounded-lg shadow-lg mx-auto relative z-20 form-container">
         <h2 class="text-center text-4xl font-bold text-gray-900 mb-4">Registrar</h2>
         <p class="text-center text-sm text-gray-600 mb-8">Insira seus dados para se registrar</p>
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-6">
+          <!-- Form Fields -->
           <div class="mb-6">
             <label for="username" class="block mb-2 text-sm font-medium text-gray-900">Nome:</label>
             <input type="text" formControlName="username" id="username" class="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" placeholder="John Doe" required />
@@ -58,7 +59,6 @@
               <option value="" disabled selected>Selecione um papel</option>
               <option value="PLAYER">Jogador</option>
               <option value="COACH">Treinador</option>
-              <option value="ADMIN">Administrador</option>
             </select>
             <div *ngIf="submitted && registerForm.get('role')?.invalid" class="text-red-600 text-sm mt-2">
               <div *ngIf="registerForm.get('role')?.errors?.['required']">Escolher um papel é obrigatório.</div>
@@ -69,8 +69,6 @@
         <p class="mt-8 py-5 text-center text-sm text-gray-600">Já tem uma conta? <a [routerLink]="'/auth/login'" class="text-red-600 hover:text-red-500">Entre aqui</a></p>
       </section>
     </div>
-
-    <!-- Componente Footer que aparece apenas em resoluções de celular -->
     <footer class="mt-4 md:hidden">
       <app-footer></app-footer>
     </footer>

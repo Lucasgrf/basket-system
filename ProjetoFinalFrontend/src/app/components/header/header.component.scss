@@ -1,0 +1,29 @@
+/* header.component.scss */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: white;
+  z-index: 1000;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease-in-out;
+}
+
+nav ul {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+}
+
+nav ul li {
+  margin: 1rem 0;
+}
+
+nav ul li a {
+  font-size: 1.2rem;
+  color: #ff0000;
+  font-weight: bold;
+  text-decoration: none;
+}

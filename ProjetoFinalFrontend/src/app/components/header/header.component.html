@@ -3,19 +3,28 @@
     <img src="assets/logo.svg" alt="Logo" class="h-10 m-2 w-10">
     <span class="text-xl font-bold text-red-500"><a [routerLink]="'/dashboard'">BasketSystem</a></span>
   </div>
-  <div class="hidden lg:flex space-x-4">
+
+  <!-- Menu desktop -->
+  <div class= "lg:flex space-x-4 justify-end">
     <button [routerLink]="'/profile'" class="bg-white text-red-500 font-semibold py-2 px-4 border border-red-500 rounded hover:bg-red-500 hover:text-white transition">Minha conta</button>
-    <button (click)="logout()"  class="bg-red-500 text-white font-semibold py-2 px-4 rounded hover:bg-red-600 transition">Sair</button>
+    <button (click)="logout()" class="bg-red-500 text-white font-semibold py-2 px-4 rounded hover:bg-red-600 transition">Sair</button>
   </div>
- <!-- header.component.html -->
-<button  id="menu-button" class="lg:hidden text-red-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
-  <!-- Ícone de menu (hamburger) -->
-  <svg *ngIf="!isMenuOpen" xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 transition-transform duration-300 ease-in-out" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-  </svg>
-  <!-- Ícone de X -->
-  <svg *ngIf="isMenuOpen" xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 transition-transform duration-300 ease-in-out transform rotate-45" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-  </svg>
-</button>
+
+  <!-- Botão do menu hambúrguer (aparece em telas menores) -->
+  <button (click)="toggleMenuHeader()" class="lg:hidden text-red-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
+    <!-- Ícone de menu (hamburger) -->
+
+    <!-- Ícone de X -->
+    <svg *ngIf="isMenuOpen" xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 transition-transform duration-300 ease-in-out" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  </button>
 </header>
+
+<!-- Menu móvel -->
+<nav *ngIf="isMenuOpen" class="fixed top-0 left-0 w-2/3 h-full bg-white shadow-lg transform -translate-x-full lg:hidden">
+  <ul class="flex flex-col p-4 space-y-4">
+    <li><a [routerLink]="'/profile'" class="text-red-500 font-semibold">Minha conta</a></li>
+    <li><a href="#" (click)="logout()" class="text-red-500 font-semibold">Sair</a></li>
+  </ul>
+</nav>

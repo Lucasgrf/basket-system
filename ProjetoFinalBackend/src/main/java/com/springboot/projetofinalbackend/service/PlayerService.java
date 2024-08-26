@@ -256,7 +256,8 @@ public class PlayerService {
     public User generateRandomUser(){
         User user = new User();
 
-        List<String> nomes = Arrays.asList("João", "Maria", "Pedro", "Ana", "Carlos", "Beatriz", "Lucas", "Fernanda");
+        List<String> nomes = Arrays.asList("João", "Pedro", "Carlos", "Lucas", "Miguel", "Gabriel", "Rafael", "Felipe", "Gustavo");
+
 
         Random random = new Random();
         int randomNumber = random.nextInt(100); // Gera um número entre 0 e 99
@@ -267,7 +268,7 @@ public class PlayerService {
 
         user.setUsername(randomName);
         user.setPhotoName("");
-        user.setPassword(passwordEncoder.encode("padrao@user" + randomNumber));
+        user.setPassword(passwordEncoder.encode("padrao@user" + randomName));
         user.setRole(User.Role.PLAYER);
         userRepository.save(user);
         Credential credential = credentialService.create(user);

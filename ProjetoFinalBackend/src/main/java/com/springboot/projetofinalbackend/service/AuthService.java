@@ -56,10 +56,7 @@ public class AuthService {
                     playerRepository.save(player);
                 }
                 case ADMIN -> {
-                    Admin admin = new Admin();
-                    admin.setUser(newUser);
-                    adminRepository.save(admin);
-                    //return ResponseEntity.badRequest().build();
+                    return ResponseEntity.badRequest().build();
                 }
                 default -> throw new IllegalStateException("Role not found: " + body.role());
             }

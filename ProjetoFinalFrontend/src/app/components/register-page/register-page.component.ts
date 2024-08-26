@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { AfterViewInit, Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { FooterComponent } from "../footer/footer.component";
+import anime from 'animejs';
 
 @Component({
   selector: 'app-register-page',
@@ -12,10 +13,9 @@ import { FooterComponent } from "../footer/footer.component";
   templateUrl: './register-page.component.html',
   styleUrl: './register-page.component.scss'
 })
-export class RegisterPageComponent {
+export class RegisterPageComponent implements AfterViewInit {
   private fb = inject(FormBuilder);
   submitted = false;
-
 
   constructor(private router: Router, private service: AuthService) {}
 
@@ -40,12 +40,23 @@ export class RegisterPageComponent {
       this.service.signup(registerData.username!, registerData.email!, registerData.password!, registerData.role!).subscribe({
         next: () => {
           alert('Cadastro realizado com sucesso');
-          this.router.navigate(['/auth/login']);
+          this.router.navigate(['/dashboard']);
         },
         error: (error) => {
           alert('Erro ao realizar cadastro, tente novamente' + error);
         }
       });
     }
+  }
+
+  ngAfterViewInit() {
+    // Animação usando Anime.js
+    anime({
+      targets: '.form-container',
+      opacity: [0, 1],
+      translateY: [-50, 0],
+      duration: 1000,
+      easing: 'easeOutExpo',
+    });
   }
 }

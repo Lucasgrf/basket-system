@@ -43,18 +43,18 @@ export class ContactUsComponent {
       opacity: this.isMenuOpen ? [0, 1] : [1, 0],
       translateX: this.isMenuOpen ? ['100%', '0%'] : ['0%', '100%'],
       easing: 'easeInOutQuad',
-      duration: 500,
+      duration: 300,
     });
   }
 
   animateBackground(): void {
     anime({
-      targets: 'circle, path',
+      targets: '#background-shapes circle, #background-shapes path',
       strokeDashoffset: [anime.setDashoffset, 0],
       easing: 'easeInOutSine',
       duration: 2000,
       loop: true,
-      direction: 'alternate',
+      direction: 'alternate'
     });
   }
 

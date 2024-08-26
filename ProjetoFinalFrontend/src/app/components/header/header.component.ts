@@ -13,7 +13,7 @@ import anime from 'animejs';
 export class HeaderComponent {
   isMenuOpen = false;
 
-  toggleMenu(): void {
+  toggleMenuHeader(): void {
     this.isMenuOpen = !this.isMenuOpen;
 
     if (this.isMenuOpen) {

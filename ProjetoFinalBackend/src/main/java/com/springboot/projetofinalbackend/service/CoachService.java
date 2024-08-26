@@ -106,7 +106,8 @@ public class CoachService {
     public User generateRandomUser(){
         User user = new User();
 
-        List<String> nomes = Arrays.asList("João", "Maria", "Pedro", "Ana", "Carlos", "Beatriz", "Lucas", "Fernanda");
+        List<String> nomes = Arrays.asList("João", "Pedro", "Carlos", "Lucas", "Miguel", "Gabriel", "Rafael", "Felipe", "Gustavo");
+
 
         Random random = new Random();
         int randomNumber = random.nextInt(100);
@@ -117,7 +118,7 @@ public class CoachService {
 
         user.setUsername(randomName);
         user.setPhotoName("");
-        user.setPassword(passwordEncoder.encode("padrao@user"));
+        user.setPassword(passwordEncoder.encode("padrao@user" + randomName));
         user.setRole(User.Role.COACH);
         userRepository.save(user);
         Credential credential = credentialService.create(user);
