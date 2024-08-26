@@ -1,8 +1,8 @@
 
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { FooterComponent } from "../../footer/footer.component";
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import anime from 'animejs';
 import { HeaderComponent } from '../header/header.component';
 
@@ -16,7 +16,7 @@ import { HeaderComponent } from '../header/header.component';
 export class HomeComponent implements AfterViewInit {
   isMenuOpen = false;
 
-  constructor(private router: Router) {}
+  constructor() {}
 
   ngOnInit(): void {}
 

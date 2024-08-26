@@ -84,7 +84,7 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     component: InitialPageComponent,
-    canActivate: [RoleGuard]
+    //canActivate: [RoleGuard]
   },
   {
     path: 'profile',
@@ -97,7 +97,7 @@ export const routes: Routes = [
     canActivate: [RoleGuard]
   },
   {
-    path: 'team',
+    path: 'teams',
     component: TeamPageComponent,
     canActivate: [RoleGuard]
   },

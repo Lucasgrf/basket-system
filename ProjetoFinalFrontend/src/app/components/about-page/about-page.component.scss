@@ -1,0 +1,57 @@
+.relative {
+  position: relative;
+
+  h1 {
+    font-size: 2.5rem;
+  }
+}
+
+section {
+  padding: 2rem 1rem;
+}
+
+.card {
+  background-color: rgba(31, 41, 55, 0.8); // Cor de fundo com transparência
+  transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: rgba(31, 41, 55, 1); // Fundo opaco ao passar o mouse
+  }
+}
+
+#background-shapes {
+  stroke-dasharray: 1000; // Ajuste conforme necessário para o comprimento do caminho
+  stroke-dashoffset: 1000; // Começa com o caminho escondido
+  transition: stroke-dashoffset 2s ease;
+}
+
+
+.court-path {
+  stroke-dasharray: 1000; // Adjust as needed to fit the path length
+  stroke-dashoffset: 1000; // Start with the path hidden
+  animation: drawCourt 15s ease-in-out forwards; // Adjust duration as needed
+}
+
+/* Menu Box */
+.menu-box {
+  position: absolute;
+  top: 3rem; /* Ajuste conforme necessário */
+  right: 0;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* Garante que o menu esteja acima de outros elementos */
+  opacity: 0;
+  transform: translateX(100%);
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+/* Botão do Menu Hambúrguer */
+.hamburger-menu-button {
+  z-index: 1001; /* Deve estar acima do menu para interagir */
+}
+

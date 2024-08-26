@@ -1,17 +1,30 @@
-/* Cor de fundo para força de senha fraca */
-.weak {
-  width: 33%;
-  background-color: red;
+:host {
+  display: block;
 }
 
-/* Cor de fundo para força de senha média */
-.medium {
-  width: 66%;
-  background-color: orange;
+header {
+  margin-bottom: 2rem;
 }
 
-/* Cor de fundo para força de senha forte */
-.strong {
-  width: 100%;
-  background-color: green;
+section {
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+button {
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+input:focus {
+  outline: none;
+  border-color: #f87171; /* Tailwind red-400 */
+  box-shadow: 0 0 0 2px rgba(248, 113, 113, 0.5);
+}
+
+.register-bg {
+  background-image: url('/assets/register.png');
 }

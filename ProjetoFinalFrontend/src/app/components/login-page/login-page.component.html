@@ -4,29 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Entrar</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.3/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100">
-  <main class="min-h-screen flex flex-col md:flex-row">
+<body class="bg-gray-900 flex items-center justify-center min-h-screen overflow-hidden">
+  <main class="relative flex flex-col md:flex-row w-full h-full bg-gray-900">
     <!-- Seção do Formulário de Login -->
-    <div class="flex flex-col justify-center items-center w-full md:w-1/2 bg-gray-100 p-8">
-      <!-- Cabeçalho com Logo -->
+    <div class="flex flex-col justify-center items-center w-full md:w-1/2 bg-gray-900 p-8 md:p-16 z-10">
       <header class="flex justify-center items-center w-full h-12 mb-8">
         <img src="./assets/logo.svg" alt="Logo" class="h-12">
-        <span class="text-2xl font-bold text-gray-900 ml-3"><a href="#">BasketSystem</a></span>
+        <span class="text-3xl font-bold text-white ml-3"><a href="#">BasketSystem</a></span>
       </header>
-
-      <!-- Container do Formulário de Login -->
-      <section class="border-none p-10 w-full max-w-md bg-white rounded-md shadow-lg mx-auto">
-        <!-- Título e Subtítulo -->
-        <h2 class="text-center text-3xl font-bold text-gray-900 mb-4">ENTRAR</h2>
+      <section class="border-none p-10 w-full max-w-md bg-white rounded-lg shadow-lg mx-auto relative z-20">
+        <h2 class="text-center text-4xl font-bold text-gray-900 mb-4">Entrar</h2>
         <p class="text-center text-sm text-gray-600 mb-8">Insira seus dados para acessar o sistema</p>
-
-        <!-- Início do Formulário -->
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
           <div class="mb-6">
             <label for="email" class="block mb-2 text-sm font-medium text-gray-900">E-mail:</label>
-            <input type="email" formControlName="email" id="email" class="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="john.doe@company.com" required />
+            <input type="email" formControlName="email" id="email" class="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" placeholder="john.doe@company.com" required />
             <div *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.touched || loginForm.get('email')?.dirty)" class="text-red-600 text-sm mt-2">
               <div *ngIf="loginForm.get('email')?.errors?.['required']">O e-mail é obrigatório.</div>
               <div *ngIf="loginForm.get('email')?.errors?.['email']">O e-mail deve ser válido.</div>
@@ -34,31 +28,26 @@
           </div>
           <div class="mb-6">
             <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Senha:</label>
-            <input type="password" formControlName="password" id="password" class="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="•••••••••" required />
+            <input type="password" formControlName="password" id="password" class="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" placeholder="•••••••••" required />
             <div *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.touched || loginForm.get('password')?.dirty)" class="text-red-600 text-sm mt-2">
               <div *ngIf="loginForm.get('password')?.errors?.['required']">A senha é obrigatória.</div>
             </div>
           </div>
-          <div class="flex items-center justify-between">
+          <div class="flex items-center justify-between mb-4">
             <label class="flex items-center">
-              <input type="checkbox" class="form-checkbox text-blue-600">
+              <input type="checkbox" class="form-checkbox text-red-600">
               <span class="ml-2 text-sm text-gray-600">Lembrar-me</span>
             </label>
-            <a href="#" class="text-sm text-indigo-600 hover:text-indigo-500">Esqueceu a senha?</a>
+            <a [routerLink]="'/contact'" class="text-sm text-red-600 hover:text-red-500">Esqueceu a senha?</a>
           </div>
-          <div class="">
-            <button type="submit" class="w-full py-2 px-4 bg-red-500 text-white font-semibold rounded-md shadow hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-600">Logar</button>
-          </div>
+          <button type="submit" class="w-full py-2 px-4 bg-red-500 text-white font-semibold rounded-lg shadow hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-600">Logar</button>
         </form>
-        <p class="mt-8 py-5 text-center text-sm text-gray-600">Não tem uma conta? <a href="#" class="text-indigo-600 hover:text-indigo-500">Cadastre-se grátis!</a></p>
+        <p class="mt-8 py-5 text-center text-sm text-gray-600">Não tem uma conta? <a [routerLink]="'/auth/register'" class="text-red-600 hover:text-red-500">Cadastre-se grátis!</a></p>
       </section>
     </div>
-
     <!-- Seção da Imagem/Logo -->
-    <div class="hidden md:flex md:w-1/2 justify-center items-center bg-cover bg-center" style="background-image: url('./assets/login.png');">
-      <!-- Mantenha vazio se for apenas mostrar uma imagem -->
+    <div class="hidden md:flex md:w-1/2 justify-center items-center bg-cover bg-center login-bg">
     </div>
-
     <!-- Componente Footer que aparece apenas em resoluções de celular -->
     <footer class="mt-4 md:hidden">
       <app-footer></app-footer>

@@ -17,6 +17,9 @@ public class Player {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
+    private String nickname;
+
     private String position;
 
     private double height;

@@ -1,0 +1,52 @@
+/* app.component.css */
+body {
+  @apply bg-gray-100;
+}
+
+header {
+  @apply bg-white shadow;
+}
+
+nav ul {
+  @apply flex space-x-4;
+}
+
+nav a {
+  @apply text-gray-700 hover:text-gray-900;
+}
+
+#mobile-menu {
+  @apply fixed top-0 inset-x-0 bg-slate-100 shadow-md z-50 transform -translate-y-full transition-transform duration-300;
+}
+
+#mobile-menu .flex {
+  @apply justify-between items-center p-4;
+}
+
+#mobile-menu a {
+  @apply p-4 hover:bg-red-100 flex items-center;
+}
+
+#mobile-menu svg {
+  @apply h-6 w-6 mr-3 text-red-500;
+}
+
+.container {
+  @apply mx-auto px-4 py-6;
+}
+
+aside {
+  @apply w-64 bg-white shadow-lg;
+}
+
+aside ul {
+  @apply flex flex-col;
+}
+
+aside a {
+  @apply block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-200;
+}
+
+main {
+  @apply flex-1 bg-white p-6;
+}

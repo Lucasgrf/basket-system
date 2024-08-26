@@ -108,6 +108,7 @@ public class TeamService {
     public PlayerDTO toDTO(Player player) {
         return new PlayerDTO(
                 player.getId(),
+                player.getNickname(),
                 player.getUser() != null ? player.getUser().getId() : null,
                 player.getPosition(),
                 player.getHeight(),

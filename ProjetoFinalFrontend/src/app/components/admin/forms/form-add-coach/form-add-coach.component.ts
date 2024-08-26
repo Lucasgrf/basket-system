@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HeaderComponent } from "../../header/header.component";
 import { CoachService } from '../../../../services/coach.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-form-add-coach',
@@ -13,7 +14,7 @@ import { CoachService } from '../../../../services/coach.service';
 export class FormAddCoachComponent {
   coachForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private service: CoachService) {
+  constructor(private fb: FormBuilder, private service: CoachService,private router: Router) {
     // Inicialize o FormGroup com as validações necessárias
     this.coachForm = this.fb.group({
       nickname: ['', Validators.required],
@@ -28,11 +29,11 @@ export class FormAddCoachComponent {
       this.service.createCoach(formData).subscribe({
         next: (coach) => {
           alert('Treinador criado com sucesso');
+          this.router.navigate(['/admin/coaches']);
           console.log(coach);
         },
         error: (error) => {
-          alert('Erro ao criar treinador');
-          alert(error);
+          alert('Erro ao criar treinador' + error);
         }
       });
     }

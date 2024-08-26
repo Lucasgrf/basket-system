@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { HeaderComponent } from "../../header/header.component";
 import { CommonModule } from '@angular/common';
 import { PlayerService } from '../../../../services/player.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-form-add-player',
@@ -16,17 +17,18 @@ export class FormAddPlayerComponent {
   heights: string[] = [];
   weights: string[] = [];
 
-  constructor(private fb: FormBuilder, private service: PlayerService) {}
+  constructor(private fb: FormBuilder, private service: PlayerService,private router: Router) {}
 
   ngOnInit() {
     this.generateHeights();
     this.generateWeights();
     this.playerForm = this.fb.group({
+      nickname: ['', [Validators.required]],
       position: ['', [Validators.required]],
       age: ['', [Validators.required, Validators.min(1)]],
       height: ['', Validators.required],
       weight: ['', Validators.required],
-      teamId: ['', Validators.required],
+      teamId: ['',],
       userId: ['', Validators.required]
     });
   }
@@ -70,10 +72,10 @@ export class FormAddPlayerComponent {
       this.service.createPlayer(this.playerForm.value).subscribe({
         next: () => {
           alert('Jogador criado com sucesso');
+          this.router.navigate(['/admin/players']);
         },
         error: (error) => {
-          alert('Erro ao criar jogador');
-          console.log(error);
+          alert('Erro ao criar jogador' + error);
         }
       });
     }

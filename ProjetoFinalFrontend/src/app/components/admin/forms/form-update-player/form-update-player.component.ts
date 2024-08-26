@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HeaderComponent } from "../../header/header.component";
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PlayerService } from '../../../../services/player.service';
 import { CommonModule } from '@angular/common';
 
@@ -20,7 +20,8 @@ export class FormUpdatePlayerComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private playerService: PlayerService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     this.playerForm = this.fb.group({
       position: ['', Validators.required],
@@ -60,12 +61,11 @@ export class FormUpdatePlayerComponent implements OnInit {
       console.log(this.playerForm.value);
       this.playerService.updatePlayer(id, this.playerForm.value).subscribe({
         next: (player) => {
-          console.log('Jogador atualizado com sucesso!', player);
           alert('Jogador atualizado com sucesso!');
+          this.router.navigate(['/admin/players']);
         },
         error: (error) => {
-          console.error('Erro ao atualizar jogador', error);
-          alert('Erro ao tentar atualizar o jogador!');
+          alert('Erro ao tentar atualizar o jogador!' + error);
         },
       });
     }

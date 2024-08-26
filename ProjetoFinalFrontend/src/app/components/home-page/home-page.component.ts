@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FooterComponent } from '../footer/footer.component';
 import { CommonModule } from '@angular/common';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -15,44 +15,31 @@ import anime from 'animejs';
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss'
 })
-export class HomePageComponent {
+export class HomePageComponent implements OnInit, AfterViewInit {
+  @ViewChild('menuBox') menuBox!: ElementRef;
+
   isMenuOpen = false;
 
-  @ViewChild('menuBox', { static: false }) menuBox!: ElementRef;
+  constructor() {}
 
-  toggleMenu() {
+  ngOnInit(): void {}
+
+  ngAfterViewInit(): void {
+    this.animateMenu();
+  }
+
+  toggleMenu(): void {
     this.isMenuOpen = !this.isMenuOpen;
     this.animateMenu();
   }
 
-  animateMenu() {
-    if (this.menuBox) {
-      const menuElement = this.menuBox.nativeElement;
-      if (this.isMenuOpen) {
-        anime({
-          targets: menuElement,
-          translateX: ['100%', '0%'],
-          opacity: [0, 1],
-          duration: 300,
-          easing: 'easeInOutCubic'
-        });
-      } else {
-        anime({
-          targets: menuElement,
-          translateX: ['0%', '100%'],
-          opacity: [1, 0],
-          duration: 300,
-          easing: 'easeInOutCubic'
-        });
-      }
-    }
-  }
-
-  @HostListener('window:resize', ['$event'])
-  onResize(event: Event) {
-    if (window.innerWidth >= 1024) {
-      this.isMenuOpen = false;
-      this.animateMenu();
-    }
+  animateMenu(): void {
+    anime({
+      targets: this.menuBox.nativeElement,
+      opacity: this.isMenuOpen ? [0, 1] : [1, 0],
+      translateX: this.isMenuOpen ? ['100%', '0%'] : ['0%', '100%'],
+      easing: 'easeInOutQuad',
+      duration: 300,
+    });
   }
 }

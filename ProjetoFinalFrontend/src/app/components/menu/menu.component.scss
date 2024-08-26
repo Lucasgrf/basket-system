@@ -1,27 +1,16 @@
-nav {
-  transition: transform 0.5s ease-in-out;
-}
-
+/* menu-horizontal.component.scss */
 .menu-item {
-  @apply p-2 flex items-center rounded-md transition-transform transform hover:scale-105;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+
+  &:hover {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
 }
 
-.menu-item:hover svg {
-  @apply text-red-600;
-}
-
-.menu-item:hover span {
-  @apply text-red-600;
-}
-
-.menu-item svg {
-  @apply h-6 w-6 mr-2 text-red-500 transition-colors;
-}
-
-.menu-item span {
-  @apply text-black transition-colors;
-}
-
-.nav-container {
-  @apply flex justify-around p-2 bg-slate-100;
+.icon {
+  fill: #EA454C; // Definindo a cor do ícone
 }

@@ -185,6 +185,7 @@ public class AdminService {
     public PlayerDTO toDTO(Player player) {
         return new PlayerDTO(
                 player.getId(),
+                player.getNickname(),
                 player.getUser().getId(),
                 player.getPosition(),
                 player.getHeight(),

@@ -1,13 +1,23 @@
 <footer class="bg-red-500 text-white text-center py-8">
-  <div class="flex justify-center mb-4">
-    <img src="assets/logoBranco.svg" alt="TDStats Logo" class="h-12 w-10">
-    <span class="text-xl font-bold mt-3 m-2"><a href="#">Basket System</a></span>
-  </div>
-  <div class="mb-4">
-    <a href="#" class="text-white hover:underline">Início</a> |
-    <a href="#" class="text-white hover:underline">Entrar</a> |
-    <a href="#" class="text-white hover:underline">Registrar</a>
-  </div>
-  <p class="text-sm">Este é um projeto pessoal com todos seus direitos de copyright preservados.</p>
-</footer>
+  <div class="container mx-auto flex flex-col items-center">
+    <!-- Logo e Nome -->
+    <div class="flex items-center mb-6">
+      <img src="assets/logoBranco.svg" alt="Basket System Logo" class="h-12 w-12">
+      <span class="text-2xl font-bold ml-4">
+        <a [routerLink]="'/home'" class="hover:underline">Basket System</a>
+      </span>
+    </div>
 
+    <!-- Links de Navegação -->
+    <div class="flex justify-center items-center mb-6 space-x-6">
+      <a [routerLink]="'/home'" class="hover:underline">Início</a>
+      <a [routerLink]="'/about'" class="hover:underline">Sobre</a>
+      <a [routerLink]="'/contact'" class="hover:underline">Contato</a>
+      <a [routerLink]="'/auth/login'" class="hover:underline">Entrar</a>
+      <a [routerLink]="'/auth/register'" class="hover:underline">Registrar</a>
+    </div>
+
+    <!-- Direitos Autorais -->
+    <p class="text-sm">&copy; 2024 Basket System. Todos os direitos reservados.</p>
+  </div>
+</footer>

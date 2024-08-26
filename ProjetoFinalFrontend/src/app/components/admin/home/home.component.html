@@ -1,15 +1,5 @@
 <app-admin-header></app-admin-header>
 <div class="min-h-screen flex flex-col">
-  <!-- Menu lateral móvel -->
-  <nav *ngIf="isMenuOpen" class="lg:hidden bg-white shadow-md mt-2 p-4 transform transition-transform duration-300 ease-in-out">
-    <ul class="space-y-4">
-      <li><a routerLink="/admin/users" class="block text-red-500 font-semibold hover:text-red-700">Users</a></li>
-      <li><a routerLink="/admin/teams" class="block text-red-500 font-semibold hover:text-red-700">Teams</a></li>
-      <li><a routerLink="/admin/trainings" class="block text-red-500 font-semibold hover:text-red-700">Trainings</a></li>
-      <li><a routerLink="/" class="block text-red-500 font-semibold hover:text-red-700">Logout</a></li>
-    </ul>
-  </nav>
-
   <!-- Conteúdo principal -->
   <section class="relative flex flex-col items-center justify-center flex-1 bg-gray-100 py-8 lg:py-16">
     <div class="container mx-auto p-6 bg-white rounded-3xl shadow-lg">

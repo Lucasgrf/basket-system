@@ -1,0 +1,46 @@
+<header class="flex justify-between items-center p-4 bg-white shadow-md z-50">
+  <div class="flex items-center">
+    <img src="assets/logo.svg" alt="TDStats Logo" class="h-10 w-10 mr-3">
+    <span class="text-xl font-bold text-red-500">
+      <a [routerLink]="'/home'">Basket System</a>
+    </span>
+  </div>
+  <div class="hidden lg:flex space-x-4">
+    <button [routerLink]="'/auth/login'"
+      class="bg-white text-red-500 font-semibold py-2 px-4 border border-red-500 rounded hover:bg-red-500 hover:text-white transition">
+      Entrar
+    </button>
+    <button [routerLink]="'/auth/register'"
+      class="bg-red-500 text-white font-semibold py-2 px-4 rounded hover:bg-red-600 transition">
+      Registrar
+    </button>
+  </div>
+  <div class="relative lg:hidden flex items-center">
+    <!-- Menu Hambúrguer e Botões -->
+    <div class="flex items-center space-x-4">
+      <button *ngIf="!isMenuOpen" (click)="toggleMenu()"
+        class="text-red-500 focus:outline-none focus:ring-2 focus:ring-red-500 transition-transform transform hover:scale-110 hamburger-menu-button">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+        </svg>
+      </button>
+      <button *ngIf="isMenuOpen" (click)="toggleMenu()"
+        class="text-red-500 focus:outline-none focus:ring-2 focus:ring-red-500 transition-transform transform hover:scale-110 hamburger-menu-button">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      <div #menuBox
+        class="menu-box flex flex-col space-y-2">
+        <button [routerLink]="'/auth/login'"
+          class="text-red-500 font-semibold py-2 px-4 border border-red-500 rounded hover:bg-red-500 hover:text-white transition">
+          Entrar
+        </button>
+        <button [routerLink]="'/auth/register'"
+          class="bg-red-500 text-white font-semibold py-2 px-4 rounded hover:bg-red-600 transition">
+          Registrar
+        </button>
+      </div>
+    </div>
+  </div>
+</header>

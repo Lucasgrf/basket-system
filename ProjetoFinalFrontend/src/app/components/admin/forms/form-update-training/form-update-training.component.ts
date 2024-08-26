@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HeaderComponent } from "../../header/header.component";
 import { DatePipe } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TrainingService } from '../../../../services/training.service';
 
 @Component({
@@ -20,7 +20,8 @@ export class FormUpdateTrainingComponent {
     private fb: FormBuilder,
     private trainingService: TrainingService,
     private route: ActivatedRoute,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private router: Router
   ) {
     this.trainingForm = this.fb.group({
       title: ['', Validators.required],
@@ -56,12 +57,11 @@ export class FormUpdateTrainingComponent {
       const trainingData = this.trainingForm.value;
       this.trainingService.updateTraining(id, trainingData).subscribe({
         next: (response) => {
-          console.log('Treino atualizado com sucesso', response);
           alert('Treino atualizado com sucesso');
+          this.router.navigate(['/admin/trainings']);
         },
         error: (error) => {
-          console.error('Erro ao atualizar o treino', error);
-          alert('Erro ao atualizar o treino');
+          alert('Erro ao atualizar o treino' + error);
         }
       });
     } else {

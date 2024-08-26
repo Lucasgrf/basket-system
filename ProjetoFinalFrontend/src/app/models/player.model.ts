@@ -1,5 +1,6 @@
 export interface Player {
   id: number;
+  nickname: string;
   userId: number;
   position: string;
   height: number;

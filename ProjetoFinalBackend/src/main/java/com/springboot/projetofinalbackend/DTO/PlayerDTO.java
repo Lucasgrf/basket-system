@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Positive;
 
 public record PlayerDTO(
         Long id,
+        String nickname,
         Long userId,
         String position,
         double height,

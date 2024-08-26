@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HeaderComponent } from "../../header/header.component";
 import { UserService } from '../../../../services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-form-add-user',
@@ -13,8 +14,7 @@ import { UserService } from '../../../../services/user.service';
 export class FormAddUserComponent {
   userForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private service: UserService) {
-    // Inicialize o FormGroup com as validações necessárias
+  constructor(private fb: FormBuilder, private service: UserService, private router: Router) {
     this.userForm = this.fb.group({
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -30,10 +30,10 @@ export class FormAddUserComponent {
       this.service.createUser(formData, savePassword).subscribe({
         next: (user) => {
           alert('Usuário criado com sucesso');
+          this.router.navigate(['/admin/users']);
         },
         error: (error) => {
-          alert('Erro ao criar usuário');
-          alert(error);
+          alert('Erro ao criar usuário' + error);
         }
       });
     }

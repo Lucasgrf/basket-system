@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../../../services/user.service';
 import { HeaderComponent } from "../../header/header.component";
 
@@ -17,7 +17,8 @@ export class FormUpdateUserComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     this.userForm = this.fb.group({
       username: ['', Validators.required],
@@ -44,12 +45,11 @@ export class FormUpdateUserComponent implements OnInit {
       const id: number = +this.route.snapshot.paramMap.get('id')!;
       this.userService.updateUser(id, this.userForm.value).subscribe({
         next: (user) => {
-          console.log('Usuário atualizado com sucesso', user);
           alert('Usuário atualizado com sucesso');
+          this.router.navigate(['/admin/users']);
         },
         error: (error) => {
-          console.error('Erro ao atualizar usuário', error);
-          alert('Erro ao atualizar usuário');
+          alert('Erro ao atualizar usuário' + error);
         }
       });
     }

@@ -42,7 +42,7 @@ export class FormUpdateCoachComponent {
         this.router.navigate(['/admin/coaches']);
       }, (error: any) => {
         console.log(error);
-        alert('Erro ao atualizar coach!');
+        alert('Erro ao atualizar coach!' + error);
       });
     }
   }

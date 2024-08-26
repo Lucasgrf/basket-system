@@ -2,7 +2,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from "../../header/header.component";
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TeamService } from '../../../../services/team.service';
 
 @Component({
@@ -20,7 +20,8 @@ export class FormUpdateTeamComponent implements OnInit {
     private fb: FormBuilder,
     private service: TeamService,
     private route: ActivatedRoute,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private router: Router
   ) {
     this.teamForm = this.fb.group({
       name: ['', Validators.required],
@@ -55,12 +56,11 @@ export class FormUpdateTeamComponent implements OnInit {
       const teamData = this.teamForm.value;
       this.service.updateTeam(id, teamData).subscribe({
         next: (team) => {
-          console.log('Time atualizado com sucesso', team);
           alert('Time atualizado com sucesso');
+          this.router.navigate(['/admin/teams']);
         },
         error: (error) => {
-          console.error('Erro ao atualizar o time', error);
-          alert('Erro ao atualizar o time');
+          alert('Erro ao atualizar o time' + error);
         }
       });
     } else {

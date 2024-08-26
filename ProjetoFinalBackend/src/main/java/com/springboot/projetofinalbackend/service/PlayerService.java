@@ -206,6 +206,7 @@ public class PlayerService {
     public PlayerDTO toDTO(Player player) {
         return new PlayerDTO(
                 player.getId(),
+                player.getNickname(),
                 player.getUser() != null ? player.getUser().getId() : null,
                 player.getPosition(),
                 player.getHeight(),
@@ -222,24 +223,23 @@ public class PlayerService {
     }
 
     public ResponseEntity<PlayerDTO> create(PlayerDTO playerDTO) {
-        var existsPlayer = playerRepository.findById(playerDTO.userId());
-        var existsTeam = teamRepository.findById(playerDTO.teamId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        var existsUser = userRepository.findById(playerDTO.userId());
-
+        var existsPlayer = playerRepository.findByNickname(playerDTO.nickname());
         if(existsPlayer.isEmpty()){
             Player player = new Player();
+            player.setNickname(playerDTO.nickname());
             player.setAge(playerDTO.age());
             player.setPosition(playerDTO.position());
             player.setHeight(playerDTO.height());
             player.setWeight(playerDTO.weight());
-            player.setTeam(existsTeam);
-            if (existsUser.isEmpty()) {
+            if(playerDTO.teamId() != null){
+                teamRepository.findById(playerDTO.teamId()).ifPresent(player::setTeam);
+            }
+            if (playerDTO.userId() != null) {
                 User user = generateRandomUser();
                 player.setUser(user);
                 playerRepository.save(player);
                 return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(player));
             }
-            player.setUser(existsUser.get());
             playerRepository.save(player);
             return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(player));
         }
@@ -267,7 +267,7 @@ public class PlayerService {
 
         user.setUsername(randomName);
         user.setPhotoName("");
-        user.setPassword(passwordEncoder.encode("padrao@user"));
+        user.setPassword(passwordEncoder.encode("padrao@user" + randomNumber));
         user.setRole(User.Role.PLAYER);
         userRepository.save(user);
         Credential credential = credentialService.create(user);

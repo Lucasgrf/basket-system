@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HeaderComponent } from "../../header/header.component";
 import { TeamService } from '../../../../services/team.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-form-add-team',
@@ -13,7 +14,7 @@ import { TeamService } from '../../../../services/team.service';
 export class FormAddTeamComponent implements OnInit {
   teamForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private service: TeamService) {}
+  constructor(private fb: FormBuilder, private service: TeamService,private router: Router) {}
 
   ngOnInit(): void {
     this.teamForm = this.fb.group({
@@ -37,9 +38,10 @@ export class FormAddTeamComponent implements OnInit {
       this.service.addTeam(teamData).subscribe({
         next: () => {
           alert('Equipe criada com sucesso');
+          this.router.navigate(['/admin/teams']);
         },
         error: (error) => {
-          alert(error);
+          alert('Erro ao criar equipe' + error);
         }
       });
     }

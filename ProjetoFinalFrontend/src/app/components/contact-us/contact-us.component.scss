@@ -1,0 +1,45 @@
+:host {
+  display: block;
+  position: relative;
+  min-height: 100vh;
+}
+
+header {
+  position: relative;
+  z-index: 10;
+}
+
+main {
+  position: relative;
+  z-index: 20;
+}
+
+section {
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 1rem;
+  padding: 2rem;
+}
+
+button {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.animate-circle {
+  animation: moveCircle 10s infinite linear;
+}
+
+.animate-path {
+  animation: movePath 10s infinite linear;
+}
+
+@keyframes moveCircle {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes movePath {
+  0% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: 100; }
+}

@@ -1,45 +1,121 @@
-<div class="min-h-screen flex flex-col">
-  <header class="flex justify-between items-center p-4 bg-white shadow-md">
+<div class="min-h-screen flex flex-col relative overflow-hidden bg-gray-900">
+  <!-- Fundo Animado -->
+  <div class="absolute inset-0 z-0" id="animated-background">
+    <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+      <!-- Desenho geométrico para fundo -->
+      <defs>
+        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:rgba(255, 99, 71, 0.2);stop-opacity:1" />
+          <stop offset="100%" style="stop-color:rgba(255, 99, 71, 0);stop-opacity:1" />
+        </linearGradient>
+      </defs>
+      <g fill="none" stroke="url(#grad1)" stroke-width="2" id="background-shapes">
+        <circle cx="50" cy="50" r="40" />
+        <circle cx="150" cy="50" r="40" />
+        <circle cx="50" cy="150" r="40" />
+        <circle cx="150" cy="150" r="40" />
+        <path d="M10,100 L190,100" />
+        <path d="M100,10 L100,190" />
+      </g>
+    </svg>
+  </div>
+
+
+  <!-- Conteúdo da Página -->
+  <header class="flex justify-between items-center p-4 bg-white shadow-md z-50">
     <div class="flex items-center">
-      <img src="assets/logo.svg" alt="Basket System Logo" class="h-10 m-2 w-10">
-      <span class="text-xl font-bold text-red-500"><a href="#">Basket System</a></span>
+      <img src="assets/logo.svg" alt="TDStats Logo" class="h-10 w-10 mr-3">
+      <span class="text-xl font-bold text-red-500">
+        <a [routerLink]="'/home'">Basket System</a>
+      </span>
     </div>
     <div class="hidden lg:flex space-x-4">
-      <button class="bg-white text-red-500 font-semibold py-2 px-4 border border-red-500 rounded hover:bg-red-500 hover:text-white transition">Entrar</button>
-      <button class="bg-red-500 text-white font-semibold py-2 px-4 rounded hover:bg-red-600 transition">Registrar</button>
+      <button [routerLink]="'/auth/login'"
+        class="bg-white text-red-500 font-semibold py-2 px-4 border border-red-500 rounded hover:bg-red-500 hover:text-white transition">
+        Entrar
+      </button>
+      <button [routerLink]="'/auth/register'"
+        class="bg-red-500 text-white font-semibold py-2 px-4 rounded hover:bg-red-600 transition">
+        Registrar
+      </button>
     </div>
-    <button class="lg:hidden text-pink-500 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50">
-      <!-- Ícone de menu (hamburger) -->
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-      </svg>
-    </button>
+    <div class="relative lg:hidden flex items-center">
+      <!-- Menu Hambúrguer e Botões -->
+      <div class="flex items-center space-x-4">
+        <button *ngIf="!isMenuOpen" (click)="toggleMenu()"
+          class="text-red-500 focus:outline-none focus:ring-2 focus:ring-red-500 transition-transform transform hover:scale-110 hamburger-menu-button">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+          </svg>
+        </button>
+        <button *ngIf="isMenuOpen" (click)="toggleMenu()"
+          class="text-red-500 focus:outline-none focus:ring-2 focus:ring-red-500 transition-transform transform hover:scale-110 hamburger-menu-button">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+        <div #menuBox
+          class="menu-box flex flex-col space-y-2">
+          <button [routerLink]="'/auth/login'"
+            class="text-red-500 font-semibold py-2 px-4 border border-red-500 rounded hover:bg-red-500 hover:text-white transition">
+            Entrar
+          </button>
+          <button [routerLink]="'/auth/register'"
+            class="bg-red-500 text-white font-semibold py-2 px-4 rounded hover:bg-red-600 transition">
+            Registrar
+          </button>
+        </div>
+      </div>
+    </div>
   </header>
 
-  <section class="z-0 relative flex flex-col items-center justify-center flex-1 bg-gray-200 py-8 lg:py-16">
-    <img src="assets/bg-about.png" alt="Background Image" class="absolute inset-0 w-full h-full object-cover opacity-25">
-    <div class="text-center text-4xl md:text-5xl lg:text-4xl mb-5 font-bold text-orange-800 hover:text-red-700 transition duration-300 ease-in-out">
-      About Basket System
+  <main class="flex flex-col items-center justify-center flex-1 py-12 lg:py-24 z-20 relative">
+    <div class="relative w-full max-w-5xl mx-auto text-center mb-12">
+      <h1 class="text-4xl lg:text-5xl font-bold text-white mb-4">Sobre o Basket System</h1>
+      <p class="text-lg lg:text-xl text-gray-300 mb-6">A melhor plataforma para gerenciar jogadores, equipes e treinos com eficiência.</p>
+      <button [routerLink]="'/contact'"
+        class="bg-red-500 text-white font-semibold py-2 px-6 rounded-lg hover:bg-red-600 transition">
+        Entre em Contato
+      </button>
     </div>
-    <div class="z-10 w-full max-w-screen-lg bg-white rounded-3xl shadow-lg p-8">
-      <h1 class="text-3xl font-bold text-gray-800 mb-4">Our Mission</h1>
-      <p class="text-slate-700 text-lg mb-4">
-        At Basket System, we are dedicated to providing top-notch solutions for managing basketball teams, players, and trainings. Our platform is designed to streamline operations, enhance player development, and ensure smooth coordination among teams.
-      </p>
-      <h2 class="text-2xl font-bold text-gray-800 mb-4">What We Offer</h2>
-      <ul class="list-disc pl-6 text-slate-700 text-lg">
-        <li class="mb-2">Comprehensive team management tools to oversee all team activities.</li>
-        <li class="mb-2">Advanced player management to track progress and attendance.</li>
-        <li class="mb-2">Secure credential system to verify player identities and manage access to trainings.</li>
-        <li class="mb-2">A user-friendly interface that simplifies the management of basketball teams.</li>
-      </ul>
-      <h2 class="text-2xl font-bold text-gray-800 mb-4">Our Vision</h2>
-      <p class="text-slate-700 text-lg mb-4">
-        We envision a world where basketball teams are managed efficiently, allowing coaches and players to focus on what they do best - playing and improving their game. With Basket System, we're making that vision a reality.
-      </p>
-    </div>
-    <button class="z-0 mt-8 bg-pink-500 text-white font-semibold py-2 px-6 rounded hover:bg-pink-600 transition">Contact Us</button>
-  </section>
 
-  <app-footer></app-footer>
+    <section class="w-full max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Card 1 -->
+      <div class="p-6 rounded-lg shadow-lg hover:shadow-xl transition-transform transform hover:scale-105 text-center bg-gray-800">
+        <div class="flex items-center justify-center mb-4">
+          <svg class="h-16 w-16 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm0 0c-4.418 0-8 3.582-8 8v2h16v-2c0-4.418-3.582-8-8-8z" />
+          </svg>
+        </div>
+        <h2 class="text-xl font-semibold text-white mb-2">Nossa Missão</h2>
+        <p class="text-gray-300">No Basket System, dedicamo-nos a oferecer soluções de ponta para gerenciar equipes de basquete, jogadores e treinamentos.</p>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="p-6 rounded-lg shadow-lg hover:shadow-xl transition-transform transform hover:scale-105 text-center bg-gray-800">
+        <div class="flex items-center justify-center mb-4">
+          <svg class="h-16 w-16 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 21h5a1 1 0 001-1v-6a1 1 0 00-1-1h-5m-5 0H6a1 1 0 00-1 1v6a1 1 0 001 1h6m6-12V5a1 1 0 00-1-1h-5a1 1 0 00-1 1v4m4 0v6" />
+          </svg>
+        </div>
+        <h2 class="text-xl font-semibold text-white mb-2">O Que Oferecemos</h2>
+        <p class="text-gray-300">Ferramentas abrangentes para gerenciamento de equipes, jogadores e treinamentos.</p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="p-6 rounded-lg shadow-lg hover:shadow-xl transition-transform transform hover:scale-105 text-center bg-gray-800">
+        <div class="flex items-center justify-center mb-4">
+          <svg class="h-16 w-16 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h1m2 0h-1v4h1m-1-2v-1h1v1h-1zm0-3v1h-1v-1h1zM8 8h8v12H8V8zm0-2c0-.553.447-1 1-1h8c.553 0 1 .447 1 1v1H7V6z" />
+          </svg>
+        </div>
+        <h2 class="text-xl font-semibold text-white mb-2">Nossa Visão</h2>
+        <p class="text-gray-300">Enxergamos um mundo onde equipes de basquete são gerenciadas de forma eficiente, permitindo que treinadores e jogadores se concentrem em seu desempenho.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="z-50">
+    <app-footer></app-footer>
+  </footer>
 </div>

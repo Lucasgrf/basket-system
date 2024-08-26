@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CredentialService } from '../../../../services/credential.service';
 import { HeaderComponent } from '../../header/header.component';
 import { CommonModule } from '@angular/common';
@@ -18,7 +18,8 @@ export class FormUpdateCredentialComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private credentialService: CredentialService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     this.credentialForm = this.fb.group({
       photoName: ['',],
@@ -45,12 +46,11 @@ export class FormUpdateCredentialComponent implements OnInit {
       const id: number = +this.route.snapshot.paramMap.get('id')!;
       this.credentialService.update(id, this.credentialForm.value).subscribe({
         next: (credential) => {
-          console.log('Credencial atualizado com sucesso!', credential);
           alert('Credencial atualizado com sucesso!');
+          this.router.navigate(['/admin/users/credentials']);
         },
         error: (error) => {
-          console.error('Erro ao tentar atualizar credencial!', error);
-          alert('Erro ao tentar atualizar credencial!');
+          alert('Erro ao tentar atualizar credencial!' + error);
         }
       });
     }
