@@ -40,4 +40,10 @@ export class HeaderComponent {
       duration: 500
     });
   }
+
+  logout(): void {
+    localStorage.clear();
+    alert('Você foi desconectado');
+    window.location.href = '';
+  }
 }

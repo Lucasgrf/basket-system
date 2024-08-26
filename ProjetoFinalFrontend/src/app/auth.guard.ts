@@ -2,39 +2,31 @@ import { inject } from "@angular/core";
 import { CanActivateFn, Router } from "@angular/router";
 import { AuthService } from "./services/auth.service";
 
-export const authorizationGuard: CanActivateFn = (route, state) => {
-  const router: Router = inject(Router);
-  const authService: AuthService = inject(AuthService);
-  return router.navigate(['auth/login']);
-}
-
 export const RoleGuard: CanActivateFn = (route, state) => {
   const router: Router = inject(Router);
   const authService: AuthService = inject(AuthService);
   const role = localStorage.getItem('role');
 
-  if (authService.isLogged) {
+  // Verifica se o usuário está logado
+  if (authService.isLogged()) {
+    // Permissões baseadas no papel do usuário
     if (role === 'ADMIN') {
-      // Admin has access to all routes
+      // Admin tem acesso a todas as rotas
       return true;
     } else if (role === 'COACH') {
-      // Coach has access to specific routes
+      // Coach tem acesso a rotas específicas
       if (['/players', '/team', '/trainings', '/dashboard', '/profile'].includes(state.url)) {
         return true;
-      } else {
-        return router.navigate(['/dashboard']);
       }
     } else if (role === 'PLAYER') {
-      // Player has access to specific routes
+      // Player tem acesso a rotas específicas
       if (['/team', '/dashboard', '/profile', '/trainings'].includes(state.url)) {
         return true;
-      } else {
-        return router.navigate(['/dashboard']);
       }
     }
   }
 
-  // If the user is not logged in or the role doesn't match, redirect to login
-  return router.navigate(['auth/login']);
+  // Se o usuário não estiver logado ou não tiver permissão, redireciona para a página 404
+  router.navigate(['/404']);
+  return false;
 };
-

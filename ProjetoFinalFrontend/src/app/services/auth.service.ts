@@ -19,8 +19,10 @@ export class AuthService {
     return this.http.post<LoginResponse>(BASE_URL + "/auth/register", {username,email,password,role}).pipe(
       tap(
         (value) => {
+            const userId = value['id'];
             const jwtToken = value['token'];
             const role = value['role'];
+            localStorage.setItem('userId', userId.toString());
             localStorage.setItem('role', role);
             localStorage.setItem('JWT', jwtToken);
         }
@@ -29,7 +31,7 @@ export class AuthService {
   }
 
   login(loginRequest: any): Observable<any> {
-    return this.http.post<LoginResponse>(BASE_URL + "auth/login", loginRequest).pipe(
+    return this.http.post<LoginResponse>(BASE_URL + "/auth/login", loginRequest).pipe(
       tap(
         (value) => {
             const jwtToken = value['token'];
@@ -47,9 +49,17 @@ export class AuthService {
     localStorage.removeItem('JWT');
   }
 
-  get isLogged() {
+  isLogged() {
     const jwtToken = localStorage.getItem('JWT');
     if (jwtToken) {
+      return true;
+    }
+    return false;
+  }
+
+  isAdmin() {
+    const role = localStorage.getItem('role');
+    if (role === 'ADMIN') {
       return true;
     }
     return false;

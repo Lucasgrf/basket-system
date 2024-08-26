@@ -1,5 +1,5 @@
 export type LoginResponse = {
-  id: number
+  id: number;
   token: string;
   role: string;
 }

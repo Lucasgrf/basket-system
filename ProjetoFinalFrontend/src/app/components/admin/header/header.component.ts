@@ -56,4 +56,10 @@ export class HeaderComponent implements AfterViewInit {
       }
     }
   }
+
+  logout(): void {
+    localStorage.clear();
+    alert('Você foi desconectado');
+    window.location.href = '';
+  }
 }

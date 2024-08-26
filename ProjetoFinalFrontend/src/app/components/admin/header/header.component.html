@@ -30,7 +30,9 @@
       <span class="material-icons">event</span> <span>Trainings</span>
     </a>
     <a routerLink="/" class="text-red-500 font-semibold hover:text-red-700 flex items-center space-x-2">
-      <span class="material-icons">logout</span> <span>Logout</span>
+      <button (click)="logout()">
+        <span class="material-icons">logout</span> <span>Logout</span>
+      </button>
     </a>
   </nav>
 </header>

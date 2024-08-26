@@ -13,6 +13,7 @@ import com.springboot.projetofinalbackend.repository.PlayerRepository;
 import com.springboot.projetofinalbackend.repository.UserRepository;
 import com.springboot.projetofinalbackend.security.TokenService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -58,6 +59,7 @@ public class AuthService {
                     Admin admin = new Admin();
                     admin.setUser(newUser);
                     adminRepository.save(admin);
+                    //return ResponseEntity.badRequest().build();
                 }
                 default -> throw new IllegalStateException("Role not found: " + body.role());
             }
@@ -79,9 +81,5 @@ public class AuthService {
             return ResponseEntity.ok(new ResponseDTO(user.getId(), token, user.getRole()));
         }
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-    }
-
-    public boolean authenticate(String rawPassword, String encodedPassword) {
-        return passwordEncoder.matches(rawPassword, encodedPassword);
     }
 }

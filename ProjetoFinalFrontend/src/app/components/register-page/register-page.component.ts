@@ -40,7 +40,7 @@ export class RegisterPageComponent {
       this.service.signup(registerData.username!, registerData.email!, registerData.password!, registerData.role!).subscribe({
         next: () => {
           alert('Cadastro realizado com sucesso');
-          this.router.navigate(['login']);
+          this.router.navigate(['/auth/login']);
         },
         error: (error) => {
           alert('Erro ao realizar cadastro, tente novamente' + error);

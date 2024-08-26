@@ -35,7 +35,15 @@ export class LoginPageComponent {
       this.service.login(this.loginForm.value).subscribe({
         next: () => {
           alert("Login bem-sucedido!");
-          this.router.navigate(['home/dashboard']);
+          console.log(this.service.isAdmin());
+          console.log(localStorage.getItem('role'));
+          console.log(localStorage.getItem('JWT'));
+          console.log(localStorage.getItem('userId'));
+          if(this.service.isAdmin()) {
+            this.router.navigate(['/admin']);
+          } else {
+            this.router.navigate(['/dashboard']);
+          }
         },
         error: (error) => {
           alert("Falha no login, tente novamente.");

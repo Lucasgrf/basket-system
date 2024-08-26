@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { LoginPageComponent } from './components/login-page/login-page.component'; // Import the LoginComponent from the correct file path
+import { LoginPageComponent } from './components/login-page/login-page.component';
 import { RegisterPageComponent } from './components/register-page/register-page.component';
 import { AboutPageComponent } from './components/about-page/about-page.component';
 import { InitialPageComponent } from './components/initial-page/initial-page.component';
@@ -30,27 +30,28 @@ import { FormUpdateCoachComponent } from './components/admin/forms/form-update-c
 import { OverviewComponent } from './components/admin/overview/overview.component';
 import { CredentialsComponent } from './components/admin/credentials/credentials.component';
 import { FormUpdateCredentialComponent } from './components/admin/forms/form-update-credential/form-update-credential.component';
+import { NoDirectAccessGuard } from './NoDirectAccessGuard';
 
 export const routes: Routes = [
-  { path: 'admin', component: HomeComponent },
-  { path: 'admin/users', component: UsersComponent},
-  { path: 'admin/teams', component: TeamsComponent },
-  { path: 'admin/trainings', component: TrainingsComponent},
-  { path: 'admin/users/add', component: FormAddUserComponent },
-  { path: 'admin/users/edit/:id', component: FormUpdateUserComponent },
-  { path: 'admin/teams/add', component: FormAddTeamComponent },
-  { path: 'admin/teams/edit/:id', component: FormUpdateTeamComponent },
-  { path: 'admin/trainings/add', component: FormAddTrainingComponent},
-  { path: 'admin/trainings/edit/:id', component: FormUpdateTrainingComponent },
-  { path: 'admin/players', component: PlayersComponent},
-  { path: 'admin/players/add', component: FormAddPlayerComponent },
-  { path: 'admin/players/edit/:id', component: FormUpdatePlayerComponent },
-  { path: 'admin/coaches', component: CoachesComponent},
-  { path: 'admin/coaches/add', component: FormAddCoachComponent },
-  { path: 'admin/coaches/edit/:id', component: FormUpdateCoachComponent },
-  { path: 'admin/overview', component: OverviewComponent},
-  { path: 'admin/users/credentials', component: CredentialsComponent},
-  { path: 'admin/credentials/edit/:id', component: FormUpdateCredentialComponent},
+  { path: 'admin', component: HomeComponent, canActivate: [NoDirectAccessGuard] },
+  { path: 'admin/users', component: UsersComponent, canActivate: [NoDirectAccessGuard]},
+  { path: 'admin/teams', component: TeamsComponent, canActivate: [NoDirectAccessGuard] },
+  { path: 'admin/trainings', component: TrainingsComponent, canActivate: [NoDirectAccessGuard]},
+  { path: 'admin/users/add', component: FormAddUserComponent, canActivate: [NoDirectAccessGuard] },
+  { path: 'admin/users/edit/:id', component: FormUpdateUserComponent, canActivate: [NoDirectAccessGuard] },
+  { path: 'admin/teams/add', component: FormAddTeamComponent, canActivate: [NoDirectAccessGuard] },
+  { path: 'admin/teams/edit/:id', component: FormUpdateTeamComponent, canActivate: [NoDirectAccessGuard] },
+  { path: 'admin/trainings/add', component: FormAddTrainingComponent, canActivate: [NoDirectAccessGuard]},
+  { path: 'admin/trainings/edit/:id', component: FormUpdateTrainingComponent, canActivate: [NoDirectAccessGuard] },
+  { path: 'admin/players', component: PlayersComponent, canActivate: [NoDirectAccessGuard]},
+  { path: 'admin/players/add', component: FormAddPlayerComponent, canActivate: [NoDirectAccessGuard] },
+  { path: 'admin/players/edit/:id', component: FormUpdatePlayerComponent, canActivate: [NoDirectAccessGuard] },
+  { path: 'admin/coaches', component: CoachesComponent, canActivate: [NoDirectAccessGuard]},
+  { path: 'admin/coaches/add', component: FormAddCoachComponent, canActivate: [NoDirectAccessGuard] },
+  { path: 'admin/coaches/edit/:id', component: FormUpdateCoachComponent, canActivate: [NoDirectAccessGuard] },
+  { path: 'admin/overview', component: OverviewComponent, canActivate: [NoDirectAccessGuard]},
+  { path: 'admin/users/credentials', component: CredentialsComponent, canActivate: [NoDirectAccessGuard]},
+  { path: 'admin/credentials/edit/:id', component: FormUpdateCredentialComponent, canActivate: [NoDirectAccessGuard]},
   {
     path: '',
     component: HomePageComponent
@@ -84,27 +85,27 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     component: InitialPageComponent,
-    //canActivate: [RoleGuard]
+    canActivate: [NoDirectAccessGuard]
   },
   {
     path: 'profile',
     component: ProfilePageComponent,
-    canActivate: [RoleGuard]
+    canActivate: [NoDirectAccessGuard]
   },
   {
     path: 'players',
     component: PlayerPageComponent,
-    canActivate: [RoleGuard]
+    canActivate: [NoDirectAccessGuard]
   },
   {
     path: 'teams',
     component: TeamPageComponent,
-    canActivate: [RoleGuard]
+    canActivate: [NoDirectAccessGuard]
   },
   {
     path: 'trainings',
     component: TrainingPageComponent,
-    canActivate: [RoleGuard]
+    canActivate: [NoDirectAccessGuard]
   },
   {
     path: '**',
