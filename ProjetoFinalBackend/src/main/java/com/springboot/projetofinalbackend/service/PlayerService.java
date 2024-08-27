@@ -222,7 +222,7 @@ public class PlayerService {
         return ResponseEntity.status(HttpStatus.OK).body(toDTO(player));
     }
 
-    public ResponseEntity<PlayerDTO> create(PlayerDTO playerDTO) {
+    public ResponseEntity<PlayerDTO> create(@RequestBody PlayerDTO playerDTO) {
         var existsPlayer = playerRepository.findByNickname(playerDTO.nickname());
         if(existsPlayer.isEmpty()){
             Player player = new Player();
@@ -235,11 +235,14 @@ public class PlayerService {
                 teamRepository.findById(playerDTO.teamId()).ifPresent(player::setTeam);
             }
             if (playerDTO.userId() != null) {
-                User user = generateRandomUser();
+                User user = userRepository.findById(playerDTO.userId())
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
                 player.setUser(user);
                 playerRepository.save(player);
                 return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(player));
             }
+            User user = generateRandomUser();
+            player.setUser(user);
             playerRepository.save(player);
             return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(player));
         }

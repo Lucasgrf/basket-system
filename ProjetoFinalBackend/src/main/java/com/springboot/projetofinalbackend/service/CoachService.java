@@ -33,17 +33,17 @@ public class CoachService {
 
     public ResponseEntity<CoachDTO> createCoach(@RequestBody CoachDTO coach) {
         var existsCoach = coachRepository.findByNickname(coach.nickname());
-        var existsUser = userRepository.findById(coach.userId());
         if (existsCoach.isEmpty()) {
             Coach newCoach = new Coach();
             newCoach.setNickname(coach.nickname());
-            if (existsUser.isEmpty()) {
-                User user = generateRandomUser();
+            if (coach.userId() != null) {
+                User user = userRepository.findById(coach.userId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
                 newCoach.setUser(user);
                 coachRepository.save(newCoach);
                 return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(newCoach));
             }
-            newCoach.setUser(existsUser.get());
+            User user = generateRandomUser();
+            newCoach.setUser(user);
             coachRepository.save(newCoach);
             return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(newCoach));
         }

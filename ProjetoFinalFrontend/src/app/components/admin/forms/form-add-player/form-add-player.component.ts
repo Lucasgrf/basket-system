@@ -29,7 +29,7 @@ export class FormAddPlayerComponent {
       height: ['', Validators.required],
       weight: ['', Validators.required],
       teamId: ['',],
-      userId: ['', Validators.required]
+      userId: ['',]
     });
   }
 

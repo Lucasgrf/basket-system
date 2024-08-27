@@ -30,7 +30,7 @@ export class FormUpdateTeamComponent implements OnInit {
       foundation: ['', Validators.required],
       emailContact: ['', [Validators.required, Validators.email]],
       phoneContact: ['', Validators.required],
-      coachId: ['', Validators.required]
+      coachId: ['',]
     });
   }
 
@@ -55,7 +55,7 @@ export class FormUpdateTeamComponent implements OnInit {
       const id: number = +this.route.snapshot.paramMap.get('id')!;
       const teamData = this.teamForm.value;
       this.service.updateTeam(id, teamData).subscribe({
-        next: (team) => {
+        next: () => {
           alert('Time atualizado com sucesso');
           this.router.navigate(['/admin/teams']);
         },

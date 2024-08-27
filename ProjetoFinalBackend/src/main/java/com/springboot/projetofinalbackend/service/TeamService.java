@@ -60,17 +60,25 @@ public class TeamService {
         var teamUpdate = teamRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        teamUpdate.setName(teamDto.name());
-        teamUpdate.setAddress(teamDto.address());
-        teamUpdate.setGym(teamDto.gym());
-        teamUpdate.setEmailContact(teamDto.emailContact());
-        teamUpdate.setFoundation(teamDto.foundation());
-        teamUpdate.setPhoneContact(teamDto.phoneContact());
-        var existsCoach = coachRepository.findById(teamDto.coachId());
-        if (existsCoach.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        if(teamDto.name() != null) {
+            teamUpdate.setName(teamDto.name());
         }
-        teamUpdate.setCoach(existsCoach.get());
+        if(teamDto.address() != null) {
+            teamUpdate.setAddress(teamDto.address());
+        }
+        if(teamDto.gym() != null) {
+            teamUpdate.setGym(teamDto.gym());
+        }
+        if(teamDto.foundation() != null) {
+            teamUpdate.setFoundation(teamDto.foundation());
+        }
+        if(teamDto.phoneContact() != null) {
+            teamUpdate.setPhoneContact(teamDto.phoneContact());
+        }
+        if(teamDto.coachId() != null) {
+            Coach coach = coachRepository.findById(teamDto.coachId()).get();
+            teamUpdate.setCoach(coach);
+        }
         teamRepository.save(teamUpdate);
         return ResponseEntity.status(HttpStatus.OK).body(toDTO(teamUpdate));
     }
