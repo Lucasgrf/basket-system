@@ -69,9 +69,11 @@ BasketSystem é um sistema de gerenciamento de times, jogadores e treinos de bas
     docker run --name basketsystem-db -e POSTGRES_PASSWORD=senha -d -p 5432:5432 postgres
     ```
 
-## Testes de API
+## API
 
 Utilize o Postman para testar as APIs do backend. Importe a coleção de testes disponível no diretório `postman`.
+
+[Documentação da API](https://github.com/Lucasgrf/basket-system/blob/main/ProjetoFinalBackend/API%20docs.md)
 
 ## Contribuição
 
