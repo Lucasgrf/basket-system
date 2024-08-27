@@ -23,7 +23,7 @@ BasketSystem é um sistema de gerenciamento de times, jogadores e treinos de bas
 - Docker instalado na máquina.
 - Postman para testes de API.
 - Node.js e npm para o frontend.
-- JDK 11+ para o backend.
+- JDK 17+ para o backend.
 
 ## Como Executar
 
