@@ -31,6 +31,7 @@ import { OverviewComponent } from './components/admin/overview/overview.componen
 import { CredentialsComponent } from './components/admin/credentials/credentials.component';
 import { FormUpdateCredentialComponent } from './components/admin/forms/form-update-credential/form-update-credential.component';
 import { NoDirectAccessGuard } from './NoDirectAccessGuard';
+import { CoachPageComponent } from './components/coach-page/coach-page.component';
 
 export const routes: Routes = [
   { path: 'admin', component: HomeComponent, canActivate: [NoDirectAccessGuard] },
@@ -84,8 +85,7 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard',
-    component: InitialPageComponent,
-    canActivate: [NoDirectAccessGuard]
+    component: InitialPageComponent
   },
   {
     path: 'profile',
@@ -95,6 +95,11 @@ export const routes: Routes = [
   {
     path: 'players',
     component: PlayerPageComponent,
+    canActivate: [NoDirectAccessGuard]
+  },
+  {
+    path: 'coaches',
+    component: CoachPageComponent,
     canActivate: [NoDirectAccessGuard]
   },
   {

@@ -118,4 +118,9 @@ public class CoachController {
     public ResponseEntity<CoachDTO> updateCoach(@PathVariable Long id, @RequestBody CoachDTO coachDTO) {
         return coachService.updateCoach(id,coachDTO);
     }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<CoachDTO> getCoachByUserId(@PathVariable Long id) {
+        return coachService.getCoachByUserId(id);
+    }
 }

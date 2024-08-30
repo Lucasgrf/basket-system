@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import anime from 'animejs';
 
@@ -10,20 +10,29 @@ import anime from 'animejs';
   templateUrl: './menu-lateral.component.html',
   styleUrl: './menu-lateral.component.scss'
 })
-export class MenuLateralComponent {
-  isOpen = false;
+export class MenuLateralComponent implements OnInit {
+  isSidebarOpen: boolean = true;
+  role: string | null = '';
 
-  toggleMenu() {
-    this.isOpen = !this.isOpen;
-    this.animateMenu();
+  ngOnInit() {
+    this.role = localStorage.getItem('role');
   }
 
-  private animateMenu() {
+  toggleSidebar() {
+    this.isSidebarOpen = !this.isSidebarOpen;
+
     anime({
-      targets: '.sidebar',
+      targets: '#sidebar',
+      translateX: this.isSidebarOpen ? 0 : '-100%',
+      duration: 500,
       easing: 'easeInOutQuad',
-      duration: 300,
-      translateX: this.isOpen ? ['-100%', '0%'] : ['0%', '-100%']
     });
   }
+
+  logout() {
+    localStorage.clear();
+    alert('Deslogado com sucesso!');
+    window.location.href = '/';
+  }
+
 }

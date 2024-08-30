@@ -1,28 +1,77 @@
 <app-header></app-header>
 <div class="min-h-screen flex items-center justify-center bg-gray-900">
-  <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md m-10">
-    <div class="flex items-center mb-6">
-      <div class="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center">
-        <span class="text-green-500">Ativo</span>
+  <div class="bg-slate-100 p-8 rounded-3xl shadow-lg w-full max-w-md m-10">
+    <div class="flex items-center mb-6 relative">
+      <!-- Imagem do perfil -->
+      <div class="relative">
+        <img
+          *ngIf="user.photoName; else placeholder"
+          [src]="user.photoName"
+          alt="Foto do Usuário"
+          class="w-32 h-32 bg-gray-200 rounded-full object-cover"
+        />
+        <ng-template #placeholder>
+          <div class="w-32 h-32 bg-gray-200 rounded-full flex items-center justify-center">
+            <span class="text-gray-500">Sem Foto</span>
+          </div>
+        </ng-template>
+        <!-- Ícone de lápis -->
+        <div *ngIf="isEditing" class="absolute inset-0 flex items-center justify-center opacity-100 transition-opacity">
+          <input type="file" (change)="handleFileInput($event)" class="hidden">
+          <button (click)="uploadPhoto()" class="bg-white p-1 rounded-full shadow-md">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 19.071a3 3 0 01-2.121-.879A3 3 0 012 16V5a3 3 0 01.879-2.121A3 3 0 014 2h11a3 3 0 012.121.879L21 5.879a3 3 0 01.879 2.121v11a3 3 0 01-.879 2.121A3 3 0 0118 21H7a3 3 0 01-1.879-.879zM6 14l6-6m-2 2h4m-6 4h4"/>
+            </svg>
+          </button>
+        </div>
       </div>
-      <div class="ml-4 m-5">
-        <h3 class="text-xl font-semibold">{{user.username}}</h3>
+      <div class="p-4 mx-6">
+        <h3 class="text-2xl font-semibold text-gray-500">
+          {{ user.username }}
+          <span class="text-gray-500 mb-2 flex text-sm">{{ user.email }}</span>
+          <span class="text-gray-500 flex text-sm">{{ role }}</span>
+        </h3>
       </div>
     </div>
     <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
       <div class="mb-6">
         <label class="block text-gray-700">Nome</label>
-        <input type="text" class="w-full p-2 border border-gray-300 rounded mt-1" formControlName="username" required>
+        <input type="text" class="w-full p-2 border border-gray-300 rounded mt-1" formControlName="username" [readonly]="!isEditing" required>
       </div>
       <div class="mb-6">
         <label class="block text-gray-700">E-mail</label>
-        <input type="email" class="w-full p-2 border border-gray-300 rounded mt-1" formControlName="email" required>
+        <input type="email" class="w-full p-2 border border-gray-300 rounded mt-1" formControlName="email" [readonly]="!isEditing" required>
       </div>
       <div class="mb-6">
         <label class="block text-gray-700">Senha</label>
-        <input type="email" class="w-full p-2 border border-gray-300 rounded mt-1" formControlName="password">
+        <input type="password" class="w-full p-2 border border-gray-300 rounded mt-1" formControlName="password" [readonly]="!isEditing">
       </div>
-      <button type="submit" class="w-full bg-red-500 text-white p-2 rounded">Salvar</button>
+      <!-- Mostrar botão Editar quando não estiver editando -->
+      <button *ngIf="!isEditing" type="button" (click)="editProfile()" class="w-full bg-white text-red-500 font-bold p-2 rounded border border-red-500 hover:bg-red-600 hover:text-white transition-colors duration-300">
+        Editar
+      </button>
+      <!-- Mostrar botão Salvar quando estiver editando -->
+      <button *ngIf="isEditing" type="submit" class="w-full bg-red-500 text-white font-bold p-2 rounded border border-red-600 hover:bg-red-600 hover:text-white transition-colors duration-300">
+        Salvar
+      </button>
     </form>
+    <!-- Botão para mostrar a credencial -->
+    <button (click)="toggleCredential()" class="mt-4 w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition-colors duration-300">
+      Mostrar Credencial
+    </button>
+    <!-- Balão flutuante de credencial -->
+    <div *ngIf="isCredentialVisible" class="absolute bg-white shadow-lg rounded-lg p-4 top-24 mt-32 right-24 w-72 border border-gray-300">
+      <button (click)="toggleCredential()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-800">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+      <div class="flex flex-col items-center">
+        <img src={{photo}} alt="Foto do Usuário" class="w-52 h-52 bg-gray-200 rounded-md object-cover mb-4">
+        <h3 class="text-lg font-semibold">{{ user.username }}</h3>
+        <p class="text-gray-600">{{ role }}</p>
+        <p class="text-gray-600">{{ team }}</p>
+      </div>
+    </div>
   </div>
 </div>

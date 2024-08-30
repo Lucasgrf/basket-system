@@ -32,18 +32,12 @@ export class LoginPageComponent {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      this.service.login(this.loginForm.value).subscribe({
+      const email = this.loginForm?.get('email')?.value || '';
+      const password = this.loginForm?.get('password')?.value || '';
+      this.service.login(email!,password!).subscribe({
         next: () => {
-          alert("Login bem-sucedido!");
-          console.log(this.service.isAdmin());
-          console.log(localStorage.getItem('role'));
-          console.log(localStorage.getItem('JWT'));
-          console.log(localStorage.getItem('userId'));
-          if(this.service.isAdmin()) {
-            this.router.navigate(['/admin']);
-          } else {
-            this.router.navigate(['/dashboard']);
-          }
+          alert("Login efetuado com sucesso!");
+          this.router.navigate(['/dashboard']);
         },
         error: (error) => {
           alert("Falha no login, tente novamente.");

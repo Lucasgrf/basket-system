@@ -92,4 +92,9 @@ public class PlayerController {
     public ResponseEntity delete(@PathVariable Long id){
         return playerService.delete(id);
     }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<PlayerDTO> getPlayerByUserId(@PathVariable Long id){
+        return playerService.getPlayerByUserId(id);
+    }
 }

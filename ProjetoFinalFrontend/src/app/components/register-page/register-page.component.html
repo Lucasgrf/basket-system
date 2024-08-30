@@ -24,7 +24,7 @@
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-6">
           <!-- Form Fields -->
           <div class="mb-6">
-            <label for="username" class="block mb-2 text-sm font-medium text-gray-900">Nome:</label>
+            <label for="username" class="block mb-2 text-sm font-medium text-gray-900">Nome e Sobrenome:</label>
             <input type="text" formControlName="username" id="username" class="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5" placeholder="John Doe" required />
             <div *ngIf="submitted && registerForm.get('username')?.invalid" class="text-red-600 text-sm mt-2">
               <div *ngIf="registerForm.get('username')?.errors?.['required']">O nome é obrigatório.</div>

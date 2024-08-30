@@ -126,4 +126,13 @@ public class CoachService {
         userRepository.save(user);
         return user;
     }
+
+    public ResponseEntity<CoachDTO> getCoachByUserId(@PathVariable Long userId) {
+        Optional<Coach> coach = coachRepository.findById(userId);
+        if(coach.isPresent()) {
+            Coach coachAux = coach.get();
+            return ResponseEntity.status(HttpStatus.OK).body(toDTO(coachAux));
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
 }

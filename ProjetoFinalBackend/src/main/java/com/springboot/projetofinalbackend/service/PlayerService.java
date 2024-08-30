@@ -7,7 +7,6 @@ import com.springboot.projetofinalbackend.DTO.TrainingDTO;
 import com.springboot.projetofinalbackend.model.*;
 import com.springboot.projetofinalbackend.repository.*;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -278,5 +277,14 @@ public class PlayerService {
         user.setCredential(credential);
         userRepository.save(user);
         return user;
+    }
+
+    public ResponseEntity<PlayerDTO> getPlayerByUserId(@PathVariable Long userId){
+        var player = playerRepository.findByUserId(userId);
+        if(player.isPresent()){
+            Player playerAux = player.get();
+            return ResponseEntity.status(HttpStatus.OK).body(toDTO(playerAux));
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 }

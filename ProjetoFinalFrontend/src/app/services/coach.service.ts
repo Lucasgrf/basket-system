@@ -36,4 +36,8 @@ export class CoachService {
   deleteCoach(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+
+  getCoachByUserId(userId: number): Observable<any> {
+    return this.http.get<Coach>(`${this.apiUrl}/user/${userId}`);
+  }
 }

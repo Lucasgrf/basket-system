@@ -1,30 +1,69 @@
-<!-- menu-lateral.component.html -->
-<aside class="sidebar ">
-  <div class="logo-section bg-slate-100 rounded-xl">
-    <img src="assets/logo.svg" alt="Logo">
-    <span>Menu</span>
+<!-- Menu Lateral para Desktop -->
+<div id="sidebar" class="hidden ml-4 lg:flex flex-col rounded-3xl left-0 top-0 w-64 h-full bg-gray-900 bg-opacity-75 text-white shadow-md transform transition-transform duration-300 ease-in-out">
+  <div class="flex flex-col items-center mt-8">
+    <!-- Logo e Título -->
+    <div class="mb-6">
+      <img src="assets/logo.svg" alt="Logo" class="h-12 w-12 mx-auto">
+      <h1 class="text-lg font-bold mt-2">Basket System</h1>
+    </div>
+
+    <!-- Itens do Menu -->
+    <nav class="flex flex-col space-y-4">
+      <!-- Inicio -->
+      <a routerLink="/dashboard" class="flex items-center text-orange-500 hover:text-white transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 3l9.5 9.5-1.4 1.4L19 11.8V20H5v-8.2L3.9 13.9 2.5 12.5 12 3z"/>
+        </svg>
+        Início
+      </a>
+
+      <!-- Jogadores (Visível para COACH e ADMIN) -->
+      <a *ngIf="role !== 'PLAYER'" routerLink="/players" class="flex items-center text-orange-500 hover:text-white transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4 8 5.79 8 8s1.79 4 4 4zm0 2c-3.31 0-10 1.66-10 5v3h20v-3c0-3.34-6.69-5-10-5z"/>
+        </svg>
+        Jogadores
+      </a>
+
+      <!-- Treinadores (Visível para PLAYER e ADMIN) -->
+      <a *ngIf="role !== 'COACH'" routerLink="/coaches" class="flex items-center text-orange-500 hover:text-white transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4 8 5.79 8 8s1.79 4 4 4zm0 2c-3.31 0-10 1.66-10 5v3h20v-3c0-3.34-6.69-5-10-5z"/>
+        </svg>
+        Treinadores
+      </a>
+
+      <!-- Treinamentos -->
+      <a routerLink="/trainings" class="flex items-center text-orange-500 hover:text-white transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M19 3h-1V2h-2v1H8V2H6v1H5a2 2 0 00-2 2v17a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zm0 18H5V8h14zm-9-9h4v2h-4zm0 4h4v2h-4z"/>
+        </svg>
+        Treinamentos
+      </a>
+
+      <!-- Times -->
+      <a routerLink="/teams" class="flex items-center text-orange-500 hover:text-white transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 2C8.13 2 5 5.13 5 9c0 1.89.66 3.63 1.76 5.02L7.5 18h9l.74-3.98A7.963 7.963 0 0019 9c0-3.87-3.13-7-7-7zm-3.5 10.5c.42 0 .78.34.78.75s-.36.75-.78.75-.75-.34-.75-.75.34-.75.75-.75zm7.06 1.5h-5.12l-.62 3.25H8.44l.87-4.5h5.25l.87 4.5h-1.83l-.62-3.25zM9.78 11.75c-.42 0-.78-.34-.78-.75s.36-.75.78-.75.75.34.75.75-.34.75-.75.75z"/>
+        </svg>
+        Times
+      </a>
+
+      <!-- Configurações (Visível para ADMIN) -->
+      <a *ngIf="role === 'ADMIN'" routerLink="/admin" class="flex items-center text-orange-500 hover:text-white transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M19.4 13c.1-.7.1-1.3 0-2l2.1-1.7c.2-.1.2-.3.1-.5l-2-3.5c-.1-.1-.3-.2-.5-.1l-2.5 1c-.5-.4-1-.8-1.5-1l-.4-2.7c0-.2-.2-.4-.4-.4h-4c-.2 0-.4.2-.4.4l-.3 2.7c-.5.2-1 .6-1.5 1l-2.5-1c-.2-.1-.4 0-.5.1l-2 3.5c-.1.2 0 .4.1.5l2.1 1.7c-.1.7-.1 1.3 0 2l-2.1 1.7c-.2.1-.2.3-.1.5l2 3.5c.1.1.3.2.5.1l2.5-1c.5.4 1 .8 1.5 1l.4 2.7c0 .2.2.4.4.4h4c.2 0 .4-.2.4-.4l.3-2.7c.5-.2 1-.6 1.5-1l2.5 1c.2.1.4 0 .5-.1l2-3.5c.1-.2 0-.4-.1-.5L19.4 13zm-7.4 3c-2.2 0-4-1.8-4-4s1.8-4 4-4 4 1.8 4 4-1.8 4-4 4z"/>
+        </svg>
+        Configurações
+      </a>
+
+      <!-- Sair -->
+      <button (click)="logout()" class="ml-4 flex items-center text-orange-500 hover:text-white transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12h-6m3-3l3 3-3 3m9-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        Sair
+      </button>
+    </nav>
   </div>
-  <nav class="flex flex-col space-y-2 text-gray-700 bg-slate-100 rounded-xl h-screen">
-    <a [routerLink]="'/dashboard'" class="nav-item">
-      <svg class="w-6 h-6 mb-1 icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" fill="#EA454C">
-        <path d="M575.8 255.5c0 18-15 32.1-32 32.1l-32 0 .7 160.2c0 2.7-.2 5.4-.5 8.1l0 16.2c0 22.1-17.9 40-40 40l-16 0c-1.1 0-2.2 0-3.3-.1c-1.4 .1-2.8 .1-4.2 .1L416 512l-24 0c-22.1 0-40-17.9-40-40l0-24 0-64c0-17.7-14.3-32-32-32l-64 0c-17.7 0-32 14.3-32 32l0 64 0 24c0 22.1-17.9 40-40 40l-24 0-31.9 0c-1.5 0-3-.1-4.5-.2c-1.2 .1-2.4 .2-3.6 .2l-16 0c-22.1 0-40-17.9-40-40l0-112c0-.9 0-1.9 .1-2.8l0-69.7-32 0c-18 0-32-14-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7L564.8 231.5c8 7 12 15 11 24z"/>
-      </svg>
-      <span>Início</span>
-    </a>
-    <a [routerLink]="'/players'" class="nav-item">
-      <svg class="w-6 h-6 mb-1 icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="#EA454C">
-        <path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512l388.6 0c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304l-91.4 0z"/>
-      </svg><span>Players</span>
-    </a>
-    <a [routerLink]="'/teams'" class="nav-item">
-      <svg class="w-6 h-6 mb-1 icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="#EA454C">
-        <path d="M86.6 64l85.2 85.2C194.5 121.7 208 86.4 208 48c0-14.7-2-28.9-5.7-42.4C158.6 15 119 35.5 86.6 64zM64 86.6C35.5 119 15 158.6 5.6 202.3C19.1 206 33.3 208 48 208c38.4 0 73.7-13.5 101.3-36.1L64 86.6zM256 0c-7.3 0-14.6 .3-21.8 .9C238 16 240 31.8 240 48c0 47.3-17.1 90.5-45.4 124L256 233.4 425.4 64C380.2 24.2 320.9 0 256 0zM48 240c-16.2 0-32-2-47.1-5.8C.3 241.4 0 248.7 0 256c0 64.9 24.2 124.2 64 169.4L233.4 256 172 194.6C138.5 222.9 95.3 240 48 240zm463.1 37.8c.6-7.2 .9-14.5 .9-21.8c0-64.9-24.2-124.2-64-169.4L278.6 256 340 317.4c33.4-28.3 76.7-45.4 124-45.4c16.2 0 32 2 47.1 5.8zm-4.7 31.9C492.9 306 478.7 304 464 304c-38.4 0-73.7 13.5-101.3 36.1L448 425.4c28.5-32.3 49.1-71.9 58.4-115.7zM340.1 362.7C317.5 390.3 304 425.6 304 464c0 14.7 2 28.9 5.7 42.4C353.4 497 393 476.5 425.4 448l-85.2-85.2zM317.4 340L256 278.6 86.6 448c45.1 39.8 104.4 64 169.4 64c7.3 0 14.6-.3 21.8-.9C274 496 272 480.2 272 464c0-47.3 17.1-90.5 45.4-124z"/>
-      </svg><span>Teams</span>
-    </a>
-    <a [routerLink]="'/trainings'" class="nav-item">
-      <svg class="w-6 h-6 mb-1 icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="#EA454C">
-        <path d="M40 48C26.7 48 16 58.7 16 72l0 48c0 13.3 10.7 24 24 24l48 0c13.3 0 24-10.7 24-24l0-48c0-13.3-10.7-24-24-24L40 48zM192 64c-17.7 0-32 14.3-32 32s14.3 32 32 32l288 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L192 64zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32l288 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-288 0zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32l288 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-288 0zM16 232l0 48c0 13.3 10.7 24 24 24l48 0c13.3 0 24-10.7 24-24l0-48c0-13.3-10.7-24-24-24l-48 0c-13.3 0-24 10.7-24 24z"/>
-      </svg><span>Trainings</span>
-    </a>
-  </nav>
-</aside>
+</div>

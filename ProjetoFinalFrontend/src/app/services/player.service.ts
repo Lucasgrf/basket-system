@@ -97,6 +97,12 @@ viewTrainings(playerId: number): Observable<any[]> {
     );
   }
 
+  getPlayerByUserId(userId: number): Observable<any> {
+    return this.http.get<Player>(`${this.apiUrl}/user/${userId}`).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   // Método para tratar erros
   private handleError(error: any) {
     console.error('An error occurred:', error);

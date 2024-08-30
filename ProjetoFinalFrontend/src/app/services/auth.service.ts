@@ -30,8 +30,8 @@ export class AuthService {
     )
   }
 
-  login(loginRequest: any): Observable<any> {
-    return this.http.post<LoginResponse>(BASE_URL + "/auth/login", loginRequest).pipe(
+  login(email: string, password: string): Observable<any> {
+    return this.http.post<LoginResponse>(BASE_URL + "/auth/login", {email,password}).pipe(
       tap(
         (value) => {
             const jwtToken = value['token'];
@@ -45,9 +45,6 @@ export class AuthService {
     )
   }
 
-  private logout (){
-    localStorage.removeItem('JWT');
-  }
 
   isLogged() {
     const jwtToken = localStorage.getItem('JWT');

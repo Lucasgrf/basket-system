@@ -40,38 +40,35 @@ public class UserService {
 
     public ResponseEntity<UserDTO> updateProfile(@PathVariable Long id, @RequestBody RequestUpdateUser user) {
         var userUpdate = userRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        if(userUpdate.getCredential() != null){
-            if(user.username() != null){
-                userUpdate.setUsername(user.username());
-            }
-            if(user.email() != null){
-                userUpdate.setEmail(user.email());
-            }
-            if(user.photoName() != null){
-                userUpdate.setPhotoName(user.photoName());
-            }
-            if(user.password() != null){
-                userUpdate.setPassword(passwordEncoder.encode(user.password()));
-            }
-            userRepository.save(userUpdate);
-            return ResponseEntity.status(HttpStatus.OK).body(toDTO(userUpdate));
-        }else{
-            if(user.username() != null){
-                userUpdate.setUsername(user.username());
-            }
-            if(user.email() != null){
-                userUpdate.setEmail(user.email());
-            }
-            if(user.photoName() != null){
-                userUpdate.setPhotoName(user.photoName());
-            }
-            if(user.password() != null){
-                userUpdate.setPassword(passwordEncoder.encode(user.password()));
-            }
-            userRepository.save(userUpdate);
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+
+        // Atualiza os campos do usuário
+        updateUserFields(userUpdate, user);
+
+        // Verifica se o usuário já tem credenciais
+        if (userUpdate.getCredential() == null) {
+            // Lógica de criação de credenciais
             credentialRepository.save(credentialService.create(userUpdate));
-            return ResponseEntity.status(HttpStatus.OK).body(toDTO(userUpdate));
+        }
+
+        // Salva o usuário atualizado no repositório
+        userRepository.save(userUpdate);
+
+        return ResponseEntity.status(HttpStatus.OK).body(toDTO(userUpdate));
+    }
+
+    private void updateUserFields(User userUpdate, RequestUpdateUser user) {
+        if (user.username() != null && !user.username().trim().isEmpty()) {
+            userUpdate.setUsername(user.username());
+        }
+        if (user.email() != null && !user.email().trim().isEmpty()) {
+            userUpdate.setEmail(user.email());
+        }
+        if (user.photoName() != null && !user.photoName().trim().isEmpty()) {
+            userUpdate.setPhotoName(user.photoName());
+        }
+        if (user.password() != null && !user.password().trim().isEmpty()) {
+            userUpdate.setPassword(passwordEncoder.encode(user.password()));
         }
     }
 

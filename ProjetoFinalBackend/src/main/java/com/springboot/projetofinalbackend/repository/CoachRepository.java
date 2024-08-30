@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface CoachRepository extends JpaRepository<Coach, Long> {
     Optional<Coach> findById(Long id);
     Optional<Coach> findByNickname(String nickname);
+    Optional<Coach> findByUserId(Long userId);
 }

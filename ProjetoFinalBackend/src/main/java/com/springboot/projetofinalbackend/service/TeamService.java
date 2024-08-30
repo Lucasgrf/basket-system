@@ -5,12 +5,9 @@ import com.springboot.projetofinalbackend.DTO.TeamDTO;
 import com.springboot.projetofinalbackend.model.*;
 import com.springboot.projetofinalbackend.repository.CoachRepository;
 import com.springboot.projetofinalbackend.repository.TeamRepository;
-import com.springboot.projetofinalbackend.repository.UserRepository;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,12 +21,6 @@ public class TeamService {
     private TeamRepository teamRepository;
     @Autowired
     private CoachRepository coachRepository;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private CredentialService credentialService;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     public ResponseEntity<TeamDTO> create(@RequestBody TeamDTO teamDto) {
         var existsTeam = teamRepository.findByName(teamDto.name());
