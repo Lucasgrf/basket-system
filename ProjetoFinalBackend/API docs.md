@@ -94,7 +94,7 @@ O controlador `PlayerController` gerencia as operações relacionadas aos jogado
   - **Parâmetros:** `id` (Long)
   - **Retorno:** `ResponseEntity<Void>`
 
-- **`/user/{id}** (GET)
+- **`/user/{userId}`** (GET)
   - **Descrição:** Recupera as informações de um jogador a partir do seu ID de usuário.
   - **Parâmetros:** `userId` (Long)
   - **Retorno:** `ResponseEntity<PlayerDTO>`
@@ -166,6 +166,11 @@ O controlador `TrainingController` gerencia as operações relacionadas aos trei
   - **Corpo da Requisição:** `TrainingDTO`
   - **Retorno:** `ResponseEntity<TrainingDTO>`
 
+- **`/team/{id}/trainings`** (GET)
+  - **Descrição:** Recupera todos os treinos associados a um time específico.
+  - **Parâmetros:** `id` (Long)
+  - **Retorno:** `ResponseEntity<List<TrainingDTO>>`
+
 ## UserController
 
 O controlador `UserController` gerencia as operações relacionadas aos usuários.
@@ -207,94 +212,3 @@ O controlador `UserController` gerencia as operações relacionadas aos usuário
   - **Parâmetros:** `id` (Long)
   - **Corpo da Requisição:** `UserDTO`
   - **Retorno:** `ResponseEntity<UserDTO>`
-
-## CoachController
-
-O controlador `CoachController` gerencia as operações relacionadas aos treinadores, times e treinamentos.
-
-### Endpoints
-
-- **`/coach/team`** (POST)
-  - **Descrição:** Cria um novo time.
-  - **Corpo da Requisição:** `TeamDTO`
-  - **Retorno:** `ResponseEntity<TeamDTO>`
-
-- **`/coach/team/{id}`** (DELETE)
-  - **Descrição:** Deleta um time específico pelo ID.
-  - **Parâmetros:** 
-    - `id` (Long): ID do time.
-  - **Retorno:** `ResponseEntity<Void>`
-
-- **`/coach/team/{id}`** (PUT)
-  - **Descrição:** Atualiza as informações de um time específico pelo ID.
-  - **Parâmetros:** 
-    - `id` (Long): ID do time.
-  - **Corpo da Requisição:** `TeamDTO`
-  - **Retorno:** `ResponseEntity<TeamDTO>`
-
-- **`/coach/training`** (POST)
-  - **Descrição:** Cria um novo treinamento.
-  - **Corpo da Requisição:** `TrainingDTO`
-  - **Retorno:** `ResponseEntity<TrainingDTO>`
-
-- **`/coach/training/{id}`** (PUT)
-  - **Descrição:** Atualiza as informações de um treinamento específico pelo ID.
-  - **Parâmetros:** 
-    - `id` (Long): ID do treinamento.
-  - **Corpo da Requisição:** `TrainingDTO`
-  - **Retorno:** `ResponseEntity<TrainingDTO>`
-
-- **`/coach/training/{id}`** (DELETE)
-  - **Descrição:** Deleta um treinamento específico pelo ID.
-  - **Parâmetros:** 
-    - `id` (Long): ID do treinamento.
-  - **Retorno:** `ResponseEntity<Void>`
-
-- **`/coach/training/{trainingId}/player/{playerId}`** (POST)
-  - **Descrição:** Adiciona um jogador específico a um treinamento.
-  - **Parâmetros:** 
-    - `trainingId` (Long): ID do treinamento.
-    - `playerId` (Long): ID do jogador.
-  - **Retorno:** `ResponseEntity<Set<PlayerDTO>>`
-
-- **`/coach/training/{trainingId}/player/{playerId}`** (DELETE)
-  - **Descrição:** Remove um jogador específico de um treinamento.
-  - **Parâmetros:** 
-    - `trainingId` (Long): ID do treinamento.
-    - `playerId` (Long): ID do jogador.
-  - **Retorno:** `ResponseEntity<Void>`
-
-- **`/coach`** (GET)
-  - **Descrição:** Recupera todos os treinadores.
-  - **Retorno:** `ResponseEntity<List<CoachDTO>>`
-
-- **`/coach`** (POST)
-  - **Descrição:** Cria um novo treinador.
-  - **Corpo da Requisição:** `CoachDTO`
-  - **Retorno:** `ResponseEntity<CoachDTO>`
-
-- **`/coach/{id}`** (GET)
-  - **Descrição:** Recupera as informações de um treinador específico pelo ID.
-  - **Parâmetros:** 
-    - `id` (Long): ID do treinador.
-  - **Retorno:** `ResponseEntity<CoachDTO>`
-
-- **`/coach/{id}`** (DELETE)
-  - **Descrição:** Deleta um treinador específico pelo ID.
-  - **Parâmetros:** 
-    - `id` (Long): ID do treinador.
-  - **Retorno:** `ResponseEntity<Void>`
-
-- **`/coach/{id}`** (PUT)
-  - **Descrição:** Atualiza as informações de um treinador específico pelo ID.
-  - **Parâmetros:** 
-    - `id` (Long): ID do treinador.
-  - **Corpo da Requisição:** `CoachDTO`
-  - **Retorno:** `ResponseEntity<CoachDTO>`
-
-- **`/coach/user/{id}`** (GET)
-  - **Descrição:** Recupera as informações de um treinador específico pelo ID do usuário.
-  - **Parâmetros:** 
-    - `id` (Long): ID do usuário.
-  - **Retorno:** `ResponseEntity<CoachDTO>`
-
