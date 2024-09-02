@@ -1,0 +1,50 @@
+<div class="min-h-screen flex flex-col">
+  <app-header></app-header>
+  <app-menu></app-menu>
+  <main class="flex flex-1 p-4 bg-gray-900">
+    <div class="flex-1 space-y-4 max-w-xl mx-auto">
+      <!-- Título da Página -->
+      <h2 class="text-3xl font-bold text-white mb-4">Criar Novo Time</h2>
+
+      <!-- Formulário de Criação de Time -->
+      <form [formGroup]="timeForm" (ngSubmit)="criarTime()">
+        <div class="mb-4">
+          <label class="block text-white">Nome do Time</label>
+          <input type="text" formControlName="name" class="w-full p-2 border border-gray-300 rounded" required>
+          <div *ngIf="timeForm.get('name')?.invalid && timeForm.get('name')?.touched" class="text-red-500">
+            Nome é obrigatório.
+          </div>
+        </div>
+        <div class="mb-4">
+          <label class="block text-white">Endereço</label>
+          <input type="text" formControlName="address" class="w-full p-2 border border-gray-300 rounded">
+        </div>
+        <div class="mb-4">
+          <label class="block text-white">Ginásio</label>
+          <input type="text" formControlName="gym" class="w-full p-2 border border-gray-300 rounded">
+        </div>
+        <div class="mb-4">
+          <label class="block text-white">Data de Fundação</label>
+          <input type="date" formControlName="foundation" class="w-full p-2 border border-gray-300 rounded">
+          <div *ngIf="timeForm.get('foundation')?.invalid && timeForm.get('foundation')?.touched" class="text-red-500">
+            Data de Fundação é obrigatória.
+          </div>
+        </div>
+        <div class="mb-4">
+          <label class="block text-white">E-mail de Contato</label>
+          <input type="email" formControlName="emailContact" class="w-full p-2 border border-gray-300 rounded">
+          <div *ngIf="timeForm.get('emailContact')?.invalid && timeForm.get('emailContact')?.touched" class="text-red-500">
+            E-mail válido é obrigatório.
+          </div>
+        </div>
+        <div class="mb-4">
+          <label class="block text-white">Telefone de Contato</label>
+          <input type="text" formControlName="phoneContact" class="w-full p-2 border border-gray-300 rounded">
+        </div>
+        <button type="submit" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700">Criar Time</button>
+      </form>
+    </div>
+    <app-menu-lateral></app-menu-lateral>
+  </main>
+  <app-footer></app-footer>
+</div>

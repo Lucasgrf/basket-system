@@ -32,6 +32,7 @@ import { CredentialsComponent } from './components/admin/credentials/credentials
 import { FormUpdateCredentialComponent } from './components/admin/forms/form-update-credential/form-update-credential.component';
 import { NoDirectAccessGuard } from './NoDirectAccessGuard';
 import { CoachPageComponent } from './components/coach-page/coach-page.component';
+import { CreateTeamComponent } from './components/create-team/create-team.component';
 
 export const routes: Routes = [
   { path: 'admin', component: HomeComponent, canActivate: [NoDirectAccessGuard] },
@@ -105,6 +106,11 @@ export const routes: Routes = [
   {
     path: 'teams',
     component: TeamPageComponent,
+    canActivate: [NoDirectAccessGuard]
+  },
+  {
+    path: 'create-team',
+    component: CreateTeamComponent,
     canActivate: [NoDirectAccessGuard]
   },
   {

@@ -28,7 +28,7 @@ export class FormAddUserComponent {
       const savePassword = this.userForm.value.password;
       const { password, ...formData } = this.userForm.value;
       this.service.createUser(formData, savePassword).subscribe({
-        next: (user) => {
+        next: () => {
           alert('Usuário criado com sucesso');
           this.router.navigate(['/admin/users']);
         },

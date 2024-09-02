@@ -12,4 +12,5 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
     Optional<Training> findByTitle(String title);
     Optional<Training> findByDate(Date date);
     List<Training> findByPlayersId(Long id);
+    List<Training> getTrainingsByTeamId(Long id);
 }

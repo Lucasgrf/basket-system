@@ -47,6 +47,12 @@ export class TrainingService {
     );
   }
 
+  getTrainingsByTeam(teamId: number): Observable<any[]> {
+    return this.http.get<Training[]>(`${this.apiUrl}/team/${teamId}`).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   // Método para tratar erros
   private handleError(error: any) {
     console.error('An error occurred:', error);

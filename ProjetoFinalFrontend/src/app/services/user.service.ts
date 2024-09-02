@@ -35,8 +35,8 @@ export class UserService {
     );
   }
 
-  updateUser(id: number, user: User): Observable<any> {
-    return this.http.put<UserResponse>(`${this.apiUrl}/${id}`, user).pipe(
+  updateUser(id: number, user: User, password?: string): Observable<any> {
+    return this.http.put<UserResponse>(`${this.apiUrl}/${id}`, {user,password}).pipe(
       catchError(this.handleError)
     );
   }

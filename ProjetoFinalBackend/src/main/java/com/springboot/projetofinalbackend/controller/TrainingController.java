@@ -51,4 +51,9 @@ public class TrainingController {
         return adminService.updateTraining(id,body);
     }
 
+    @GetMapping("/team/{id}")
+    public ResponseEntity<List<TrainingDTO>> getAllTrainingsByTeam(@PathVariable Long id){
+        return trainingService.getAllTrainingsByTeam(id);
+    }
+
 }

@@ -1,1 +1,63 @@
-<p>training-page works!</p>
+<div class="min-h-screen flex flex-col">
+  <app-header></app-header>
+  <app-menu></app-menu>
+
+  <main class="flex flex-1 p-4 bg-gray-900">
+    <div class="flex-1 space-y-4 max-w-6xl mx-auto">
+      <h2 class="text-3xl font-bold text-white mb-4">Treinos</h2>
+
+      <!-- Mensagem se o usuário não estiver vinculado a um time -->
+      <div *ngIf="!userTeamId" class="text-center py-6">
+        <p class="text-red-500 text-lg font-semibold">Você precisa estar vinculado a um time para acessar os treinos!</p>
+      </div>
+
+      <!-- Lista de treinos se o usuário estiver vinculado a um time -->
+      <div *ngIf="userTeamId" class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div *ngFor="let training of trainings"
+             class="bg-white rounded-3xl shadow-md p-4 flex flex-col items-center justify-center text-center">
+          <img [src]="photo" alt="agenda" class="w-32 h-32 rounded-full mb-4">
+          <h3 class="text-xl font-semibold text-gray-800">{{ training.title }}</h3>
+          <p class="text-gray-600">Data: {{ training.date | date:'short' }}</p>
+          <p class="text-gray-600">Local: {{ training.location }}</p>
+
+          <div class="mt-4">
+            <!-- Botões para jogador -->
+            <ng-container *ngIf="userRole === 'PLAYER'">
+              <button
+                class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
+                (click)="confirmPresence(training.id)">
+                Confirmar Presença
+              </button>
+              <button
+                class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700 mt-2 ml-3"
+                (click)="notifyAbsence(training.id)">
+                Avisar Ausência
+              </button>
+            </ng-container>
+
+            <!-- Botões para treinador -->
+            <ng-container *ngIf="userRole === 'COACH'">
+              <button
+                class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700"
+                (click)="viewTrainingDetails(training.id)">
+                Ver Detalhes do Treino
+              </button>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botão para o treinador criar um novo treino -->
+      <div *ngIf="userRole === 'COACH' && userTeamId" class="text-center mt-8">
+        <button class="bg-green-500 text-white py-3 px-6 rounded hover:bg-green-700"
+                (click)="createTraining()">
+          Criar Novo Treino
+        </button>
+      </div>
+    </div>
+
+    <app-menu-lateral></app-menu-lateral>
+  </main>
+
+  <app-footer></app-footer>
+</div>

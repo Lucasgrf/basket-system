@@ -162,6 +162,9 @@ public class PlayerService {
         if(playerDTO.teamId() != null){
             teamRepository.findById(playerDTO.teamId()).ifPresent(player::setTeam);
         }
+        if(playerDTO.nickname() != null){
+            player.setNickname(playerDTO.nickname());
+        }
         if(playerDTO.age() != 0){
             player.setAge(playerDTO.age());
         }

@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -140,4 +142,12 @@ public class TrainingService {
         );
     }
 
+    public ResponseEntity<List<TrainingDTO>> getAllTrainingsByTeam(@PathVariable Long teamId) {
+        var trainings = trainingRepository.getTrainingsByTeamId(teamId);
+        List<TrainingDTO> trainingDTOList = new ArrayList<>();
+        for (var training : trainings) {
+            trainingDTOList.add(toDTO(training));
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(trainingDTOList);
+    }
 }

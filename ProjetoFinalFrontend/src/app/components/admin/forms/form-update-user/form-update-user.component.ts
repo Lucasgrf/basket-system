@@ -43,8 +43,10 @@ export class FormUpdateUserComponent implements OnInit {
   onSubmitUser() {
     if (this.userForm.valid) {
       const id: number = +this.route.snapshot.paramMap.get('id')!;
-      this.userService.updateUser(id, this.userForm.value).subscribe({
-        next: (user) => {
+      const savePassword: string | undefined = this.userForm.value.password;
+      const { password, ...formData } = this.userForm.value;
+      this.userService.updateUser(id, formData, savePassword).subscribe({
+        next: () => {
           alert('Usuário atualizado com sucesso');
           this.router.navigate(['/admin/users']);
         },

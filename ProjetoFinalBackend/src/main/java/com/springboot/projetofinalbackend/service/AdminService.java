@@ -4,7 +4,6 @@ import com.springboot.projetofinalbackend.DTO.*;
 import com.springboot.projetofinalbackend.model.*;
 import com.springboot.projetofinalbackend.repository.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -78,14 +78,30 @@ public class AdminService {
         return userService.deleteProfile(userId);
     }
 
-    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO body) {
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO body, @RequestParam Optional<String> password) {
         var existsUser = userRepository.findById(id);
         if(existsUser.isPresent()) {
             User userUpdate = existsUser.get();
-            userUpdate.setUsername(body.username());
-            userUpdate.setPhotoName(body.photoName());
-            userUpdate.setEmail(body.email());
-            userUpdate.setRole(body.role());
+            //Caso ele receba uma senha, faz a troca pela nova.
+            password.ifPresent(s -> userUpdate.setPassword(passwordEncoder.encode(s)));
+            if(body.username()!=null){
+                userUpdate.setUsername(body.username());
+            }
+            if(body.email()!=null){
+                userUpdate.setEmail(body.email());
+            }
+            if(body.photoName()!=null){
+                userUpdate.setPhotoName(body.photoName());
+            }
+            if(body.role()!=null){
+                userUpdate.setRole(body.role());
+            }
+            if(body.playerId()!=null){
+                playerRepository.findById(body.playerId()).ifPresent(userUpdate::setPlayer);
+            }
+            if(body.coachId()!=null){
+                coachRepository.findById(body.coachId()).ifPresent(userUpdate::setCoach);
+            }
             userRepository.save(userUpdate);
             return ResponseEntity.ok(toDTO(userUpdate));
         }
@@ -157,6 +173,10 @@ public class AdminService {
     }
 
     public UserDTO toDTO(User user) {
+        return getUserDTO(user);
+    }
+
+    static UserDTO getUserDTO(User user) {
         return new UserDTO(
                 user.getId(),
                 user.getUsername(),
@@ -170,6 +190,10 @@ public class AdminService {
     }
 
     public TeamDTO toDTO(Team team) {
+        return getTeamDTO(team);
+    }
+
+    static TeamDTO getTeamDTO(Team team) {
         return new TeamDTO(
                 team.getId(),
                 team.getName(),
@@ -183,6 +207,10 @@ public class AdminService {
     }
 
     public PlayerDTO toDTO(Player player) {
+        return getPlayerDTO(player);
+    }
+
+    static PlayerDTO getPlayerDTO(Player player) {
         return new PlayerDTO(
                 player.getId(),
                 player.getNickname(),
@@ -196,6 +224,10 @@ public class AdminService {
     }
 
     public TrainingDTO toDTO(Training training) {
+        return getTrainingDTO(training);
+    }
+
+    static TrainingDTO getTrainingDTO(Training training) {
         return new TrainingDTO(
                 training.getId(),
                 training.getTitle(),
@@ -206,6 +238,10 @@ public class AdminService {
     }
 
     public CredentialDTO toDTO(Credential credential) {
+        return getCredentialDTO(credential);
+    }
+
+    static CredentialDTO getCredentialDTO(Credential credential) {
         return new CredentialDTO(
                 credential.getId(),
                 credential.getPhotoName(),

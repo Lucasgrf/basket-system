@@ -13,6 +13,7 @@
       <thead class="bg-gray-50">
         <tr>
           <th class="py-3 px-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">ID</th>
+          <th class="py-3 px-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Nickname</th>
           <th class="py-3 px-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Position</th>
           <th class="py-3 px-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Age</th>
           <th class="py-3 px-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Height</th>
@@ -25,6 +26,7 @@
       <tbody class="bg-white divide-y divide-gray-200">
         <tr *ngFor="let player of players" class="hover:bg-gray-50 transition">
           <td class="py-3 px-4 text-sm text-gray-700">{{ player.id }}</td>
+          <td class="py-3 px-4 text-sm text-gray-700">{{ player.nickname }}</td>
           <td class="py-3 px-4 text-sm text-gray-700">{{ player.position }}</td>
           <td class="py-3 px-4 text-sm text-gray-700">{{ player.age }}</td>
           <td class="py-3 px-4 text-sm text-gray-700">{{ player.height }}</td>

@@ -16,6 +16,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
+import static com.springboot.projetofinalbackend.service.AdminService.getUserDTO;
+
 @Service
 public class UserService {
 
@@ -42,19 +44,30 @@ public class UserService {
         var userUpdate = userRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 
-        // Atualiza os campos do usuário
         updateUserFields(userUpdate, user);
 
-        // Verifica se o usuário já tem credenciais
         if (userUpdate.getCredential() == null) {
-            // Lógica de criação de credenciais
             credentialRepository.save(credentialService.create(userUpdate));
         }
 
-        // Salva o usuário atualizado no repositório
         userRepository.save(userUpdate);
 
         return ResponseEntity.status(HttpStatus.OK).body(toDTO(userUpdate));
+    }
+
+    public ResponseEntity<Void> deleteProfile(@PathVariable Long userId) {
+        var userDelete = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        if(userDelete != null){
+            userRepository.delete(userDelete);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
+    public UserDTO toDTO(User user) {
+        return getUserDTO(user);
     }
 
     private void updateUserFields(User userUpdate, RequestUpdateUser user) {
@@ -70,31 +83,6 @@ public class UserService {
         if (user.password() != null && !user.password().trim().isEmpty()) {
             userUpdate.setPassword(passwordEncoder.encode(user.password()));
         }
-    }
-
-
-    public ResponseEntity<Void> deleteProfile(@PathVariable Long userId) {
-        var userDelete = userRepository.findById(userId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
-        if(userDelete != null){
-            userRepository.delete(userDelete);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-    }
-
-    public UserDTO toDTO(User user) {
-        return new UserDTO(
-                user.getId(),
-                user.getUsername(),
-                user.getEmail(),
-                user.getPhotoName(),
-                user.getRole(),
-                user.getPlayer() != null ? user.getPlayer().getId() : null,
-                user.getCoach() != null ? user.getCoach().getId() : null,
-                user.getCredential() != null ? user.getCredential().getId() : null
-        );
     }
 
 }

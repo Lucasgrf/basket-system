@@ -10,6 +10,7 @@ import { PlayerService } from '../../services/player.service';
 import { CoachService } from '../../services/coach.service';
 import { Player } from '../../models/player.model';
 import { Coach } from '../../models/coach.model';
+import { FooterComponent } from "../footer/footer.component";
 
 @Component({
   selector: 'app-profile-page',

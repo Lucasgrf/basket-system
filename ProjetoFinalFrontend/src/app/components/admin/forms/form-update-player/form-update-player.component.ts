@@ -24,6 +24,7 @@ export class FormUpdatePlayerComponent implements OnInit {
     private router: Router
   ) {
     this.playerForm = this.fb.group({
+      nickname: ['', Validators.required],
       position: ['', Validators.required],
       age: ['', [Validators.required, Validators.min(16), Validators.max(45)]],
       height: ['', Validators.required],
@@ -58,7 +59,6 @@ export class FormUpdatePlayerComponent implements OnInit {
   onSubmitPlayer() {
     if (this.playerForm.valid) {
       const id: number = +this.route.snapshot.paramMap.get('id')!;
-      console.log(this.playerForm.value);
       this.playerService.updatePlayer(id, this.playerForm.value).subscribe({
         next: (player) => {
           alert('Jogador atualizado com sucesso!');

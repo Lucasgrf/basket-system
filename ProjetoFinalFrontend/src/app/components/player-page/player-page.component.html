@@ -1,1 +1,36 @@
-<p>player-page works!</p>
+<div class="min-h-screen flex flex-col">
+  <app-header></app-header>
+  <app-menu></app-menu>
+  <main class="flex flex-1 p-4 bg-gray-900">
+    <div class="flex-1 space-y-4">
+      <!-- Título da Página -->
+      <div class="flex justify-between items-center">
+        <h2 class="text-3xl font-bold text-gray-800">Jogadores Disponíveis</h2>
+      </div>
+
+      <!-- Lista de Jogadores -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div *ngFor="let player of players" class="bg-white rounded-xl shadow-md p-4 flex flex-col items-center text-center">
+          <img [src]="photo" alt="{{player.nickname}}" class="w-24 h-24 rounded-full mb-4">
+          <p class="text-xl font-semibold text-gray-800">{{ player.nickname }}</p>
+          <p class="text-gray-500 mb-2">Posição: {{ player.position }}</p>
+          <p class="text-gray-500 mb-2">Idade: {{ player.age }}</p>
+          <p class="text-gray-500 mb-2">Altura: {{ player.height }} cm | Peso: {{ player.weight }} kg</p>
+          <div class="flex space-x-2 mt-2">
+            <button (click)="verPerfil(player)" class="bg-gray-100 text-gray-700 py-1 px-4 rounded hover:bg-gray-200">
+              Ver Perfil
+            </button>
+            <button (click)="convidarParaTime(player)" class="bg-green-500 text-white py-1 px-4 rounded hover:bg-green-700">
+              Convidar
+            </button>
+            <button (click)="enviarMensagem(player)" class="bg-blue-500 text-white py-1 px-4 rounded hover:bg-blue-700">
+              Mensagem
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-menu-lateral></app-menu-lateral>
+  </main>
+  <app-footer></app-footer>
+</div>

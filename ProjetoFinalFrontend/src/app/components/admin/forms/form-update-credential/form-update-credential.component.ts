@@ -45,7 +45,7 @@ export class FormUpdateCredentialComponent implements OnInit {
     if (this.credentialForm.valid) {
       const id: number = +this.route.snapshot.paramMap.get('id')!;
       this.credentialService.update(id, this.credentialForm.value).subscribe({
-        next: (credential) => {
+        next: () => {
           alert('Credencial atualizado com sucesso!');
           this.router.navigate(['/admin/users/credentials']);
         },
