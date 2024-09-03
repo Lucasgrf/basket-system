@@ -27,29 +27,24 @@ BasketSystem é um sistema de gerenciamento de times, jogadores e treinos de bas
 
 ## Como Executar
 
-### Backend
+### Backend e Banco de dados
 
 1. Clone o repositório:
     ```bash
     git clone https://github.com/Lucasgrf/basket-system.git
-    cd BasketSystem
+    cd ProjetoFinalBackend
     ```
 
-2. Construa a imagem Docker:
+2. Execute o comando para gerar as imagens(app e database) e rodar a aplicação no Docker:
     ```bash
-    docker build -t basketsystem-backend .
+    docker-compose up --build
     ```
-
-3. Execute o container Docker:
-    ```bash
-    docker run -p 8080:8080 basketsystem-backend
-    ```
-
+    
 ### Frontend
 
 1. Navegue até o diretório do frontend:
     ```bash
-    cd ../frontend
+    cd ../ProjetoFinalFrontend
     ```
 
 2. Instale as dependências:
@@ -60,13 +55,6 @@ BasketSystem é um sistema de gerenciamento de times, jogadores e treinos de bas
 3. Execute a aplicação:
     ```bash
     npm start
-    ```
-
-### Banco de Dados
-
-1. Execute o container Docker para o PostgreSQL:
-    ```bash
-    docker run --name basketsystem-db -e POSTGRES_PASSWORD=senha -d -p 5432:5432 postgres
     ```
 
 ## API
