@@ -59,7 +59,7 @@ BasketSystem é um sistema de gerenciamento de times, jogadores e treinos de bas
 
 ## API
 
-Utilize o Postman para testar as APIs do backend. Importe a coleção de testes disponível no diretório `postman`.
+Utilize o Postman para testar a API do backend. Importe a coleção de testes disponível no diretório `postman`.
 
 [Documentação da API](https://github.com/Lucasgrf/basket-system/blob/main/ProjetoFinalBackend/API%20docs.md)
 
