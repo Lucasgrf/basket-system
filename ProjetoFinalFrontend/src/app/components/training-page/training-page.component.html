@@ -17,32 +17,39 @@
              class="bg-white rounded-3xl shadow-md p-4 flex flex-col items-center justify-center text-center">
           <img [src]="photo" alt="agenda" class="w-32 h-32 rounded-full mb-4">
           <h3 class="text-xl font-semibold text-gray-800">{{ training.title }}</h3>
-          <p class="text-gray-600">Data: {{ training.date | date:'short' }}</p>
+          <!-- Exibe a data e o horário do treino -->
+          <p class="text-gray-600">Data e Horário: {{ training.date | date:'dd/MMM/yyyy HH:mm' }}</p>
           <p class="text-gray-600">Local: {{ training.location }}</p>
 
           <div class="mt-4">
-            <!-- Botões para jogador -->
-            <ng-container *ngIf="userRole === 'PLAYER'">
-              <button
-                class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
-                (click)="confirmPresence(training.id)">
-                Confirmar Presença
-              </button>
-              <button
-                class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700 mt-2 ml-3"
-                (click)="notifyAbsence(training.id)">
-                Avisar Ausência
-              </button>
+            <!-- Se o treino for passado, exibe apenas o texto -->
+            <ng-container *ngIf="isPastTraining(training.date.toString()); else futureTraining">
+              <p class="text-gray-500">Este treino já ocorreu.</p>
             </ng-container>
 
-            <!-- Botões para treinador -->
-            <ng-container *ngIf="userRole === 'COACH'">
-              <button
-                class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700"
-                (click)="viewTrainingDetails(training.id)">
-                Ver Detalhes do Treino
-              </button>
-            </ng-container>
+            <!-- Botões de ação para treinos futuros -->
+            <ng-template #futureTraining>
+              <ng-container *ngIf="userRole === 'PLAYER'">
+                <button
+                  class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
+                  (click)="confirmPresence(training.id)">
+                  Confirmar Presença
+                </button>
+                <button
+                  class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700 mt-2 ml-3"
+                  (click)="notifyAbsence(training.id)">
+                  Avisar Ausência
+                </button>
+              </ng-container>
+
+              <ng-container *ngIf="userRole === 'COACH'">
+                <button
+                  class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700"
+                  (click)="viewTrainingDetails(training.id)">
+                  Ver Detalhes do Treino
+                </button>
+              </ng-container>
+            </ng-template>
           </div>
         </div>
       </div>

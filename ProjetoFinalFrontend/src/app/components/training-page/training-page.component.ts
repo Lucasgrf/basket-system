@@ -14,7 +14,7 @@ import { Coach } from '../../models/coach.model';
 @Component({
   selector: 'app-training-page',
   standalone: true,
-  imports: [CommonModule,MenuLateralComponent, FooterComponent, MenuComponent, HeaderComponent],
+  imports: [CommonModule, MenuLateralComponent, FooterComponent, MenuComponent, HeaderComponent],
   templateUrl: './training-page.component.html',
   styleUrl: './training-page.component.scss'
 })
@@ -25,24 +25,24 @@ export class TrainingPageComponent implements OnInit {
   userId = parseInt(localStorage.getItem('userId') || '0');
   photo: string = 'https://www.pngitem.com/pimgs/m/481-4818558_agenda-icon-png-download-transparent-background-agenda-png.png';
 
-  constructor(private trainingService: TrainingService, private playerService: PlayerService,private coachService: CoachService) {}
+  constructor(private trainingService: TrainingService, private playerService: PlayerService, private coachService: CoachService) {}
 
   ngOnInit(): void {
     this.userRole = localStorage.getItem('role');
     console.log(this.userRole);
-    if(this.userRole === 'PLAYER') {
+    if (this.userRole === 'PLAYER') {
       this.playerService.getPlayerByUserId(this.userId).subscribe((player: Player) => {
         this.userTeamId = player.teamId;
         console.log(this.userTeamId);
         this.loadTrainings();
       });
-      } else {
+    } else {
       this.coachService.getCoachByUserId(this.userId).subscribe((coach: Coach) => {
         this.userTeamId = coach.teamId;
         console.log(this.userTeamId);
         this.loadTrainings();
       });
-      }
+    }
   }
 
   loadTrainings(): void {
@@ -52,19 +52,22 @@ export class TrainingPageComponent implements OnInit {
     });
   }
 
-  // Jogador marca presença no treino
+  isPastTraining(trainingDate: string): boolean {
+    const trainingDateObj = new Date(trainingDate);
+    const today = new Date();
+    return trainingDateObj < today; // Verifica se o treino é anterior a hoje
+  }
+
   confirmPresence(trainingId: number): void {
     console.log(`Presença confirmada para o treino ${trainingId}`);
     // Implementar lógica de envio ao backend
   }
 
-  // Jogador avisa que vai faltar no treino
   notifyAbsence(trainingId: number): void {
     console.log(`Aviso de ausência enviado para o treino ${trainingId}`);
     // Implementar lógica de envio ao backend
   }
 
-  // Treinador cria um novo treino
   createTraining(): void {
     console.log(`Criando um novo treino...`);
     // Implementar lógica para abrir o formulário de criação de treino
