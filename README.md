@@ -83,7 +83,3 @@ Utilize o Postman para testar a API do backend. Importe a coleção de testes di
 ## Licença
 
 Este projeto está licenciado sob a Licença MIT. Veja o arquivo LICENSE para mais detalhes.
-
----
-
-Espero que isso ajude! Se precisar de mais alguma coisa, é só avisar. 😊
