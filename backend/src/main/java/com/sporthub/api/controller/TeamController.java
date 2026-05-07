@@ -1,59 +1,47 @@
 package com.sporthub.api.controller;
 
-import com.sporthub.api.DTO.PlayerDTO;
-import com.sporthub.api.DTO.TeamDTO;
-import com.sporthub.api.service.AdminService;
+import com.sporthub.api.dto.request.TeamCreateRequest;
+import com.sporthub.api.dto.request.TeamUpdateRequest;
+import com.sporthub.api.dto.response.TeamResponse;
 import com.sporthub.api.service.TeamService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 
 @RestController
-@RequestMapping("/team")
-//@PreAuthorize("hasAnyRole('ADMIN','COACH')")
+@RequestMapping("/teams")
+@RequiredArgsConstructor
 public class TeamController {
-    @Autowired
-    private TeamService teamService;
 
-    @Autowired
-    private AdminService adminService;
+    private final TeamService teamService;
 
-    //@PreAuthorize("hasAnyRole('ADMIN','COACH')")
-    @GetMapping("/{teamId}/players")
-    public ResponseEntity<Set<PlayerDTO>> getAllPlayers(@PathVariable Long teamId) {
-        return teamService.getAllPlayersTeam(teamId);
-    }
-
-    //@PreAuthorize("hasAnyRole('ADMIN','COACH')")
-    @GetMapping("/{id}")
-    public ResponseEntity<TeamDTO> getTeamById(@PathVariable Long id) {
-        return teamService.getTeam(id);
-    }
-
-    //@PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping
-    public ResponseEntity<List<TeamDTO>> getAllTeam(){
-        return adminService.getAllTeams();
+    public ResponseEntity<List<TeamResponse>> getAllTeams() {
+        return ResponseEntity.ok(teamService.getAllTeams());
     }
 
-    //@PreAuthorize("hasAnyRole('ADMIN')")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTeam(@PathVariable Long id){
-        return adminService.deleteTeam(id);
+    @GetMapping("/{id}")
+    public ResponseEntity<TeamResponse> getTeamById(@PathVariable Long id) {
+        return ResponseEntity.ok(teamService.getTeamById(id));
     }
 
-    //@PreAuthorize("hasAnyRole('ADMIN')")
-    @PostMapping("/add")
-    public ResponseEntity<TeamDTO> addTeam(@RequestBody TeamDTO body){
-        return adminService.createTeam(body);
+    @PostMapping
+    public ResponseEntity<TeamResponse> createTeam(@RequestBody @Valid TeamCreateRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(teamService.createTeam(request));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TeamDTO> updateTeam(@PathVariable Long id, @RequestBody TeamDTO team){
-        return adminService.updateTeam(id, team);
+    public ResponseEntity<TeamResponse> updateTeam(@PathVariable Long id, @RequestBody TeamUpdateRequest request) {
+        return ResponseEntity.ok(teamService.updateTeam(id, request));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteTeam(@PathVariable Long id) {
+        teamService.deleteTeam(id);
+        return ResponseEntity.noContent().build();
     }
 }

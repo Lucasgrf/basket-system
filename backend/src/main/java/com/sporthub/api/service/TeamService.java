@@ -1,132 +1,82 @@
 package com.sporthub.api.service;
 
-import com.sporthub.api.DTO.PlayerDTO;
-import com.sporthub.api.DTO.TeamDTO;
-import com.sporthub.api.model.*;
-import com.sporthub.api.repository.CoachRepository;
+import com.sporthub.api.dto.request.TeamCreateRequest;
+import com.sporthub.api.dto.request.TeamUpdateRequest;
+import com.sporthub.api.dto.response.TeamResponse;
+import com.sporthub.api.exception.ResourceAlreadyExistsException;
+import com.sporthub.api.exception.ResourceNotFoundException;
+import com.sporthub.api.mapper.TeamMapper;
+import com.sporthub.api.model.Team;
+import com.sporthub.api.model.Technician;
 import com.sporthub.api.repository.TeamRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import com.sporthub.api.repository.TechnicianRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class TeamService {
-    @Autowired
-    private TeamRepository teamRepository;
-    @Autowired
-    private CoachRepository coachRepository;
 
-    public ResponseEntity<TeamDTO> create(@RequestBody TeamDTO teamDto) {
-        var existsTeam = teamRepository.findByName(teamDto.name());
-        if (existsTeam.isPresent()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+    private final TeamRepository teamRepository;
+    private final TechnicianRepository technicianRepository;
+    private final TeamMapper teamMapper;
 
-        Team team = new Team();
-        team.setName(teamDto.name());
-        team.setAddress(teamDto.address());
-        team.setGym(teamDto.gym());
-        team.setFoundation(teamDto.foundation());
-        team.setEmailContact(teamDto.emailContact());
-        team.setPhoneContact(teamDto.phoneContact());
-
-        // Verifica se o coachId está presente antes de buscar o Coach
-        if (teamDto.coachId() != null) {
-            coachRepository.findById(teamDto.coachId()).ifPresent(team::setCoach);
-        }
-
-        teamRepository.save(team);
-        return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(team));
+    @Transactional(readOnly = true)
+    public List<TeamResponse> getAllTeams() {
+        return teamRepository.findAll().stream()
+                .map(teamMapper::toResponse)
+                .collect(Collectors.toList());
     }
 
-
-
-    public ResponseEntity<TeamDTO> update(@PathVariable Long id, @RequestBody TeamDTO teamDto) {
-        var teamUpdate = teamRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
-        if(teamDto.name() != null) {
-            teamUpdate.setName(teamDto.name());
-        }
-        if(teamDto.address() != null) {
-            teamUpdate.setAddress(teamDto.address());
-        }
-        if(teamDto.gym() != null) {
-            teamUpdate.setGym(teamDto.gym());
-        }
-        if(teamDto.foundation() != null) {
-            teamUpdate.setFoundation(teamDto.foundation());
-        }
-        if(teamDto.phoneContact() != null) {
-            teamUpdate.setPhoneContact(teamDto.phoneContact());
-        }
-        if(teamDto.coachId() != null) {
-            Coach coach = coachRepository.findById(teamDto.coachId()).get();
-            teamUpdate.setCoach(coach);
-        }
-        teamRepository.save(teamUpdate);
-        return ResponseEntity.status(HttpStatus.OK).body(toDTO(teamUpdate));
+    @Transactional(readOnly = true)
+    public TeamResponse getTeamById(Long id) {
+        Team team = teamRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Team", "id", id));
+        return teamMapper.toResponse(team);
     }
 
+    @Transactional
+    public TeamResponse createTeam(TeamCreateRequest request) {
+        // Here we could add a check if team name already exists if needed
+        
+        Team team = teamMapper.toEntity(request);
 
-
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        var teamDelete = teamRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        if(teamDelete != null) {
-            teamRepository.delete(teamDelete);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        if (request.headTechnicianId() != null) {
+            Technician technician = technicianRepository.findById(request.headTechnicianId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Technician", "id", request.headTechnicianId()));
+            team.setHeadTechnician(technician);
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+        Team savedTeam = teamRepository.save(team);
+        return teamMapper.toResponse(savedTeam);
     }
 
-    public ResponseEntity<Set<PlayerDTO>> getAllPlayersTeam(@PathVariable Long teamId) {
-        var team = teamRepository.findById(teamId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        Set<Player> players = team.getPlayers();
-        Set<PlayerDTO> playerDTOSet = new HashSet<>();
-        for (var player : players) {
-            PlayerDTO playerDTO = toDTO(player);
-            playerDTOSet.add(playerDTO);
+    @Transactional
+    public TeamResponse updateTeam(Long id, TeamUpdateRequest request) {
+        Team team = teamRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Team", "id", id));
+
+        teamMapper.updateEntity(team, request);
+
+        if (request.headTechnicianId() != null) {
+            Technician technician = technicianRepository.findById(request.headTechnicianId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Technician", "id", request.headTechnicianId()));
+            team.setHeadTechnician(technician);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(playerDTOSet);
+
+        Team updatedTeam = teamRepository.save(team);
+        return teamMapper.toResponse(updatedTeam);
     }
 
-    public ResponseEntity<TeamDTO> getTeam(@PathVariable Long teamId) {
-        var team = teamRepository.findById(teamId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        return ResponseEntity.status(HttpStatus.OK).body(toDTO(team));
-    }
-
-    public PlayerDTO toDTO(Player player) {
-        return new PlayerDTO(
-                player.getId(),
-                player.getNickname(),
-                player.getUser() != null ? player.getUser().getId() : null,
-                player.getPosition(),
-                player.getHeight(),
-                player.getWeight(),
-                player.getAge(),
-                player.getTeam() != null ? player.getTeam().getId() : null
-        );
-    }
-
-    public TeamDTO toDTO(Team team) {
-        return new TeamDTO(
-                team.getId(),
-                team.getName(),
-                team.getAddress(),
-                team.getGym(),
-                team.getFoundation(),
-                team.getEmailContact(),
-                team.getPhoneContact(),
-                team.getCoach() != null ? team.getCoach().getId() : null
-        );
+    @Transactional
+    public void deleteTeam(Long id) {
+        if (!teamRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Team", "id", id);
+        }
+        teamRepository.deleteById(id);
     }
 }

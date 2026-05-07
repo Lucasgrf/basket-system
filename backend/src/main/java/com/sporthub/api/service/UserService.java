@@ -1,89 +1,50 @@
 package com.sporthub.api.service;
 
-import com.sporthub.api.DTO.RequestUpdateUser;
-import com.sporthub.api.DTO.UserDTO;
+import com.sporthub.api.dto.response.UserResponse;
+import com.sporthub.api.exception.ResourceNotFoundException;
+import com.sporthub.api.mapper.UserMapper;
 import com.sporthub.api.model.User;
-import com.sporthub.api.repository.CredentialRepository;
 import com.sporthub.api.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
-import static com.sporthub.api.service.AdminService.getUserDTO;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private CredentialService credentialService;
-    @Autowired
-    private CredentialRepository credentialRepository;
-
-    public ResponseEntity<UserDTO> getById(@PathVariable Long id){
-        Optional<User> user = userRepository.findById(id);
-        if(user.isPresent()){
-            return ResponseEntity.status(HttpStatus.OK).body(toDTO(user.get()));
-        }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    @Transactional(readOnly = true)
+    public List<UserResponse> getAllUsers() {
+        return userRepository.findAll().stream()
+                .map(userMapper::toResponse)
+                .collect(Collectors.toList());
     }
 
-
-    public ResponseEntity<UserDTO> updateProfile(@PathVariable Long id, @RequestBody RequestUpdateUser user) {
-        var userUpdate = userRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
-
-        updateUserFields(userUpdate, user);
-
-        if (userUpdate.getCredential() == null) {
-            credentialRepository.save(credentialService.create(userUpdate));
-        }
-
-        userRepository.save(userUpdate);
-
-        return ResponseEntity.status(HttpStatus.OK).body(toDTO(userUpdate));
+    @Transactional(readOnly = true)
+    public UserResponse getUserById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
+        return userMapper.toResponse(user);
     }
 
-    public ResponseEntity<Void> deleteProfile(@PathVariable Long userId) {
-        var userDelete = userRepository.findById(userId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
-        if(userDelete != null){
-            userRepository.delete(userDelete);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    @Transactional(readOnly = true)
+    public UserResponse getUserByUsername(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
+        return userMapper.toResponse(user);
     }
 
-    public UserDTO toDTO(User user) {
-        return getUserDTO(user);
+    @Transactional
+    public void deleteUser(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new ResourceNotFoundException("User", "id", id);
+        }
+        userRepository.deleteById(id);
     }
-
-    private void updateUserFields(User userUpdate, RequestUpdateUser user) {
-        if (user.username() != null && !user.username().trim().isEmpty()) {
-            userUpdate.setUsername(user.username());
-        }
-        if (user.email() != null && !user.email().trim().isEmpty()) {
-            userUpdate.setEmail(user.email());
-        }
-        if (user.photoName() != null && !user.photoName().trim().isEmpty()) {
-            userUpdate.setPhotoName(user.photoName());
-        }
-        if (user.password() != null && !user.password().trim().isEmpty()) {
-            userUpdate.setPassword(passwordEncoder.encode(user.password()));
-        }
-    }
-
 }
-

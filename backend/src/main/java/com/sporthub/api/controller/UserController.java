@@ -1,67 +1,38 @@
 package com.sporthub.api.controller;
 
-import com.sporthub.api.DTO.RequestUpdateUser;
-import com.sporthub.api.DTO.UserDTO;
-import com.sporthub.api.service.AdminService;
+import com.sporthub.api.dto.response.UserResponse;
 import com.sporthub.api.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("/user")
-//@PreAuthorize("hasAnyRole('ADMIN','COACH','PLAYER')")
+@RequestMapping("/users")
+@RequiredArgsConstructor
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private AdminService adminService;
-
-    //@PreAuthorize("hasAnyRole('ADMIN','COACH','PLAYER')")
-    @PutMapping("/profile/{id}")
-    public ResponseEntity<UserDTO> updateProfile(@PathVariable Long id, @RequestBody RequestUpdateUser user){
-        return userService.updateProfile(id,user);
-    }
-
-    //@PreAuthorize("hasAnyRole('ADMIN','COACH','PLAYER')")
-    @DeleteMapping("/profile/{id}")
-    public ResponseEntity<Void> deleteProfile(@PathVariable Long id) {
-        return userService.deleteProfile(id);
-    }
-
-    //@PreAuthorize("hasAnyRole('ADMIN','COACH','PLAYER')")
-    @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> getUser(@PathVariable Long id){
-        return userService.getById(id);
-    }
-
-    //@PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping
-    public ResponseEntity<List<UserDTO>> getAllUser(){
-        return adminService.getAllUser();
+    public ResponseEntity<List<UserResponse>> getAllUsers() {
+        return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    //@PreAuthorize("hasAnyRole('ADMIN')")
+    @GetMapping("/{id}")
+    public ResponseEntity<UserResponse> getUserById(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.getUserById(id));
+    }
+
+    @GetMapping("/username/{username}")
+    public ResponseEntity<UserResponse> getUserByUsername(@PathVariable String username) {
+        return ResponseEntity.ok(userService.getUserByUsername(username));
+    }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id){
-        return adminService.deleteUser(id);
-    }
-
-    //@PreAuthorize("hasAnyRole('ADMIN')")
-    @PostMapping("/add")
-    public ResponseEntity<UserDTO> addUser(@RequestBody UserDTO user, @RequestParam String password){
-        return adminService.createUser(user,password);
-    }
-
-    //@PreAuthorize("hasAnyRole('ADMIN')")
-    @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO user, @RequestParam Optional<String> password){
-        return adminService.updateUser(id,user,password);
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return ResponseEntity.noContent().build();
     }
 }
