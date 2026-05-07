@@ -34,7 +34,7 @@ public class User implements UserDetails {
     @Column(nullable = false, unique = true)
     private String email;
 
-    private String photoName;
+    private String photoUrl;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

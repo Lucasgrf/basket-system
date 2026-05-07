@@ -22,6 +22,8 @@ public class Technician {
 
     private String nickname;
 
+    private String specialization;
+
     private String licenseNumber;
 
     @Enumerated(EnumType.STRING)
