@@ -47,7 +47,7 @@ public class TechnicianController {
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'TECHNICIAN')")
     @Operation(summary = "Update technician")
-    public ResponseEntity<TechnicianResponse> updateTechnician(@PathVariable Long id, @RequestBody TechnicianUpdateRequest request) {
+    public ResponseEntity<TechnicianResponse> updateTechnician(@PathVariable Long id, @RequestBody @Valid TechnicianUpdateRequest request) {
         return ResponseEntity.ok(technicianService.updateTechnician(id, request));
     }
 

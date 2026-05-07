@@ -47,7 +47,7 @@ public class TrainingSessionController {
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'TECHNICIAN')")
     @Operation(summary = "Update training session")
-    public ResponseEntity<TrainingSessionResponse> updateTrainingSession(@PathVariable Long id, @RequestBody TrainingSessionUpdateRequest request) {
+    public ResponseEntity<TrainingSessionResponse> updateTrainingSession(@PathVariable Long id, @RequestBody @Valid TrainingSessionUpdateRequest request) {
         return ResponseEntity.ok(trainingSessionService.updateTrainingSession(id, request));
     }
 

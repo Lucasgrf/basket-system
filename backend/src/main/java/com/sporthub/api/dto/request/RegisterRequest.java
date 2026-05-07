@@ -19,8 +19,5 @@ public record RegisterRequest(
         @Email(message = "Email must be valid")
         String email,
 
-        String photoUrl,
-
-        @NotNull(message = "Role is required")
-        Role role
+        String photoUrl
 ) {}

@@ -16,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/athletes")
@@ -54,7 +53,7 @@ public class AthleteController {
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'TECHNICIAN')")
     @Operation(summary = "Update athlete")
-    public ResponseEntity<AthleteResponse> updateAthlete(@PathVariable Long id, @RequestBody AthleteUpdateRequest request) {
+    public ResponseEntity<AthleteResponse> updateAthlete(@PathVariable Long id, @RequestBody @Valid AthleteUpdateRequest request) {
         return ResponseEntity.ok(athleteService.updateAthlete(id, request));
     }
 

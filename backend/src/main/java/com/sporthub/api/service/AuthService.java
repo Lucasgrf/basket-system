@@ -35,7 +35,7 @@ public class AuthService {
         user.setUsername(request.username());
         user.setEmail(request.email());
         user.setPassword(passwordEncoder.encode(request.password()));
-        user.setRole(request.role());
+        user.setRole(com.sporthub.api.model.enums.Role.ATHLETE); // Enforce default role, ignoring request role for security
         user.setPhotoUrl(request.photoUrl());
 
         User savedUser = userRepository.save(user);

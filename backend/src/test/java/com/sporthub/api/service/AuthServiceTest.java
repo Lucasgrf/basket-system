@@ -58,7 +58,7 @@ class AuthServiceTest {
     @Test
     @DisplayName("register - should create user and return JWT")
     void register_shouldCreateUserAndReturnToken() {
-        var request = new RegisterRequest("john.doe", "password123", "john@example.com", null, Role.ATHLETE);
+        var request = new RegisterRequest("john.doe", "password123", "john@example.com", null);
 
         given(userRepository.findByUsername("john.doe")).willReturn(Optional.empty());
         given(userRepository.findByEmail("john@example.com")).willReturn(Optional.empty());
@@ -76,7 +76,7 @@ class AuthServiceTest {
     @Test
     @DisplayName("register - should throw when username already exists")
     void register_shouldThrow_whenUsernameExists() {
-        var request = new RegisterRequest("john.doe", "pass", "new@example.com", null, Role.ATHLETE);
+        var request = new RegisterRequest("john.doe", "pass", "new@example.com", null);
 
         given(userRepository.findByUsername("john.doe")).willReturn(Optional.of(user));
 
@@ -90,7 +90,7 @@ class AuthServiceTest {
     @Test
     @DisplayName("register - should throw when email already exists")
     void register_shouldThrow_whenEmailExists() {
-        var request = new RegisterRequest("new.user", "pass", "john@example.com", null, Role.ATHLETE);
+        var request = new RegisterRequest("new.user", "pass", "john@example.com", null);
 
         given(userRepository.findByUsername("new.user")).willReturn(Optional.empty());
         given(userRepository.findByEmail("john@example.com")).willReturn(Optional.of(user));

@@ -6,8 +6,9 @@ import java.util.List;
 
 public record TrainingSessionResponse(
         Long id,
-        LocalDateTime date,
-        String local,
+        String title,
+        LocalDateTime scheduledAt,
+        String location,
         String description,
         Integer durationMinutes,
         SessionStatus status,

@@ -88,6 +88,10 @@ public class TechnicianService {
             Team team = teamRepository.findById(request.teamId())
                     .orElseThrow(() -> new ResourceNotFoundException("Team", "id", request.teamId()));
             
+            if (team.getSportType() != technician.getSportType()) {
+                throw new BusinessRuleException("Technician sport type does not match team sport type");
+            }
+            
             technician.setTeam(team);
         }
 
