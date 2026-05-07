@@ -1,10 +1,7 @@
 package com.sporthub.api.security;
 
-import com.sporthub.api.model.User;
-import com.sporthub.api.model.enums.Role;
 import com.sporthub.api.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,28 +9,24 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Component
+@RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
-    @Autowired
-    private UserRepository repository;
+
+    private final UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = this.repository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        var user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
 
-        // Verifica se o usuário é ADMIN para atribuir todas as roles
-        List<GrantedAuthority> authorities;
-        if (user.getRole() == Role.ADMIN) {
-            authorities = Stream.of(Role.values())
-                    .map(role -> new SimpleGrantedAuthority(role.name()))
-                    .collect(Collectors.toList());
-        } else {
-            authorities = List.of(new SimpleGrantedAuthority(user.getRole().name()));
-        }
+        var authority = new SimpleGrantedAuthority("ROLE_" + user.getRole().name());
 
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
+        return new org.springframework.security.core.userdetails.User(
+                user.getUsername(),
+                user.getPassword(),
+                List.of(authority)
+        );
     }
 }
