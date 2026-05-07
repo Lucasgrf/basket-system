@@ -7,11 +7,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public record TrainingSessionCreateRequest(
-        @NotNull(message = "Date is required")
-        LocalDateTime date,
+        @NotBlank(message = "Title is required")
+        String title,
 
-        @NotBlank(message = "Local is required")
-        String local,
+        @NotNull(message = "Date is required")
+        LocalDateTime scheduledAt,
+
+        @NotBlank(message = "Location is required")
+        String location,
 
         String description,
         Integer durationMinutes,

@@ -5,8 +5,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public record TrainingSessionUpdateRequest(
-        LocalDateTime date,
-        String local,
+        String title,
+        LocalDateTime scheduledAt,
+        String location,
         String description,
         Integer durationMinutes,
         SessionStatus status,

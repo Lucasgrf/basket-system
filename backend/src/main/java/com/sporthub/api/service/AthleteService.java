@@ -101,8 +101,9 @@ public class AthleteService {
             Team team = teamRepository.findById(request.teamId())
                     .orElseThrow(() -> new ResourceNotFoundException("Team", "id", request.teamId()));
             
-            // Note: in a real system you might check if the team's sport type matches the athlete's subclass
-            
+            if (team.getSportType() != athlete.getSportType()) {
+                throw new BusinessRuleException("Athlete sport type does not match team sport type");
+            }
             athlete.setTeam(team);
         }
 

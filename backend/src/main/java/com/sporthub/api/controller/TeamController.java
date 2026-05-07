@@ -16,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/teams")
@@ -54,7 +53,7 @@ public class TeamController {
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'TECHNICIAN')")
     @Operation(summary = "Update team")
-    public ResponseEntity<TeamResponse> updateTeam(@PathVariable Long id, @RequestBody TeamUpdateRequest request) {
+    public ResponseEntity<TeamResponse> updateTeam(@PathVariable Long id, @RequestBody @Valid TeamUpdateRequest request) {
         return ResponseEntity.ok(teamService.updateTeam(id, request));
     }
 

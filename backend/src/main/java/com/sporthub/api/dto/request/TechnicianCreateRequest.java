@@ -18,6 +18,7 @@ public record TechnicianCreateRequest(
         @NotNull(message = "Sport type is required")
         SportType sportType,
 
+        @NotNull(message = "User ID is required")
         Long userId,
         Long teamId
 ) {}

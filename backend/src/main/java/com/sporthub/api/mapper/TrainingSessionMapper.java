@@ -32,6 +32,7 @@ public class TrainingSessionMapper {
 
         return new TrainingSessionResponse(
                 session.getId(),
+                session.getTitle(),
                 session.getScheduledAt(),
                 session.getLocation(),
                 session.getDescription(),
@@ -49,8 +50,9 @@ public class TrainingSessionMapper {
         }
 
         return TrainingSession.builder()
-                .scheduledAt(request.date())
-                .location(request.local())
+                .title(request.title())
+                .scheduledAt(request.scheduledAt())
+                .location(request.location())
                 .description(request.description())
                 .durationMinutes(request.durationMinutes())
                 .status(request.status())
@@ -58,8 +60,9 @@ public class TrainingSessionMapper {
     }
 
     public void updateEntity(TrainingSession session, TrainingSessionUpdateRequest request) {
-        if (request.date() != null) session.setScheduledAt(request.date());
-        if (request.local() != null) session.setLocation(request.local());
+        if (request.title() != null) session.setTitle(request.title());
+        if (request.scheduledAt() != null) session.setScheduledAt(request.scheduledAt());
+        if (request.location() != null) session.setLocation(request.location());
         if (request.description() != null) session.setDescription(request.description());
         if (request.durationMinutes() != null) session.setDurationMinutes(request.durationMinutes());
         if (request.status() != null) session.setStatus(request.status());
