@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: sporthub-api
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/mydatabase
+    username: myuser
+    password: secret
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+
+  jackson:
+    time-zone: America/Sao_Paulo
+
+security:
+  jwt:
+    secret: ${JWT_SECRET:my-secret-key-change-in-production}
+    expiration-hours: 2

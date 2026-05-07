@@ -1,13 +1,15 @@
 package com.sporthub.api.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sporthub.api.model.User;
-import com.sporthub.api.model.enums.Role;
 import com.sporthub.api.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,42 +17,66 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.Map;
 
 @Component
+@RequiredArgsConstructor
 public class SecurityFilter extends OncePerRequestFilter {
-    @Autowired
-    TokenService tokenService;
-    @Autowired
-    UserRepository userRepository;
+
+    private final TokenService tokenService;
+    private final UserRepository userRepository;
+    private final ObjectMapper objectMapper;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        var token = this.recoverToken(request);
-        var login = tokenService.validateToken(token);
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
 
-        //Permitido all para desenvolvimento
-        if(login != null){
-            User user = userRepository.findByEmail(login).orElseThrow(() -> new RuntimeException("User Not Found"));
-            List<SimpleGrantedAuthority> authorities;
-            if (user.getRole() == Role.ADMIN) {
-                authorities = Stream.of(Role.values())
-                        .map(role -> new SimpleGrantedAuthority(role.name()))
-                        .collect(Collectors.toList());
-            } else {
-                authorities = List.of(new SimpleGrantedAuthority(user.getRole().name()));
+        String rawToken = recoverToken(request);
+
+        if (rawToken != null) {
+            String username = tokenService.validateToken(rawToken);
+
+            if (username == null) {
+                writeUnauthorizedResponse(response, "Invalid or expired token");
+                return;
             }
-            var authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
+
+            User user = userRepository.findByUsername(username).orElse(null);
+            if (user == null) {
+                writeUnauthorizedResponse(response, "User not found");
+                return;
+            }
+
+            var authority = new SimpleGrantedAuthority("ROLE_" + user.getRole().name());
+            var authentication = new UsernamePasswordAuthenticationToken(user, null, List.of(authority));
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
+
         filterChain.doFilter(request, response);
     }
 
-    private String recoverToken(HttpServletRequest request){
-        var authHeader = request.getHeader("Authorization");
-        if(authHeader == null) return null;
-        return authHeader.replace("Bearer ", "");
+    private String recoverToken(HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return null;
+        }
+        return authHeader.substring(7);
+    }
+
+    private void writeUnauthorizedResponse(HttpServletResponse response, String message) throws IOException {
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+
+        Map<String, Object> body = Map.of(
+                "status", HttpStatus.UNAUTHORIZED.value(),
+                "error", "Unauthorized",
+                "message", message,
+                "timestamp", Instant.now().toString()
+        );
+
+        objectMapper.writeValue(response.getWriter(), body);
     }
 }
