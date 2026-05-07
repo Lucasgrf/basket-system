@@ -1,0 +1,82 @@
+package com.sporthub.api.service;
+
+import com.sporthub.api.DTO.LoginRequestDTO;
+import com.sporthub.api.DTO.RegisterRequestDTO;
+import com.sporthub.api.DTO.ResponseDTO;
+import com.sporthub.api.model.Admin;
+import com.sporthub.api.model.Coach;
+import com.sporthub.api.model.Player;
+import com.sporthub.api.model.User;
+import com.sporthub.api.repository.AdminRepository;
+import com.sporthub.api.repository.CoachRepository;
+import com.sporthub.api.repository.PlayerRepository;
+import com.sporthub.api.repository.UserRepository;
+import com.sporthub.api.security.TokenService;
+import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
+public class AuthService {
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final CredentialService credentialService;
+    private final TokenService tokenService;
+    private final PlayerRepository playerRepository;
+    private final CoachRepository coachRepository;
+
+    public ResponseEntity<ResponseDTO> registerUser(RegisterRequestDTO body) {
+        Optional<User> existingUser = userRepository.findByEmail(body.email());
+
+        if (existingUser.isEmpty()) {
+            User newUser = new User();
+            newUser.setPassword(passwordEncoder.encode(body.password()));
+            newUser.setEmail(body.email());
+            newUser.setUsername(body.username());
+            newUser.setRole(body.role());
+
+            userRepository.save(newUser);
+
+            switch (body.role()) {
+                case COACH -> {
+                    Coach coach = new Coach();
+                    coach.setUser(newUser);
+                    coachRepository.save(coach);
+                }
+                case PLAYER -> {
+                    Player player = new Player();
+                    player.setUser(newUser);
+                    playerRepository.save(player);
+                }
+                case ADMIN -> {
+                    return ResponseEntity.badRequest().build();
+                }
+                default -> throw new IllegalStateException("Role not found: " + body.role());
+            }
+
+            credentialService.create(newUser);
+            String token = tokenService.generateToken(newUser);
+
+            return ResponseEntity.ok(new ResponseDTO(newUser.getId(), token,newUser.getRole()));
+        }
+
+        return ResponseEntity.badRequest().build();
+    }
+
+
+    public ResponseEntity<ResponseDTO> login(LoginRequestDTO body) {
+        var user = userRepository.findByEmail(body.email()).orElseThrow(() -> new RuntimeException("User not found."));
+        boolean verification = passwordEncoder.matches(body.password(), user.getPassword());
+        if (verification) {
+            String token = tokenService.generateToken(user);
+            return ResponseEntity.ok(new ResponseDTO(user.getId(), token, user.getRole()));
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    }
+}
