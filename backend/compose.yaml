@@ -1,37 +1,64 @@
 services:
   postgres:
-    image: 'postgres:latest'
+    image: 'postgres:15-alpine'
     environment:
-      - POSTGRES_DB=mydatabase
-      - POSTGRES_USER=myuser
-      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=${POSTGRES_DB:-mydatabase}
+      - POSTGRES_USER=${POSTGRES_USER:-myuser}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-secret}
     ports:
       - '5432:5432'
     volumes:
       - pgdata:/var/lib/postgresql/data
     networks:
-      - spring-boot-network
+      - sporthub-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-myuser} -d ${POSTGRES_DB:-mydatabase}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER:-guest}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASS:-guest}
+    networks:
+      - sporthub-network
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   sporthub-api:
     build:
       context: .
       dockerfile: Dockerfile
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/mydatabase
-      - SPRING_DATASOURCE_USERNAME=myuser
-      - SPRING_DATASOURCE_PASSWORD=secret
-      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/${POSTGRES_DB:-mydatabase}
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER:-myuser}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD:-secret}
+      - JWT_SECRET=${JWT_SECRET:-change-this-to-a-strong-secret-in-production}
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_USER=${RABBITMQ_USER:-guest}
+      - RABBITMQ_PASS=${RABBITMQ_PASS:-guest}
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
     ports:
       - '8080:8080'
     networks:
-      - spring-boot-network
+      - sporthub-network
 
 volumes:
   pgdata:
     driver: local
 
 networks:
-  spring-boot-network:
+  sporthub-network:
     driver: bridge

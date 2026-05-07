@@ -1,14 +1,34 @@
-# Use uma imagem base Java para o seu aplicativo
-FROM openjdk:17-jdk-slim
-
-# Define o diretório de trabalho dentro do container
+# Stage 1: Build the application
+FROM eclipse-temurin:17-jdk-jammy AS build
 WORKDIR /app
 
-# Copia o arquivo JAR da aplicação para o diretório /app no container
-COPY target/*.jar app.jar
+# Copy maven executable and pom.xml
+COPY mvnw .
+COPY .mvn .mvn
+COPY pom.xml .
 
-# Expõe a porta que o Spring Boot usa (por padrão 8080)
+# Download dependencies (this layer is cached unless pom.xml changes)
+RUN ./mvnw dependency:go-offline -B
+
+# Copy the project source
+COPY src src
+
+# Package the application
+RUN ./mvnw package -DskipTests
+
+# Stage 2: Create the runtime image
+FROM eclipse-temurin:17-jre-jammy
+WORKDIR /app
+
+# Run as non-root user for security
+RUN addgroup --system sporthub && adduser --system --ingroup sporthub sporthub
+USER sporthub
+
+# Copy the built jar from the build stage
+COPY --from=build /app/target/*.jar app.jar
+
+# Expose port
 EXPOSE 8080
 
-# Comando para executar o JAR
+# Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]

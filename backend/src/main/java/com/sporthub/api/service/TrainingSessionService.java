@@ -12,6 +12,8 @@ import com.sporthub.api.model.TrainingSession;
 import com.sporthub.api.repository.AthleteRepository;
 import com.sporthub.api.repository.TeamRepository;
 import com.sporthub.api.repository.TrainingSessionRepository;
+import com.sporthub.api.messaging.event.TrainingCreatedEvent;
+import com.sporthub.api.messaging.producer.EventPublisher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +32,7 @@ public class TrainingSessionService {
     private final TeamRepository teamRepository;
     private final AthleteRepository athleteRepository;
     private final TrainingSessionMapper trainingSessionMapper;
+    private final EventPublisher eventPublisher;
 
     @Transactional(readOnly = true)
     public List<TrainingSessionResponse> getAllTrainingSessions() {
@@ -69,6 +72,16 @@ public class TrainingSessionService {
         }
 
         TrainingSession savedSession = trainingSessionRepository.save(session);
+
+        eventPublisher.publishTrainingCreated(new TrainingCreatedEvent(
+                savedSession.getId(),
+                savedSession.getTitle(),
+                team.getId(),
+                team.getName(),
+                savedSession.getScheduledAt(),
+                savedSession.getLocation()
+        ));
+
         return trainingSessionMapper.toResponse(savedSession);
     }
 
