@@ -13,11 +13,12 @@ import com.sporthub.api.repository.AthleteRepository;
 import com.sporthub.api.repository.TeamRepository;
 import com.sporthub.api.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import com.sporthub.api.messaging.event.AthleteJoinedTeamEvent;
+import com.sporthub.api.messaging.producer.EventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,12 +28,12 @@ public class AthleteService {
     private final TeamRepository teamRepository;
     private final UserRepository userRepository;
     private final AthleteMapper athleteMapper;
+    private final EventPublisher eventPublisher;
 
     @Transactional(readOnly = true)
-    public List<AthleteResponse> getAllAthletes() {
-        return athleteRepository.findAll().stream()
-                .map(athleteMapper::toResponse)
-                .collect(Collectors.toList());
+    public Page<AthleteResponse> getAllAthletes(Pageable pageable) {
+        return athleteRepository.findAll(pageable)
+                .map(athleteMapper::toResponse);
     }
 
     @Transactional(readOnly = true)
@@ -67,13 +68,25 @@ public class AthleteService {
         }
 
         Athlete savedAthlete = athleteRepository.save(athlete);
-        
+
         // Ensure bidirectional relationship if user is attached
         if (savedAthlete.getUser() != null) {
             savedAthlete.getUser().setAthlete(savedAthlete);
             userRepository.save(savedAthlete.getUser());
         }
-        
+
+        // Publish domain event if athlete was assigned to a team
+        if (savedAthlete.getTeam() != null) {
+            Team team = savedAthlete.getTeam();
+            eventPublisher.publishAthleteJoinedTeam(new AthleteJoinedTeamEvent(
+                    savedAthlete.getId(),
+                    savedAthlete.getUser() != null ? savedAthlete.getUser().getUsername() : "unknown",
+                    team.getId(),
+                    team.getName(),
+                    team.getSportType().name()
+            ));
+        }
+
         return athleteMapper.toResponse(savedAthlete);
     }
 

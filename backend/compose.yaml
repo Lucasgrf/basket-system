@@ -10,7 +10,18 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     networks:
-      - spring-boot-network
+      - sporthub-network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    networks:
+      - sporthub-network
 
   sporthub-api:
     build:
@@ -20,18 +31,22 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/mydatabase
       - SPRING_DATASOURCE_USERNAME=myuser
       - SPRING_DATASOURCE_PASSWORD=secret
-      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
+      - JWT_SECRET=change-this-to-a-strong-secret-in-production
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_USER=guest
+      - RABBITMQ_PASS=guest
     depends_on:
       - postgres
+      - rabbitmq
     ports:
       - '8080:8080'
     networks:
-      - spring-boot-network
+      - sporthub-network
 
 volumes:
   pgdata:
     driver: local
 
 networks:
-  spring-boot-network:
+  sporthub-network:
     driver: bridge

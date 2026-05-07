@@ -11,11 +11,10 @@ import com.sporthub.api.model.Technician;
 import com.sporthub.api.repository.TeamRepository;
 import com.sporthub.api.repository.TechnicianRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,10 +25,9 @@ public class TeamService {
     private final TeamMapper teamMapper;
 
     @Transactional(readOnly = true)
-    public List<TeamResponse> getAllTeams() {
-        return teamRepository.findAll().stream()
-                .map(teamMapper::toResponse)
-                .collect(Collectors.toList());
+    public Page<TeamResponse> getAllTeams(Pageable pageable) {
+        return teamRepository.findAll(pageable)
+                .map(teamMapper::toResponse);
     }
 
     @Transactional(readOnly = true)
