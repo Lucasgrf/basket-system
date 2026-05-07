@@ -1,6 +1,6 @@
 package com.sporthub.api.DTO;
 
-import com.sporthub.api.model.User;
+import com.sporthub.api.model.enums.Role;
 
-public record ResponseDTO(Long id, String token, User.Role role) {
+public record ResponseDTO(Long id, String token, Role role) {
 }

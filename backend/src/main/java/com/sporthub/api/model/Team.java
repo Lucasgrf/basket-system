@@ -1,13 +1,13 @@
 package com.sporthub.api.model;
 
+import com.sporthub.api.model.enums.SportType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,6 +16,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "teams")
 public class Team {
 
     @Id
@@ -32,8 +33,7 @@ public class Team {
     private String gym;
 
     @Column(nullable = false)
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
-    private Date foundation;
+    private LocalDate foundation;
 
     @Column(nullable = false, unique = true)
     private String emailContact;
@@ -41,15 +41,19 @@ public class Team {
     @Column(nullable = false, unique = true)
     private String phoneContact;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "coach_id")
-    private Coach coach;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private SportType sportType;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "head_technician_id")
+    private Technician headTechnician;
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private Set<Training> trainings = new HashSet<>();
+    @Builder.Default
+    private Set<TrainingSession> trainingSessions = new HashSet<>();
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Player> players = new HashSet<>();
+    @Builder.Default
+    private Set<Athlete> athletes = new HashSet<>();
 }
-
-

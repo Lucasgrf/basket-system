@@ -1,6 +1,7 @@
 package com.sporthub.api.security;
 
 import com.sporthub.api.model.User;
+import com.sporthub.api.model.enums.Role;
 import com.sporthub.api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,8 +26,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         // Verifica se o usuário é ADMIN para atribuir todas as roles
         List<GrantedAuthority> authorities;
-        if (user.getRole() == User.Role.ADMIN) {
-            authorities = Stream.of(User.Role.values())
+        if (user.getRole() == Role.ADMIN) {
+            authorities = Stream.of(Role.values())
                     .map(role -> new SimpleGrantedAuthority(role.name()))
                     .collect(Collectors.toList());
         } else {

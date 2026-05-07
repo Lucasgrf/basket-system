@@ -3,17 +3,13 @@ package com.sporthub.api.service;
 import com.sporthub.api.DTO.LoginRequestDTO;
 import com.sporthub.api.DTO.RegisterRequestDTO;
 import com.sporthub.api.DTO.ResponseDTO;
-import com.sporthub.api.model.Admin;
-import com.sporthub.api.model.Coach;
-import com.sporthub.api.model.Player;
+import com.sporthub.api.model.Technician;
 import com.sporthub.api.model.User;
-import com.sporthub.api.repository.AdminRepository;
-import com.sporthub.api.repository.CoachRepository;
-import com.sporthub.api.repository.PlayerRepository;
+import com.sporthub.api.model.enums.Role;
+import com.sporthub.api.repository.TechnicianRepository;
 import com.sporthub.api.repository.UserRepository;
 import com.sporthub.api.security.TokenService;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,59 +17,52 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+/**
+ * TODO (Phase 3): Fully rewrite. Stub retained for compile compatibility with Phase 2 model changes.
+ * AuthService will be refactored to: remove ResponseEntity, use proper exceptions,
+ * and route registration to AthleteService/TechnicianService.
+ */
 @Service
 @RequiredArgsConstructor
 public class AuthService {
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final CredentialService credentialService;
     private final TokenService tokenService;
-    private final PlayerRepository playerRepository;
-    private final CoachRepository coachRepository;
+    private final TechnicianRepository technicianRepository;
 
     public ResponseEntity<ResponseDTO> registerUser(RegisterRequestDTO body) {
         Optional<User> existingUser = userRepository.findByEmail(body.email());
 
-        if (existingUser.isEmpty()) {
-            User newUser = new User();
-            newUser.setPassword(passwordEncoder.encode(body.password()));
-            newUser.setEmail(body.email());
-            newUser.setUsername(body.username());
-            newUser.setRole(body.role());
-
-            userRepository.save(newUser);
-
-            switch (body.role()) {
-                case COACH -> {
-                    Coach coach = new Coach();
-                    coach.setUser(newUser);
-                    coachRepository.save(coach);
-                }
-                case PLAYER -> {
-                    Player player = new Player();
-                    player.setUser(newUser);
-                    playerRepository.save(player);
-                }
-                case ADMIN -> {
-                    return ResponseEntity.badRequest().build();
-                }
-                default -> throw new IllegalStateException("Role not found: " + body.role());
-            }
-
-            credentialService.create(newUser);
-            String token = tokenService.generateToken(newUser);
-
-            return ResponseEntity.ok(new ResponseDTO(newUser.getId(), token,newUser.getRole()));
+        if (existingUser.isPresent()) {
+            return ResponseEntity.badRequest().build();
         }
 
-        return ResponseEntity.badRequest().build();
+        User newUser = User.builder()
+                .password(passwordEncoder.encode(body.password()))
+                .email(body.email())
+                .username(body.username())
+                .role(body.role())
+                .build();
+
+        userRepository.save(newUser);
+
+        if (body.role() == Role.TECHNICIAN) {
+            Technician technician = Technician.builder()
+                    .user(newUser)
+                    .build();
+            technicianRepository.save(technician);
+        }
+        // Athlete registration (with sport profile) will be handled in Phase 3 via AthleteService
+
+        String token = tokenService.generateToken(newUser);
+        return ResponseEntity.ok(new ResponseDTO(newUser.getId(), token, newUser.getRole()));
     }
 
-
     public ResponseEntity<ResponseDTO> login(LoginRequestDTO body) {
-        var user = userRepository.findByEmail(body.email()).orElseThrow(() -> new RuntimeException("User not found."));
-        boolean verification = passwordEncoder.matches(body.password(), user.getPassword());
-        if (verification) {
+        User user = userRepository.findByEmail(body.email())
+                .orElseThrow(() -> new RuntimeException("User not found."));
+        if (passwordEncoder.matches(body.password(), user.getPassword())) {
             String token = tokenService.generateToken(user);
             return ResponseEntity.ok(new ResponseDTO(user.getId(), token, user.getRole()));
         }

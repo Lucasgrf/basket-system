@@ -1,15 +1,13 @@
 package com.sporthub.api.DTO;
 
-
-import com.sporthub.api.model.User;
+import com.sporthub.api.model.enums.Role;
 
 public record UserDTO(
         Long id,
         String username,
         String email,
         String photoName,
-        User.Role role,
-        Long playerId,
-        Long coachId,
-        Long credentialId) {
+        Role role,
+        Long athleteId,
+        Long technicianId) {
 }

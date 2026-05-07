@@ -1,59 +1,16 @@
 package com.sporthub.api.controller;
 
-import com.sporthub.api.DTO.TrainingDTO;
-import com.sporthub.api.service.AdminService;
 import com.sporthub.api.service.TrainingService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
-
+/**
+ * TODO (Phase 3): Replace with TrainingSessionController.
+ */
 @RestController
-@RequestMapping("/training")
-//@PreAuthorize("hasAnyRole('ADMIN','COACH', 'PLAYER')")
+@RequestMapping("/training-sessions")
+@RequiredArgsConstructor
 public class TrainingController {
-    @Autowired
-    private TrainingService trainingService;
-
-    @Autowired
-    private AdminService adminService;
-
-    //@PreAuthorize("hasAnyRole('ADMIN','COACH', 'PLAYER')")
-    @GetMapping("/{id}")
-    public ResponseEntity<TrainingDTO> getTraining(@PathVariable Long id) {
-        return trainingService.getTraining(id);
-    }
-
-    //@PreAuthorize("hasAnyRole('ADMIN')")
-    @GetMapping
-    public ResponseEntity<List<TrainingDTO>> getAllTrainings(){
-        return adminService.getAllTrainings();
-    }
-
-    //@PreAuthorize("hasAnyRole('ADMIN')")
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteTraining(@PathVariable Long id){
-        return adminService.deleteTraining(id);
-    }
-
-    //@PreAuthorize("hasAnyRole('ADMIN')")
-    @PostMapping("/add")
-    public ResponseEntity<TrainingDTO> addTraining(@RequestBody TrainingDTO body){
-        return adminService.createTraining(body);
-    }
-
-    //@PreAuthorize("hasAnyRole('ADMIN')")
-    @PutMapping("/update/{id}")
-    public ResponseEntity<TrainingDTO> updateTraining(@PathVariable Long id, @RequestBody TrainingDTO body){
-        return adminService.updateTraining(id,body);
-    }
-
-    @GetMapping("/team/{id}")
-    public ResponseEntity<List<TrainingDTO>> getAllTrainingsByTeam(@PathVariable Long id){
-        return trainingService.getAllTrainingsByTeam(id);
-    }
-
+    private final TrainingService trainingService;
 }

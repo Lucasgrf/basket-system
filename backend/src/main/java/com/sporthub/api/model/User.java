@@ -1,5 +1,6 @@
 package com.sporthub.api.model;
 
+import com.sporthub.api.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,22 +41,10 @@ public class User implements UserDetails {
     private Role role;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Coach coach;
+    private Technician technician;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Player player;
-
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Admin admin;
-
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Credential credential;
-
-    public enum Role {
-        COACH,
-        PLAYER,
-        ADMIN
-    }
+    private Athlete athlete;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -82,5 +71,3 @@ public class User implements UserDetails {
         return true;
     }
 }
-
-

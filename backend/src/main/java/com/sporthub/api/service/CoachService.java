@@ -1,138 +1,24 @@
 package com.sporthub.api.service;
 
-import com.sporthub.api.DTO.CoachDTO;
-import com.sporthub.api.model.Coach;
-import com.sporthub.api.model.Credential;
-import com.sporthub.api.model.User;
-import com.sporthub.api.repository.CoachRepository;
-import com.sporthub.api.repository.TeamRepository;
-import com.sporthub.api.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import com.sporthub.api.model.Technician;
+import com.sporthub.api.repository.TechnicianRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.*;
+import java.util.List;
 
+/**
+ * TODO (Phase 3): Replace with TechnicianService. CoachService is removed.
+ * Stub retained for compile compatibility — CoachController still references this.
+ */
 @Service
+@RequiredArgsConstructor
 public class CoachService {
-    @Autowired
-    private CoachRepository coachRepository;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private TeamRepository teamRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private CredentialService credentialService;
 
-    public ResponseEntity<CoachDTO> createCoach(@RequestBody CoachDTO coach) {
-        var existsCoach = coachRepository.findByNickname(coach.nickname());
-        if (existsCoach.isEmpty()) {
-            Coach newCoach = new Coach();
-            newCoach.setNickname(coach.nickname());
-            if (coach.userId() != null) {
-                User user = userRepository.findById(coach.userId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-                newCoach.setUser(user);
-                coachRepository.save(newCoach);
-                return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(newCoach));
-            }
-            User user = generateRandomUser();
-            newCoach.setUser(user);
-            coachRepository.save(newCoach);
-            return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(newCoach));
-        }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-    }
+    private final TechnicianRepository technicianRepository;
 
-    public ResponseEntity<CoachDTO> getCoach(@PathVariable Long id) {
-        Optional<Coach> coach = coachRepository.findById(id);
-        if(coach.isPresent()) {
-            Coach coachAux = coach.get();
-            return ResponseEntity.status(HttpStatus.OK).body(toDTO(coachAux));
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    }
-
-    public ResponseEntity<List<CoachDTO>> getAllCoaches() {
-        List<Coach> coaches = coachRepository.findAll();
-        List<CoachDTO> coachDTOs = coaches.stream()
-                .map(this::toDTO)
-                .toList();
-        return ResponseEntity.ok(coachDTOs);
-    }
-
-    public ResponseEntity<CoachDTO> updateCoach(@PathVariable Long id, @RequestBody CoachDTO updatedCoach) {
-        var existsCoach = coachRepository.findById(id);
-        if (existsCoach.isPresent()) {
-            Coach coach = existsCoach.get();
-
-            if (updatedCoach.nickname() != null) {
-                coach.setNickname(updatedCoach.nickname());
-            }
-            if (updatedCoach.userId() != null) {
-                userRepository.findById(updatedCoach.userId()).ifPresent(coach::setUser);
-            }
-
-            coachRepository.save(coach);
-            return ResponseEntity.status(HttpStatus.OK).body(toDTO(coach));
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    }
-
-    public ResponseEntity<Void> deleteCoach(Long id) {
-        if (coachRepository.existsById(id)) {
-            coachRepository.deleteById(id);
-            return ResponseEntity.noContent().build();
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Coach not found");
-        }
-    }
-
-    public CoachDTO toDTO(Coach coach) {
-        return new CoachDTO(
-                coach.getId(),
-                coach.getNickname() != null ? coach.getNickname() : "",
-                coach.getUser().getId(),
-                coach.getTeam() != null ? coach.getTeam().getId() : null
-        );
-    }
-
-    public User generateRandomUser(){
-        User user = new User();
-
-        List<String> nomes = Arrays.asList("João", "Pedro", "Carlos", "Lucas", "Miguel", "Gabriel", "Rafael", "Felipe", "Gustavo");
-
-
-        Random random = new Random();
-        int randomNumber = random.nextInt(100);
-        String randomName = nomes.get(random.nextInt(nomes.size())) + random.nextInt(100);
-
-        String email = randomName + randomNumber + "@gmail.com";
-        user.setEmail(email);
-
-        user.setUsername(randomName);
-        user.setPhotoName("");
-        user.setPassword(passwordEncoder.encode("padrao@user" + randomName));
-        user.setRole(User.Role.COACH);
-        userRepository.save(user);
-        Credential credential = credentialService.create(user);
-        user.setCredential(credential);
-        userRepository.save(user);
-        return user;
-    }
-
-    public ResponseEntity<CoachDTO> getCoachByUserId(@PathVariable Long userId) {
-        Optional<Coach> coach = coachRepository.findById(userId);
-        if(coach.isPresent()) {
-            Coach coachAux = coach.get();
-            return ResponseEntity.status(HttpStatus.OK).body(toDTO(coachAux));
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    public ResponseEntity<List<Technician>> getAll() {
+        return ResponseEntity.ok(technicianRepository.findAll());
     }
 }

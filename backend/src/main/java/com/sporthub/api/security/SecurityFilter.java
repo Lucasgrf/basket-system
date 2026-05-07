@@ -1,6 +1,7 @@
 package com.sporthub.api.security;
 
 import com.sporthub.api.model.User;
+import com.sporthub.api.model.enums.Role;
 import com.sporthub.api.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -34,8 +35,8 @@ public class SecurityFilter extends OncePerRequestFilter {
         if(login != null){
             User user = userRepository.findByEmail(login).orElseThrow(() -> new RuntimeException("User Not Found"));
             List<SimpleGrantedAuthority> authorities;
-            if (user.getRole() == User.Role.ADMIN) {
-                authorities = Stream.of(User.Role.values())
+            if (user.getRole() == Role.ADMIN) {
+                authorities = Stream.of(Role.values())
                         .map(role -> new SimpleGrantedAuthority(role.name()))
                         .collect(Collectors.toList());
             } else {
